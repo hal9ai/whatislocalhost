@@ -1,0 +1,6 @@
+.env
+.env.*
+context.tar.gz
+node_modules/
+.DS_Store
+.archive/

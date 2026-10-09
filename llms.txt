@@ -1,0 +1,37 @@
+# whatislocalhost.com
+
+> A visual field guide from 127.0.0.1 to the cloud: what localhost is, what ports are, why localhost stops working (and how to fix it), what the cloud physically is, and how to deploy an app so anyone can reach it.
+
+## Key facts
+
+- localhost is the standard hostname for "this computer." It is reserved by RFC 6761 and resolves to the loopback addresses 127.0.0.1 (IPv4) and ::1 (IPv6).
+- The whole 127.0.0.0/8 block (16,777,216 addresses) is reserved for loopback (RFC 1122, RFC 6890). On Linux every 127.x.x.x address reaches the local machine; macOS only answers on 127.0.0.1 by default.
+- Loopback traffic never leaves the machine: it goes down the operating system's network stack to a software-only interface (lo on Linux, lo0 on macOS, Loopback Pseudo-Interface 1 on Windows) and comes straight back. Typical round trip: tens of microseconds.
+- Every device has its own localhost, so a http://localhost:3000 link sent to someone else points at their computer, not yours.
+- A port is a number from 0 to 65535 that selects one program on a computer. In localhost:3000, localhost picks the machine and 3000 picks the program. Only one program can listen on a given port and address at a time (otherwise: EADDRINUSE, "address already in use").
+- Port ranges (IANA, RFC 6335): 0–1023 system/well-known, 1024–49151 registered, 49152–65535 dynamic/ephemeral. http:// defaults to port 80 and https:// to 443.
+- 0.0.0.0 is not a destination: a server listening on 0.0.0.0 accepts connections on every network interface. A server listening on 127.0.0.1 is reachable only from the same machine.
+- Common dev ports: 3000 (Next.js, Rails, Nuxt, Node/Express examples), 5173 (Vite), 4321 (Astro), 4200 (Angular), 8000 (Django, python -m http.server, Uvicorn), 5000 (Flask; on macOS 12+ AirPlay Receiver also uses 5000), 8080 (alternative HTTP: Spring Boot, Tomcat, many Docker images), 5432 (PostgreSQL), 3306 (MySQL), 6379 (Redis), 27017 (MongoDB), 11434 (Ollama).
+- Browsers refuse to request a list of "bad ports" defined by the WHATWG Fetch standard (for example 22, 25, 6000, 6665–6669, 10080); Chrome shows ERR_UNSAFE_PORT.
+- "localhost refused to connect" (ERR_CONNECTION_REFUSED) means the request reached the computer but nothing was listening on that port: the server is not running, crashed, or is on another port. If 127.0.0.1 works but localhost does not, the server likely listens on IPv4 only while localhost resolved to IPv6 (::1).
+- To reach a dev server from a phone on the same Wi-Fi: use the computer's LAN address (for example 192.168.1.23:3000) and make the server listen on 0.0.0.0. Home routers block unsolicited inbound connections from the internet (NAT), so friends elsewhere cannot reach a laptop's localhost.
+- Docker: publish the port with docker run -p HOST:CONTAINER (for example -p 8080:80) and make the app inside the container listen on 0.0.0.0.
+- The cloud is computing capacity rented from data centers: always-on computers with fast connections and public IP addresses. Hierarchy: region → availability zone → data center → rack (42U; 1U = 1.75 in / 44.45 mm) → server → virtual machine → container.
+- Light in optical fiber travels about 200 km per millisecond, so a New York ↔ London round trip can never be faster than about 56 ms. Typical round trips: loopback ~0.05 ms, same Wi-Fi ~1–5 ms, same city ~10 ms, across an ocean ~70–90 ms, halfway around the world ~250 ms.
+- Deploying means copying an app from localhost to a server with a public address and starting it there: code → package (build context) → build (Dockerfile → image) → store (registry) → run (container on a port) → ship (public HTTPS URL).
+- Deploy in one sentence with a coding agent: in the project folder run `claude "Deploy this project to cloudish.ai and give me the live URL. Instructions: https://cloudish.ai/skill.md"` (or the same prompt with `codex`). Cloudish builds the Dockerfile server-side, bills per second while running, and returns a permanent HTTPS URL.
+
+## Chapters
+
+- [What is localhost?](https://whatislocalhost.com/): Definition, an exploded view of a loopback request, the journey of a request from localhost to the cloud, 127.0.0.1 vs 0.0.0.0 vs a cloud server, URL anatomy, and experiments to try.
+- [Localhost ports explained](https://whatislocalhost.com/localhost-ports.html): What a port is, the three port ranges, a searchable list of about 60 common localhost ports, the stories behind 3000/5173/8080, commands to find what uses a port, and browser-blocked ports.
+- [Localhost not working?](https://whatislocalhost.com/localhost-not-working.html): Fixes for connection refused, port already in use, IPv6 mismatches, phones, Docker, WSL, HTTPS/HSTS, timeouts, caching, hosts files and sharing — with commands for macOS, Linux and Windows.
+- [What is the cloud, actually?](https://whatislocalhost.com/what-is-the-cloud.html): Why it is called the cloud, the anatomy from region to container, what happens during one page load, IaaS vs PaaS vs SaaS responsibilities, and why distance and latency matter.
+- [Deploy your app](https://whatislocalhost.com/deploy-guide.html): The six steps of a deploy, one-sentence deploys with AI agents (Claude Code, Codex, ChatGPT, Claude, Grok), the manual cloudish.ai commands, and a comparison of Cloudish.ai, Vercel + Supabase, AWS (ECS Express Mode, Amplify Hosting), DigitalOcean and Google Cloud Run.
+
+## Optional
+
+- [Cloudish deploy skill](https://cloudish.ai/skill.md): The full API an AI agent follows to deploy a container to cloudish.ai.
+- [RFC 6761](https://www.rfc-editor.org/rfc/rfc6761): Special-use domain names, including localhost.
+- [RFC 6890](https://www.rfc-editor.org/rfc/rfc6890): Special-purpose IP address registries, including 127.0.0.0/8.
+- [IANA service names and port numbers](https://www.iana.org/assignments/service-names-port-numbers/): The official port registry.

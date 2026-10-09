@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What Is the Cloud, Actually? A Visual, No-Jargon Explanation</title>
+<meta name="description" content="The cloud is millions of always-on computers you rent by the second. See how regions, data centers and racks fit together — and why it's the fix for localhost.">
+<link rel="canonical" href="https://whatislocalhost.com/what-is-the-cloud.html">
+<meta name="theme-color" content="#f5f8fd" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061633" media="(prefers-color-scheme: dark)">
+<script>(function(){var d=document.documentElement;d.classList.add("js");try{var t=localStorage.getItem("theme");if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";d.dataset.theme=t}catch(e){d.dataset.theme="light"}})()</script>
+<link rel="preload" href="/fonts/space-grotesk-vf.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/ibm-plex-sans-vf.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/styles.css?v=2.0.0">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="whatislocalhost.com">
+<meta property="og:title" content="What is the cloud, actually?">
+<meta property="og:description" content="Millions of always-on computers in buildings around the planet, rented by the second. A visual tour from region to rack to your app.">
+<meta property="og:url" content="https://whatislocalhost.com/what-is-the-cloud.html">
+<meta property="og:image" content="https://whatislocalhost.com/og/cloud.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://whatislocalhost.com/og/cloud.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "What is the cloud, actually?",
+      "description": "The cloud is computing capacity in data centers — always-on computers with public network addresses — that you rent over the internet instead of owning.",
+      "url": "https://whatislocalhost.com/what-is-the-cloud.html",
+      "image": "https://whatislocalhost.com/og/cloud.png",
+      "datePublished": "2026-09-25",
+      "dateModified": "2026-10-04",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://whatislocalhost.com/#website"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "whatislocalhost.com",
+        "url": "https://whatislocalhost.com/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Localhost",
+          "item": "https://whatislocalhost.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "The cloud",
+          "item": "https://whatislocalhost.com/what-is-the-cloud.html"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the cloud, in simple terms?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Computers in data centers that you rent over the internet instead of buying. They stay on all the time, have fast connections and public addresses, and you pay only for what you use."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where is the cloud, physically?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In data centers: warehouse-sized buildings full of servers, grouped into regions near big cities on every inhabited continent. When you deploy, you usually choose a region close to your users."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is the cloud just someone else's computer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — millions of them, with redundant power, cooling, networking and security teams you'd never build yourself, available in seconds and billed by usage. “Someone else's computer” is exactly the point."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the difference between IaaS, PaaS and SaaS?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "They differ in how much you manage. With IaaS you rent virtual machines and manage the operating system and everything above it. With PaaS you hand over your code and the platform runs it. With SaaS you just use finished software, like Gmail."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does my app need the cloud if it works on localhost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Localhost only works on your own computer and only while it's on. A cloud server has a public address and never sleeps, so anyone can use your app from anywhere, at any time."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is the cloud expensive?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It doesn't have to be. Many platforms have free tiers, bill by the second, and scale idle apps to zero, so a small personal project can cost cents a day or nothing at all. Costs grow with traffic and resources."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script src="/script.js?v=2.0.0" defer></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" style="stroke:var(--stroke-2);stroke-width:1"/></pattern>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" style="fill:var(--stroke)"/></marker>
+    <marker id="arr-sig" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" style="fill:var(--signal)"/></marker>
+  </defs>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap masthead-inner">
+    <a class="logo" href="/" aria-label="whatislocalhost.com home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" style="fill:var(--blue)"/><path d="M1 16h30M16 1v30" stroke="#fff" stroke-opacity=".14"/><g class="logo-loop"><path d="M22.9 12.6A7.4 7.4 0 1 0 23.4 17" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round"/><path d="M19.6 12.4l3.6.5.5-3.6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></g><circle cx="16" cy="16" r="2.7" fill="#ff8a3d"/></svg>
+      <span class="logo-text">whatis<b>localhost</b></span>
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Chapters">
+      <a href="/"><span class="n">01</span>Localhost</a>
+      <a href="/localhost-ports.html"><span class="n">02</span>Ports</a>
+      <a href="/localhost-not-working.html"><span class="n">03</span>Troubleshoot</a>
+      <a href="/what-is-the-cloud.html" aria-current="page"><span class="n">04</span>The cloud</a>
+      <a href="/deploy-guide.html"><span class="n">05</span>Deploy</a>
+    </nav>
+    <div class="masthead-actions">
+      <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark blueprint theme"><span class="knob" aria-hidden="true"></span><svg class="ico-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.3 5.3l1.7 1.7M17 17l1.7 1.7M5.3 18.7L7 17M17 7l1.7-1.7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><svg class="ico-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button>
+      <a class="btn btn-primary btn-sm" href="/deploy-guide.html#launchpad">Deploy an app</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="bars" aria-hidden="true"></span>Menu</button>
+    </div>
+  </div>
+  <div class="progress" aria-hidden="true"><span></span></div>
+</header>
+
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Localhost</a><span aria-hidden="true">/</span><span>The cloud</span></nav>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="kicker"><span class="tag">CH. 04</span> The cloud · a planet-sized computer</p>
+        <h1>What is the <span class="hl">cloud</span>, actually?</h1>
+        <p class="lede">Not a mystical place. It's millions of computers in buildings around the planet — always on, always connected, rented out by the second. When you want the whole world to reach your app, this is where it goes.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#anatomy">See inside the cloud <span class="arr" aria-hidden="true">↓</span></a>
+          <a class="btn" href="/deploy-guide.html">Put my app there</a>
+        </div>
+        <dl class="readouts">
+          <div><dt>Hours a day</dt><dd>24</dd></div>
+          <div><dt>Billed by</dt><dd>The second</dd></div>
+          <div><dt>Reachable from</dt><dd>Anywhere</dd></div>
+        </dl>
+      </div>
+      <figure class="fig corners" style="margin:0">
+        <div class="fig-bar"><span><b>Fig. 01</b> — The internet, from orbit</span><span class="live">Drag to spin</span></div>
+        <div class="globe-wrap"><canvas data-globe="labels" role="img" aria-label="A rotating dotted globe showing cities that host major cloud regions, your approximate location, and requests traveling between them."></canvas></div>
+        <div class="globe-legend"><span><i class="r"></i>Cloud regions (illustrative)</span><span><i class="y"></i>You · approx., from your time zone</span><span><i class="a"></i>Requests in flight</span></div>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section section-tight section-rule" aria-labelledby="qa-h">
+  <div class="wrap split split-wide">
+    <div class="reveal">
+      <p class="eyebrow"><span class="idx">§ 01</span> The short answer</p>
+      <h2 id="qa-h">The cloud, in one paragraph</h2>
+      <div class="answer">
+        <span class="answer-label">Quick answer</span>
+        <p><strong>The cloud</strong> is computing you rent instead of own: always-on computers in <strong>data centers</strong>, with fast connections and public internet addresses, run by companies like Amazon, Google, Microsoft and DigitalOcean. You pay for what you use — often by the second.</p>
+        <p>“Deploying to the cloud” means copying your app from your laptop (your <a href="/">localhost</a>) onto one of those machines, so anyone can reach it, anytime, even with your laptop closed.</p>
+      </div>
+    </div>
+    <div class="reveal reveal-d1">
+      <p class="eyebrow"><span class="idx">Origin</span> Why “cloud”?</p>
+      <figure class="fig draft" style="margin:0">
+        <div class="fig-bar"><span><b>Fig. 02</b> — How engineers drew the network</span><span class="live">Live</span></div>
+        <svg class="dg anim" viewBox="0 0 760 250" role="img" aria-labelledby="or-t or-d">
+          <title id="or-t">A network diagram with a cloud in the middle</title>
+          <desc id="or-d">Two offices connected through a cloud shape. Engineers drew the parts of a network they didn't control as a cloud; the name stuck.</desc>
+          <rect class="bg ln" x="20" y="68" width="150" height="120" rx="10"/>
+          <text class="lbl" x="20" y="56">YOUR OFFICE</text>
+          <rect class="ln-2" x="44" y="100" width="40" height="28" rx="3"/><path class="ln-2" d="M38 132 H90"/>
+          <rect class="ln-2" x="104" y="100" width="40" height="28" rx="3"/><path class="ln-2" d="M98 132 H150"/>
+          <path class="ln-3" d="M64 132 V158 H124 V132 M94 158 V176"/>
+          <rect class="bg ln" x="590" y="68" width="150" height="120" rx="10"/>
+          <text class="lbl" x="590" y="56">ANOTHER OFFICE</text>
+          <rect class="ln-2" x="634" y="100" width="62" height="48" rx="3"/><path class="ln-3" d="M644 112 H686 M644 122 H676 M644 132 H682"/>
+          <path class="ln-2 dash" d="M258 182 C 222 182 216 132 256 126 C 252 86 312 72 336 102 C 352 62 432 62 442 102 C 472 82 522 102 508 136 C 548 142 548 182 508 182 Z"/>
+          <text class="lbl mid" x="382" y="140">THE NETWORK</text>
+          <text class="tx-3 mid" x="382" y="156">DETAILS: SOMEONE ELSE'S</text>
+          <path class="ln" d="M170 128 H228"/><path class="ln" d="M540 160 C 560 160 566 128 590 128"/>
+          <path id="or-p" d="M170 128 H228 C 300 110 460 160 540 160 C 560 160 566 128 590 128" fill="none"/>
+          <g class="pkt"><circle class="pkt-halo" r="8"/><circle class="pkt-core" r="4"/><animateMotion dur="3.4s" repeatCount="indefinite"><mpath href="#or-p"/></animateMotion></g>
+          <g class="pkt"><circle class="pkt-halo ok" r="8"/><circle class="pkt-core ok" r="4"/><animateMotion dur="3.4s" begin="-1.7s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#or-p"/></animateMotion></g>
+        </svg>
+        <figcaption>On network diagrams, engineers drew the parts they didn't control — the telephone network, later the internet — as a puffy cloud. When companies began renting out computers you reach over the internet, the name followed. It went mainstream in 2006, the year Amazon launched EC2 and started renting servers by the hour.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" id="anatomy" aria-labelledby="an-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 02</span> Anatomy</p>
+      <h2 id="an-h">Zoom into the cloud, detail by detail</h2>
+      <p>From a whole metro area down to the slice your app gets. Each drawing magnifies the highlighted part of the one before it.</p>
+    </div>
+    <div class="details">
+      <figure class="fig detail draft reveal">
+        <div class="fig-bar"><span><b>Detail A</b> — Region</span><span>→ B</span></div>
+        <svg class="dg" viewBox="0 0 240 170" role="img" aria-label="A region containing three availability zones">
+          <path class="ln-2" d="M30 40 C 60 18 150 16 200 38 C 226 52 224 118 196 138 C 160 164 72 164 40 140 C 16 120 12 60 30 40 Z"/>
+          <circle class="bg-blue" cx="80" cy="82" r="20"/><circle class="ln-sig" cx="80" cy="82" r="20"/><text class="lbl-sig mid" x="80" y="86">AZ-A</text>
+          <circle class="bg-blue" cx="152" cy="70" r="20"/><circle class="ln" cx="152" cy="70" r="20"/><text class="lbl mid" x="152" y="74">AZ-B</text>
+          <circle class="bg-blue" cx="128" cy="124" r="20"/><circle class="ln" cx="128" cy="124" r="20"/><text class="lbl mid" x="128" y="128">AZ-C</text>
+          <path class="ln-3 dash" d="M98 76 L134 72 M92 98 L114 112 M146 90 L138 106"/>
+        </svg>
+        <figcaption><strong>Region.</strong> A cluster of data centers in one metro area — Northern Virginia, Frankfurt, Tokyo. Big clouds run dozens of regions; you pick the one closest to your users.</figcaption>
+      </figure>
+      <figure class="fig detail draft reveal reveal-d1">
+        <div class="fig-bar"><span><b>Detail B</b> — Availability zone</span><span>→ C</span></div>
+        <svg class="dg" viewBox="0 0 240 170" role="img" aria-label="An availability zone with three data center buildings">
+          <path class="ln" d="M10 146 H230"/><rect class="f-hatch" x="10" y="146" width="220" height="8"/>
+          <rect class="bg ln-2" x="20" y="82" width="58" height="64"/><path class="ln-3" d="M28 92 h12 m6 0 h12 m6 0 h8"/>
+          <rect class="bg ln-sig" x="90" y="62" width="70" height="84" style="fill:var(--signal-soft)"/><path class="ln-3" d="M98 72 h14 m6 0 h14 m6 0 h14"/>
+          <rect class="bg ln-2" x="172" y="92" width="50" height="54"/><path class="ln-3" d="M180 102 h10 m6 0 h10 m6 0 h6"/>
+          <path class="ln-2" d="M30 40 V82 M30 40 H125 V62 M125 40 H198 V92"/><circle class="f-stroke" cx="30" cy="40" r="3"/>
+          <text class="tx-3" x="36" y="34">OWN POWER · OWN COOLING</text>
+        </svg>
+        <figcaption><strong>Availability zone.</strong> One or more data centers with independent power, cooling and networking, kilometers away from the others — so one fire or flood can't take a whole region down.</figcaption>
+      </figure>
+      <figure class="fig detail draft reveal reveal-d2">
+        <div class="fig-bar"><span><b>Detail C</b> — Data center</span><span>→ D</span></div>
+        <svg class="dg" viewBox="0 0 240 170" role="img" aria-label="A data center floor plan with rows of racks">
+          <rect class="ln" x="14" y="16" width="212" height="138" rx="4"/>
+          <g class="ln-2">
+            <rect x="30" y="34" width="20" height="12"/><rect x="54" y="34" width="20" height="12"/><rect x="78" y="34" width="20" height="12"/><rect x="102" y="34" width="20" height="12"/><rect x="126" y="34" width="20" height="12"/><rect x="150" y="34" width="20" height="12"/><rect x="174" y="34" width="20" height="12"/>
+            <rect x="30" y="66" width="20" height="12"/><rect x="54" y="66" width="20" height="12"/><rect x="78" y="66" width="20" height="12"/><rect x="126" y="66" width="20" height="12"/><rect x="150" y="66" width="20" height="12"/><rect x="174" y="66" width="20" height="12"/>
+            <rect x="30" y="98" width="20" height="12"/><rect x="54" y="98" width="20" height="12"/><rect x="78" y="98" width="20" height="12"/><rect x="102" y="98" width="20" height="12"/><rect x="126" y="98" width="20" height="12"/><rect x="150" y="98" width="20" height="12"/><rect x="174" y="98" width="20" height="12"/>
+            <rect x="30" y="130" width="20" height="12"/><rect x="54" y="130" width="20" height="12"/><rect x="78" y="130" width="20" height="12"/><rect x="102" y="130" width="20" height="12"/><rect x="126" y="130" width="20" height="12"/><rect x="150" y="130" width="20" height="12"/><rect x="174" y="130" width="20" height="12"/>
+          </g>
+          <rect class="ln-sig" x="102" y="66" width="20" height="12" style="fill:var(--signal-soft)"/>
+          <text class="tx-3" x="200" y="60" style="font-size:7.5px">COLD</text><text class="tx-3" x="200" y="92" style="font-size:7.5px">HOT</text><text class="tx-3" x="200" y="124" style="font-size:7.5px">COLD</text>
+        </svg>
+        <figcaption><strong>Data center.</strong> A warehouse of server racks in rows, with alternating hot and cold aisles, redundant power, backup generators and industrial cooling. A large one holds tens of thousands of servers.</figcaption>
+      </figure>
+      <figure class="fig detail draft reveal">
+        <div class="fig-bar"><span><b>Detail D</b> — Rack</span><span>→ E</span></div>
+        <svg class="dg" viewBox="0 0 240 170" role="img" aria-label="A server rack with one highlighted server">
+          <rect class="bg ln" x="80" y="10" width="80" height="152" rx="3"/>
+          <g class="ln-3"><rect x="88" y="18" width="64" height="9" rx="1"/><rect x="88" y="30" width="64" height="9" rx="1"/><rect x="88" y="42" width="64" height="9" rx="1"/><rect x="88" y="54" width="64" height="9" rx="1"/><rect x="88" y="78" width="64" height="9" rx="1"/><rect x="88" y="90" width="64" height="9" rx="1"/><rect x="88" y="102" width="64" height="9" rx="1"/><rect x="88" y="114" width="64" height="9" rx="1"/><rect x="88" y="126" width="64" height="9" rx="1"/><rect x="88" y="138" width="64" height="9" rx="1"/><rect x="88" y="150" width="64" height="6" rx="1"/></g>
+          <rect class="ln-sig" x="88" y="66" width="64" height="9" rx="1" style="fill:var(--signal-soft)"/>
+          <circle class="led on" cx="146" cy="22.5" r="1.4"/><circle class="led on" cx="146" cy="34.5" r="1.4" style="animation-delay:-.6s"/><circle class="led on" cx="146" cy="46.5" r="1.4" style="animation-delay:-1.4s"/><circle class="led on" cx="146" cy="70.5" r="1.4" style="animation-delay:-2s"/><circle class="led on" cx="146" cy="94.5" r="1.4" style="animation-delay:-.9s"/><circle class="led on" cx="146" cy="118.5" r="1.4" style="animation-delay:-1.8s"/>
+          <path class="ln-2" d="M60 10 H74 M60 162 H74 M67 10 V162"/><text class="tx-3 end" x="56" y="90">42U</text>
+          <path class="ln-2" d="M166 66 H182 M166 75 H182 M176 66 V75"/><text class="tx-3" x="186" y="74">1U</text>
+        </svg>
+        <figcaption><strong>Rack.</strong> A standard rack is 42 “units” tall — each unit 1.75 inches (44.45 mm) — packed with servers, power strips and a network switch at the top.</figcaption>
+      </figure>
+      <figure class="fig detail draft reveal reveal-d1">
+        <div class="fig-bar"><span><b>Detail E</b> — Server</span><span>→ F</span></div>
+        <svg class="dg" viewBox="0 0 240 170" role="img" aria-label="A server divided into virtual machines">
+          <rect class="bg ln" x="16" y="26" width="208" height="118" rx="6"/>
+          <rect class="ln-2 dash" x="26" y="36" width="44" height="70" rx="3"/><text class="tx-3 mid" x="48" y="75">VM</text>
+          <rect class="ln-2 dash" x="76" y="36" width="44" height="70" rx="3"/><text class="tx-3 mid" x="98" y="75">VM</text>
+          <rect class="ln-sig" x="126" y="36" width="44" height="70" rx="3" style="fill:var(--signal-soft)"/><text class="lbl-sig mid" x="148" y="75">VM</text>
+          <rect class="ln-2 dash" x="176" y="36" width="38" height="70" rx="3"/><text class="tx-3 mid" x="195" y="75">VM</text>
+          <rect class="bg-blue" x="26" y="114" width="188" height="20" rx="3"/><text class="lbl mid" x="120" y="128" style="font-size:8.5px">HYPERVISOR · SHARES CPU &amp; RAM</text>
+          <text class="tx-3" x="16" y="18">≈ 100+ CORES · 512+ GB RAM</text>
+        </svg>
+        <figcaption><strong>Server.</strong> Dozens to hundreds of CPU cores and hundreds of gigabytes of memory, carved by a hypervisor into many isolated virtual machines for many customers.</figcaption>
+      </figure>
+      <figure class="fig detail draft reveal reveal-d2">
+        <div class="fig-bar"><span><b>Detail F</b> — Your app</span><span>Live on :8080</span></div>
+        <svg class="dg" viewBox="0 0 240 170" role="img" aria-label="Your app running as a container inside a virtual machine, reachable from the internet">
+          <rect class="ln-2 dash" x="14" y="22" width="160" height="126" rx="6"/><text class="tx-3" x="22" y="38">VIRTUAL MACHINE</text>
+          <rect class="ln-2" x="26" y="50" width="62" height="84" rx="4"/><text class="tx-3 mid" x="57" y="96">OTHER</text>
+          <rect class="ln-sig" x="98" y="50" width="66" height="84" rx="4" style="fill:var(--signal-soft)"/>
+          <text class="lbl-sig mid" x="131" y="84">YOUR</text><text class="lbl-sig mid" x="131" y="98">APP</text><text class="tx-3 mid" x="131" y="120">:8080</text>
+          <path id="df-p" class="ln-sig flow" d="M232 92 H164"/>
+          <g class="pkt"><circle class="pkt-halo" r="6"/><circle class="pkt-core" r="3"/><animateMotion dur="1.8s" repeatCount="indefinite"><mpath href="#df-p"/></animateMotion></g>
+          <text class="tx-3" x="182" y="82">THE</text><text class="tx-3" x="182" y="112">WORLD</text>
+        </svg>
+        <figcaption><strong>Your app.</strong> Your container gets a slice — maybe half a CPU core and a gigabyte of memory — and one open port that the internet can reach through a public address.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" id="request-timeline" aria-labelledby="seq-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 03</span> In motion</p>
+      <h2 id="seq-h">What happens when someone opens your app</h2>
+      <p>Ten messages, five machines, a few thousand kilometers — and it's done in about the time it takes to blink.</p>
+    </div>
+    <figure class="fig reveal" data-seq>
+      <div class="fig-bar"><span><b>Fig. 03</b> — One page load, step by step</span><span>t = <b class="seq-clock" data-clock>0 ms</b> · <button class="chip" type="button" data-replay style="min-height:28px;padding:3px 10px;font-size:.72rem">Replay</button></span></div>
+      <svg class="dg seq" viewBox="0 0 800 560" role="img" aria-labelledby="sq-t sq-d">
+        <title id="sq-t">Sequence of a single page load</title>
+        <desc id="sq-d">The browser asks DNS for the app's address, sets up an encrypted connection with the load balancer, and sends GET /. The load balancer forwards it to the app container, which queries the database and returns HTML. The page renders about 140 milliseconds after the first step (illustrative timings for a user about 2,000 km away).</desc>
+        <g>
+          <rect class="bg ln" x="95" y="14" width="110" height="38" rx="8"/><text class="lbl mid" x="150" y="38">BROWSER</text>
+          <rect class="bg ln" x="245" y="14" width="110" height="38" rx="8"/><text class="lbl mid" x="300" y="38">DNS</text>
+          <rect class="bg ln" x="390" y="14" width="120" height="38" rx="8"/><text class="lbl mid" x="450" y="38">LOAD BALANCER</text>
+          <rect class="bg ln" x="545" y="14" width="110" height="38" rx="8"/><text class="lbl mid" x="600" y="38">YOUR APP</text>
+          <rect class="bg ln" x="685" y="14" width="110" height="38" rx="8"/><text class="lbl mid" x="740" y="38">DATABASE</text>
+          <path class="ln-3 dash" d="M150 52 V548 M300 52 V548 M450 52 V548 M600 52 V548 M740 52 V548"/>
+        </g>
+        <g class="msg" data-t="0"><text class="tx-3 end" x="84" y="96">0 ms</text><path class="ln-sig" d="M150 92 H294" marker-end="url(#arr-sig)"/><text class="tx-2 mid" x="225" y="84">where is my-app.com?</text></g>
+        <g class="msg" data-t="24"><text class="tx-3 end" x="84" y="140">24 ms</text><path class="ln" d="M300 136 H156" marker-end="url(#arr)"/><text class="tx-2 mid" x="225" y="128">203.0.113.10</text></g>
+        <g class="msg" data-t="24"><text class="tx-3 end" x="84" y="184">24 ms</text><path class="ln-sig" d="M150 180 H444" marker-end="url(#arr-sig)"/><text class="tx-2 mid" x="300" y="172">hello — TCP + TLS handshake</text></g>
+        <g class="msg" data-t="54"><text class="tx-3 end" x="84" y="228">54 ms</text><path class="ln" d="M450 224 H156" marker-end="url(#arr)"/><text class="tx-2 mid" x="300" y="216">certificate · encryption keys</text></g>
+        <g class="msg" data-t="84"><text class="tx-3 end" x="84" y="272">84 ms</text><path class="ln-sig" d="M150 268 H444" marker-end="url(#arr-sig)"/><text class="tx-2 mid" x="300" y="260">GET / (encrypted)</text></g>
+        <g class="msg" data-t="85"><text class="tx-3 end" x="84" y="316">85 ms</text><path class="ln-sig" d="M450 312 H594" marker-end="url(#arr-sig)"/><text class="tx-2 mid" x="525" y="304">forward → :8080</text></g>
+        <g class="msg" data-t="86"><text class="tx-3 end" x="84" y="360">86 ms</text><path class="ln-sig" d="M600 356 H734" marker-end="url(#arr-sig)"/><text class="tx-2 mid" x="670" y="348">SELECT posts</text></g>
+        <g class="msg" data-t="89"><text class="tx-3 end" x="84" y="404">89 ms</text><path class="ln" d="M740 400 H606" marker-end="url(#arr)"/><text class="tx-2 mid" x="670" y="392">12 rows</text></g>
+        <g class="msg" data-t="95"><text class="tx-3 end" x="84" y="448">95 ms</text><path class="ln" d="M600 444 H456" marker-end="url(#arr)"/><text class="tx-2 mid" x="525" y="436">200 OK · HTML</text></g>
+        <g class="msg" data-t="125"><text class="tx-3 end" x="84" y="492">125 ms</text><path class="ln" d="M450 488 H156" marker-end="url(#arr)"/><text class="tx-2 mid" x="300" y="480">200 OK</text></g>
+        <g class="msg" data-t="140"><text class="tx-3 end" x="84" y="536">≈140 ms</text><path class="ln-sig" d="M150 520 h26 v18 h-20" marker-end="url(#arr-sig)"/><text class="lbl-sig" x="186" y="534">PAGE ON SCREEN</text></g>
+      </svg>
+      <figcaption>Illustrative timings for a visitor about 2,000 km from the data center. The first steps cost whole round trips across the internet; inside the data center, hops take about a millisecond — which is why <a href="#latency">distance</a> matters so much.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section section-rule" id="who-manages-what" aria-labelledby="resp-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 04</span> Shared responsibility</p>
+      <h2 id="resp-h">IaaS, PaaS, SaaS: who manages what?</h2>
+      <p>Every kind of cloud is the same stack of layers. The only question is where your job ends and the provider's begins.</p>
+    </div>
+    <div class="resp-scroll reveal">
+      <div class="resp" role="table" aria-label="Who manages each layer, by type of service">
+        <div role="row" style="display:contents">
+          <div class="h" role="columnheader"><span class="visually-hidden">Layer</span></div>
+          <div class="h" role="columnheader">Your own servers<b>On-premises</b></div>
+          <div class="h" role="columnheader">EC2, Droplets, Compute Engine<b>IaaS · VMs</b></div>
+          <div class="h" role="columnheader">Cloud Run, ECS, Cloudish<b>Containers</b></div>
+          <div class="h" role="columnheader">Vercel, Heroku, Lambda<b>PaaS · Serverless</b></div>
+          <div class="h" role="columnheader">Gmail, Notion, Figma<b>SaaS</b></div>
+        </div>
+        <div role="row" style="display:contents"><div class="layer" role="rowheader">Your data</div><div class="you" role="cell">You</div><div class="you" role="cell">You</div><div class="you" role="cell">You</div><div class="you" role="cell">You</div><div class="you" role="cell">You</div></div>
+        <div role="row" style="display:contents"><div class="layer" role="rowheader">App code</div><div class="you" role="cell">You</div><div class="you" role="cell">You</div><div class="you" role="cell">You</div><div class="you" role="cell">You</div><div class="them" role="cell">Provider</div></div>
+        <div role="row" style="display:contents"><div class="layer" role="rowheader">Runtime</div><div class="you" role="cell">You</div><div class="you" role="cell">You</div><div class="you" role="cell">You · in image</div><div class="them" role="cell">Provider</div><div class="them" role="cell">Provider</div></div>
+        <div role="row" style="display:contents"><div class="layer" role="rowheader">Operating system</div><div class="you" role="cell">You</div><div class="you" role="cell">You</div><div class="them" role="cell">Provider</div><div class="them" role="cell">Provider</div><div class="them" role="cell">Provider</div></div>
+        <div role="row" style="display:contents"><div class="layer" role="rowheader">Virtualization</div><div class="you" role="cell">You</div><div class="them" role="cell">Provider</div><div class="them" role="cell">Provider</div><div class="them" role="cell">Provider</div><div class="them" role="cell">Provider</div></div>
+        <div role="row" style="display:contents"><div class="layer" role="rowheader">Servers &amp; storage</div><div class="you" role="cell">You</div><div class="them" role="cell">Provider</div><div class="them" role="cell">Provider</div><div class="them" role="cell">Provider</div><div class="them" role="cell">Provider</div></div>
+        <div role="row" style="display:contents"><div class="layer" role="rowheader">Networking</div><div class="you" role="cell">You</div><div class="them" role="cell">Provider</div><div class="them" role="cell">Provider</div><div class="them" role="cell">Provider</div><div class="them" role="cell">Provider</div></div>
+        <div role="row" style="display:contents"><div class="layer" role="rowheader">Building, power, cooling</div><div class="you" role="cell">You</div><div class="them" role="cell">Provider</div><div class="them" role="cell">Provider</div><div class="them" role="cell">Provider</div><div class="them" role="cell">Provider</div></div>
+      </div>
+      <div class="resp-legend"><span><i class="you-i"></i>You manage it</span><span><i class="them-i"></i>The provider manages it</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" id="latency" aria-labelledby="lat-h">
+  <div class="wrap split split-wide" style="align-items:start">
+    <div class="reveal prose">
+      <p class="eyebrow"><span class="idx">§ 05</span> The speed of light is a budget</p>
+      <h2 id="lat-h">Why distance matters</h2>
+      <p>Light in fiber travels about <strong>200 km per millisecond</strong> — two-thirds of its speed in a vacuum. That sounds instant until you do the math: a round trip from New York to London covers about 11,000 km, so it can never take less than ~56 ms, no matter how fast the servers are.</p>
+      <p>That's why clouds have regions on every continent, and why you put your app <em>near your users</em>. And it's why localhost feels impossibly fast: its round trip has no distance in it at all.</p>
+      <p class="muted small">The orange bar is a live measurement: your browser's round trip to the server hosting this page, just now.</p>
+    </div>
+    <figure class="fig viz reveal reveal-d1" data-viz="latency">
+      <div class="fig-bar"><span><b>Fig. 04</b> — Typical round-trip times</span><span>Log scale · each line = 10×</span></div>
+      <div class="viz-rows">
+        <div class="viz-grid" aria-hidden="true"></div>
+        <div class="viz-row" data-ms="0.05" data-note="Loopback never leaves the machine."><div class="viz-label">Loopback · localhost<small>your computer → itself</small></div><div class="viz-track"><span class="viz-bar" tabindex="0" role="img" aria-label="0.05 milliseconds"></span><span class="viz-val">0.05 ms</span></div></div>
+        <div class="viz-row" data-ms="3" data-note="Wi-Fi radio to the router and back."><div class="viz-label">Same Wi-Fi<small>laptop → phone</small></div><div class="viz-track"><span class="viz-bar" tabindex="0" role="img" aria-label="3 milliseconds"></span><span class="viz-val">3 ms</span></div></div>
+        <div class="viz-row" data-ms="10" data-note="Your ISP to a data center in the same metro area."><div class="viz-label">Same city<small>you → a nearby data center</small></div><div class="viz-track"><span class="viz-bar" tabindex="0" role="img" aria-label="10 milliseconds"></span><span class="viz-val">10 ms</span></div></div>
+        <div class="viz-row" data-ms="65" data-note="About 4,000 km each way."><div class="viz-label">Across a continent<small>New York ↔ Los Angeles</small></div><div class="viz-track"><span class="viz-bar" tabindex="0" role="img" aria-label="65 milliseconds"></span><span class="viz-val">65 ms</span></div></div>
+        <div class="viz-row" data-ms="75" data-note="About 5,600 km each way, under the Atlantic."><div class="viz-label">Across the Atlantic<small>New York ↔ London</small></div><div class="viz-track"><span class="viz-bar" tabindex="0" role="img" aria-label="75 milliseconds"></span><span class="viz-val">75 ms</span></div></div>
+        <div class="viz-row" data-ms="260" data-note="About 17,000 km each way."><div class="viz-label">Around the world<small>London ↔ Sydney</small></div><div class="viz-track"><span class="viz-bar" tabindex="0" role="img" aria-label="260 milliseconds"></span><span class="viz-val">260 ms</span></div></div>
+        <div class="viz-row" data-ms="600" data-note="35,786 km up to the satellite and back down, twice."><div class="viz-label">Geostationary satellite<small>up 35,786 km and back</small></div><div class="viz-track"><span class="viz-bar" tabindex="0" role="img" aria-label="600 milliseconds"></span><span class="viz-val">600 ms</span></div></div>
+        <div class="viz-row is-live" data-note="Measured by your browser just now: request to first byte, median of five."><div class="viz-label">You → this website<small>measured live</small></div><div class="viz-track"><span class="viz-bar" tabindex="0" role="img" aria-label="Live measurement"></span><span class="viz-val">measuring…</span></div></div>
+      </div>
+      <div class="viz-axis" aria-hidden="true"></div>
+      <div class="viz-tip" aria-hidden="true"></div>
+      <details>
+        <summary>Show as a table</summary>
+        <div class="table-wrap" style="margin-bottom:0"><table style="min-width:0">
+          <thead><tr><th scope="col">Trip</th><th scope="col" class="num">Typical round trip</th></tr></thead>
+          <tbody>
+            <tr><td>Loopback (localhost)</td><td class="num">0.05 ms</td></tr>
+            <tr><td>Same Wi-Fi network</td><td class="num">3 ms</td></tr>
+            <tr><td>Same city</td><td class="num">10 ms</td></tr>
+            <tr><td>New York ↔ Los Angeles</td><td class="num">65 ms</td></tr>
+            <tr><td>New York ↔ London</td><td class="num">75 ms</td></tr>
+            <tr><td>London ↔ Sydney</td><td class="num">260 ms</td></tr>
+            <tr><td>Geostationary satellite</td><td class="num">600 ms</td></tr>
+            <tr><td>You → this website (live)</td><td class="num" data-live-cell>—</td></tr>
+          </tbody>
+        </table></div>
+      </details>
+    </figure>
+  </div>
+</section>
+
+<section class="section section-tight section-rule" aria-label="The cloud in numbers">
+  <div class="wrap">
+    <div class="stats reveal">
+      <div class="stat"><span class="k">Under the sea</span><div class="v">1.4M+ <small>km</small></div><div class="l">of fiber-optic submarine cable carry almost all intercontinental internet traffic.</div></div>
+      <div class="stat"><span class="k">Light in glass</span><div class="v">≈200 <small>km/ms</small></div><div class="l">The hard speed limit for every request your app will ever answer.</div></div>
+      <div class="stat"><span class="k">A standard rack</span><div class="v">42<small>U</small></div><div class="l">Units of 1.75 inches, stacked floor to ceiling with servers.</div></div>
+      <div class="stat"><span class="k">The modern cloud began</span><div class="v">2006</div><div class="l">When Amazon launched S3 and EC2 and began renting servers by the hour.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" aria-labelledby="cmp-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 06</span> Side by side</p>
+      <h2 id="cmp-h">Your laptop vs. a cloud server</h2>
+      <p>Localhost isn't broken — it's just the wrong kind of home for anything that needs to outlive your laptop being open.</p>
+    </div>
+    <div class="table-wrap reveal">
+      <table>
+        <thead><tr><th scope="col"><span class="visually-hidden">Feature</span></th><th scope="col">Your laptop (localhost)</th><th scope="col">A cloud server</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Stays on 24/7</th><td><span class="no">No</span> — it sleeps, closes, travels</td><td><span class="yes">Yes</span> — by design</td></tr>
+          <tr><th scope="row">Reachable from anywhere</th><td><span class="no">No</span> — only from itself (or your Wi-Fi)</td><td><span class="yes">Yes</span> — it has a public IP address</td></tr>
+          <tr><th scope="row">A real URL like my-app.com</th><td><span class="no">Not practically</span></td><td><span class="yes">Yes</span> — point DNS at it</td></tr>
+          <tr><th scope="row">HTTPS for visitors</th><td><span class="no">No</span></td><td><span class="yes">Yes</span> — usually automatic</td></tr>
+          <tr><th scope="row">Handles many visitors at once</th><td>Barely — it's also your laptop</td><td><span class="yes">Yes</span> — add capacity as you grow</td></tr>
+          <tr><th scope="row">Who maintains the hardware</th><td>You</td><td>The provider</td></tr>
+          <tr><th scope="row">Cost</th><td>Free — you already own it</td><td>Pay for what you use; small apps can cost cents a day</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" aria-labelledby="kinds-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 07</span> The landscape</p>
+      <h2 id="kinds-h">Kinds of clouds</h2>
+      <p>All of them rent you computers in data centers. They differ in how much they hide from you.</p>
+    </div>
+    <div class="cards cards-3">
+      <article class="card reveal"><span class="card-idx">Hyperscalers</span><h3>AWS · Google Cloud · Azure</h3><p>Hundreds of services in dozens of regions. Maximum power and flexibility — and a learning curve to match.</p></article>
+      <article class="card reveal reveal-d1"><span class="card-idx">Developer clouds</span><h3>DigitalOcean · Hetzner · Akamai</h3><p>Simple virtual servers and managed databases with predictable pricing. Great when you want a real server without the sprawl.</p></article>
+      <article class="card reveal reveal-d2"><span class="card-idx">App platforms</span><h3>Vercel · Netlify · Render · Railway · Fly.io</h3><p>Push your code; they handle servers, scaling and HTTPS. The default for many web apps.</p></article>
+      <article class="card reveal"><span class="card-idx">Backend as a service</span><h3>Supabase · Firebase</h3><p>A managed database, logins and file storage you plug into, instead of running your own backend.</p></article>
+      <article class="card reveal reveal-d1"><span class="card-idx">Agent-first</span><h3>Cloudish.ai</h3><p>No dashboard at all: an API built for AI coding agents to deploy containers end-to-end, from one sentence. This site runs on it.</p></article>
+      <a class="card reveal reveal-d2" href="/deploy-guide.html#compare"><span class="card-idx">Compare them</span><h3>Which one should I pick? →</h3><p>Commands, trade-offs and a straight answer for your situation in the deploy guide.</p></a>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" id="faq" aria-labelledby="faq-h">
+  <div class="wrap-narrow">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 08</span> FAQ</p>
+      <h2 id="faq-h">Cloud questions, answered</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>What is the cloud, in simple terms?</summary>
+        <div class="faq-a"><p>Computers in data centers that you rent over the internet instead of buying. They stay on all the time, have fast connections and public addresses, and you pay only for what you use.</p></div>
+      </details>
+      <details>
+        <summary>Where is the cloud, physically?</summary>
+        <div class="faq-a"><p>In data centers: warehouse-sized buildings full of servers, grouped into regions near big cities on every inhabited continent. When you deploy, you usually choose a region close to your users.</p></div>
+      </details>
+      <details>
+        <summary>Is the cloud just someone else's computer?</summary>
+        <div class="faq-a"><p>Yes — millions of them, with redundant power, cooling, networking and security teams you'd never build yourself, available in seconds and billed by usage. “Someone else's computer” is exactly the point.</p></div>
+      </details>
+      <details>
+        <summary>What's the difference between IaaS, PaaS and SaaS?</summary>
+        <div class="faq-a"><p>They differ in how much you manage. With IaaS you rent virtual machines and manage the operating system and everything above it. With PaaS you hand over your code and the platform runs it. With SaaS you just use finished software, like Gmail.</p></div>
+      </details>
+      <details>
+        <summary>Why does my app need the cloud if it works on localhost?</summary>
+        <div class="faq-a"><p>Localhost only works on your own computer and only while it's on. A cloud server has a public address and never sleeps, so anyone can use your app from anywhere, at any time.</p></div>
+      </details>
+      <details>
+        <summary>Is the cloud expensive?</summary>
+        <div class="faq-a"><p>It doesn't have to be. Many platforms have free tiers, bill by the second, and scale idle apps to zero, so a small personal project can cost cents a day or nothing at all. Costs grow with traffic and resources.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight" aria-label="Next chapter">
+  <div class="wrap">
+    <a class="next-chapter reveal" href="/deploy-guide.html">
+      <span><small>Next · Chapter 05</small><strong>Deploy your app — in one sentence</strong><span class="sub">Ask an AI agent, or pick a platform. From localhost to a live URL in minutes.</span></span>
+      <span class="go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+  </div>
+</section>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="logo" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" style="fill:var(--blue)"/><path d="M1 16h30M16 1v30" stroke="#fff" stroke-opacity=".14"/><path d="M22.9 12.6A7.4 7.4 0 1 0 23.4 17" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round"/><path d="M19.6 12.4l3.6.5.5-3.6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="16" r="2.7" fill="#ff8a3d"/></svg><span class="logo-text">whatis<b>localhost</b></span></a>
+        <p>A visual field guide to how the internet really works — from 127.0.0.1 to a data center on the other side of the planet.</p>
+      </div>
+      <div class="footer-col"><h2>Chapters</h2><ul>
+        <li><a href="/">01 · What is localhost?</a></li>
+        <li><a href="/localhost-ports.html">02 · Localhost ports</a></li>
+        <li><a href="/localhost-not-working.html">03 · Localhost not working</a></li>
+        <li><a href="/what-is-the-cloud.html">04 · What is the cloud?</a></li>
+        <li><a href="/deploy-guide.html">05 · Deploy your app</a></li>
+      </ul></div>
+      <div class="footer-col"><h2>Primary sources</h2><ul>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc6761#section-6.3" rel="noopener">RFC 6761 · the localhost name</a></li>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc6890" rel="noopener">RFC 6890 · special IP addresses</a></li>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc4291#section-2.5.3" rel="noopener">RFC 4291 · IPv6 loopback ::1</a></li>
+        <li><a href="https://www.iana.org/assignments/service-names-port-numbers/" rel="noopener">IANA port registry</a></li>
+        <li><a href="https://fetch.spec.whatwg.org/#port-blocking" rel="noopener">Fetch standard · blocked ports</a></li>
+      </ul></div>
+      <div class="footer-col"><h2>For machines</h2><ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="https://cloudish.ai/skill.md" rel="noopener">Cloudish deploy skill</a></li>
+      </ul></div>
+    </div>
+    <div class="titleblock">
+      <div><span>Project</span><strong>What is localhost? A field guide</strong></div>
+      <div><span>Sheet</span><strong>04 of 05</strong></div>
+      <div><span>Drawing</span><strong>The cloud</strong></div>
+      <div><span>Rev</span><strong>2.0.0</strong></div>
+      <div><span>Scale</span><strong>127.0.0.1 : 1</strong></div>
+      <div><span>Deployed on</span><strong><a href="https://cloudish.ai/" rel="noopener">Cloudish.ai</a> — not localhost</strong></div>
+    </div>
+    <div class="footer-legal"><span>© 2026 whatislocalhost.com</span><span>Drawn in blueprint blue. Served from a data center, not a laptop.</span></div>
+  </div>
+</footer>
+</body>
+</html>

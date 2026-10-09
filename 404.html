@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 — This Page Only Exists on Someone's Localhost | whatislocalhost.com</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f5f8fd" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061633" media="(prefers-color-scheme: dark)">
+<script>(function(){var d=document.documentElement;d.classList.add("js");try{var t=localStorage.getItem("theme");if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";d.dataset.theme=t}catch(e){d.dataset.theme="light"}})()</script>
+<link rel="stylesheet" href="/styles.css?v=2.0.0">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script src="/script.js?v=2.0.0" defer></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" style="stroke:var(--stroke-2);stroke-width:1"/></pattern>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" style="fill:var(--stroke)"/></marker>
+    <marker id="arr-sig" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" style="fill:var(--signal)"/></marker>
+  </defs>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap masthead-inner">
+    <a class="logo" href="/" aria-label="whatislocalhost.com home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" style="fill:var(--blue)"/><path d="M1 16h30M16 1v30" stroke="#fff" stroke-opacity=".14"/><g class="logo-loop"><path d="M22.9 12.6A7.4 7.4 0 1 0 23.4 17" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round"/><path d="M19.6 12.4l3.6.5.5-3.6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></g><circle cx="16" cy="16" r="2.7" fill="#ff8a3d"/></svg>
+      <span class="logo-text">whatis<b>localhost</b></span>
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Chapters">
+      <a href="/"><span class="n">01</span>Localhost</a>
+      <a href="/localhost-ports.html"><span class="n">02</span>Ports</a>
+      <a href="/localhost-not-working.html"><span class="n">03</span>Troubleshoot</a>
+      <a href="/what-is-the-cloud.html"><span class="n">04</span>The cloud</a>
+      <a href="/deploy-guide.html"><span class="n">05</span>Deploy</a>
+    </nav>
+    <div class="masthead-actions">
+      <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark blueprint theme"><span class="knob" aria-hidden="true"></span><svg class="ico-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.3 5.3l1.7 1.7M17 17l1.7 1.7M5.3 18.7L7 17M17 7l1.7-1.7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><svg class="ico-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button>
+      <a class="btn btn-primary btn-sm" href="/deploy-guide.html#launchpad">Deploy an app</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="bars" aria-hidden="true"></span>Menu</button>
+    </div>
+  </div>
+  <div class="progress" aria-hidden="true"><span></span></div>
+</header>
+
+
+<main id="main" class="notfound">
+  <div class="wrap center">
+    <p class="kicker"><span class="tag">HTTP 404</span> Not found on this server</p>
+    <svg class="dg anim nf-loop" viewBox="0 0 520 220" role="img" aria-label="A request loops back to the sender: the page lives on someone else's localhost.">
+      <text class="nf-404 mid" x="260" y="150">404</text>
+      <path id="nf-p" class="ln-sig flow" d="M70 190 C 20 190 20 120 70 110 C 150 96 370 96 450 110 C 500 120 500 190 450 190 Z"/>
+      <g class="pkt"><circle class="pkt-halo" r="9"/><circle class="pkt-core" r="4.5"/><animateMotion dur="5s" repeatCount="indefinite"><mpath href="#nf-p"/></animateMotion></g>
+      <text class="lbl mid" x="260" y="214">127.0.0.1 → 127.0.0.1 → 127.0.0.1 → …</text>
+    </svg>
+    <h1 class="nf-title">This page only exists on someone's localhost.</h1>
+    <p class="lede" style="max-width:34em;margin-inline:auto">Which means you can't reach it — and neither can we. Let's get you back to somewhere with a public address.</p>
+    <div class="hero-ctas" style="justify-content:center">
+      <a class="btn btn-primary" href="/">Start at chapter 01 <span class="arr" aria-hidden="true">→</span></a>
+      <a class="btn" href="/localhost-not-working.html">Troubleshoot localhost</a>
+    </div>
+    <ul class="chips" style="justify-content:center;list-style:none;padding:0;margin-top:28px" aria-label="Chapters">
+      <li><a class="chip" href="/localhost-ports.html"><span class="k">02</span> Ports</a></li>
+      <li><a class="chip" href="/what-is-the-cloud.html"><span class="k">04</span> The cloud</a></li>
+      <li><a class="chip" href="/deploy-guide.html"><span class="k">05</span> Deploy</a></li>
+    </ul>
+  </div>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="logo" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" style="fill:var(--blue)"/><path d="M1 16h30M16 1v30" stroke="#fff" stroke-opacity=".14"/><path d="M22.9 12.6A7.4 7.4 0 1 0 23.4 17" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round"/><path d="M19.6 12.4l3.6.5.5-3.6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="16" r="2.7" fill="#ff8a3d"/></svg><span class="logo-text">whatis<b>localhost</b></span></a>
+        <p>A visual field guide to how the internet really works — from 127.0.0.1 to a data center on the other side of the planet.</p>
+      </div>
+      <div class="footer-col"><h2>Chapters</h2><ul>
+        <li><a href="/">01 · What is localhost?</a></li>
+        <li><a href="/localhost-ports.html">02 · Localhost ports</a></li>
+        <li><a href="/localhost-not-working.html">03 · Localhost not working</a></li>
+        <li><a href="/what-is-the-cloud.html">04 · What is the cloud?</a></li>
+        <li><a href="/deploy-guide.html">05 · Deploy your app</a></li>
+      </ul></div>
+      <div class="footer-col"><h2>Primary sources</h2><ul>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc6761#section-6.3" rel="noopener">RFC 6761 · the localhost name</a></li>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc6890" rel="noopener">RFC 6890 · special IP addresses</a></li>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc4291#section-2.5.3" rel="noopener">RFC 4291 · IPv6 loopback ::1</a></li>
+        <li><a href="https://www.iana.org/assignments/service-names-port-numbers/" rel="noopener">IANA port registry</a></li>
+        <li><a href="https://fetch.spec.whatwg.org/#port-blocking" rel="noopener">Fetch standard · blocked ports</a></li>
+      </ul></div>
+      <div class="footer-col"><h2>For machines</h2><ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="https://cloudish.ai/skill.md" rel="noopener">Cloudish deploy skill</a></li>
+      </ul></div>
+    </div>
+    <div class="titleblock">
+      <div><span>Project</span><strong>What is localhost? A field guide</strong></div>
+      <div><span>Sheet</span><strong>— of 05</strong></div>
+      <div><span>Drawing</span><strong>Not found</strong></div>
+      <div><span>Rev</span><strong>2.0.0</strong></div>
+      <div><span>Scale</span><strong>127.0.0.1 : 1</strong></div>
+      <div><span>Deployed on</span><strong><a href="https://cloudish.ai/" rel="noopener">Cloudish.ai</a> — not localhost</strong></div>
+    </div>
+    <div class="footer-legal"><span>© 2026 whatislocalhost.com</span><span>Drawn in blueprint blue. Served from a data center, not a laptop.</span></div>
+  </div>
+</footer>
+</body>
+</html>

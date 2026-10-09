@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Localhost Not Working? Fix “Refused to Connect” &amp; Every Common Error</title>
+<meta name="description" content="Seeing “localhost refused to connect” or ERR_CONNECTION_REFUSED? Diagnose it visually, then fix it with exact commands for macOS, Windows, Linux, Docker and WSL.">
+<link rel="canonical" href="https://whatislocalhost.com/localhost-not-working.html">
+<meta name="theme-color" content="#f5f8fd" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061633" media="(prefers-color-scheme: dark)">
+<script>(function(){var d=document.documentElement;d.classList.add("js");try{var t=localStorage.getItem("theme");if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";d.dataset.theme=t}catch(e){d.dataset.theme="light"}})()</script>
+<link rel="preload" href="/fonts/space-grotesk-vf.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/ibm-plex-sans-vf.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/styles.css?v=2.0.0">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="whatislocalhost.com">
+<meta property="og:title" content="Localhost not working? Fix “refused to connect” and every common error">
+<meta property="og:description" content="Match your symptom, see what's really happening, and fix it with exact commands for macOS, Windows, Linux, Docker and WSL.">
+<meta property="og:url" content="https://whatislocalhost.com/localhost-not-working.html">
+<meta property="og:image" content="https://whatislocalhost.com/og/troubleshoot.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://whatislocalhost.com/og/troubleshoot.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Localhost not working? How to fix every common cause",
+      "description": "A visual troubleshooting guide for localhost errors: connection refused, port already in use, IPv6 mismatches, phones, Docker, WSL, HTTPS and caching.",
+      "url": "https://whatislocalhost.com/localhost-not-working.html",
+      "image": "https://whatislocalhost.com/og/troubleshoot.png",
+      "datePublished": "2026-09-25",
+      "dateModified": "2026-10-04",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://whatislocalhost.com/#website"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "whatislocalhost.com",
+        "url": "https://whatislocalhost.com/"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to fix “localhost refused to connect”",
+      "description": "ERR_CONNECTION_REFUSED means nothing is listening on the port in the URL. Check, in this order:",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Check that the server is running",
+          "text": "Go back to the terminal where you started your app. If it crashed or was closed, start it again (for example with npm run dev) and wait until it prints a URL."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Use the exact URL the server printed",
+          "text": "Dev servers move to another port when theirs is taken, so open the exact address and port shown in the terminal output."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Confirm something is listening on the port",
+          "text": "Run lsof -nP -iTCP:3000 -sTCP:LISTEN on macOS, ss -ltn 'sport = :3000' on Linux, or Get-NetTCPConnection -LocalPort 3000 -State Listen on Windows. No output means nothing is listening."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Try 127.0.0.1 instead of localhost",
+          "text": "If http://127.0.0.1:3000 works but http://localhost:3000 doesn't, your server listens on IPv4 only while localhost resolves to IPv6 (::1)."
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Localhost",
+          "item": "https://whatislocalhost.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Troubleshooting",
+          "item": "https://whatislocalhost.com/localhost-not-working.html"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What does “localhost refused to connect” mean?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your computer received the request, but no program was listening on that port, so the operating system refused the connection immediately. The server you meant to reach isn't running, crashed, or is on a different port than the one in the URL."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I fix ERR_CONNECTION_REFUSED on localhost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Start (or restart) your server, then open the exact address and port it prints. If it still fails, check whether anything is listening on that port, and try 127.0.0.1 instead of localhost in case of an IPv4/IPv6 mismatch."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I free a port that's already in use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Find the process that owns the port — lsof -nP -iTCP:3000 -sTCP:LISTEN on macOS, ss -ltnp on Linux, netstat -ano | findstr :3000 on Windows — and stop it with kill <PID> or taskkill /PID <PID> /F. Or start your app on another port."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does 127.0.0.1 work but localhost doesn't?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "localhost can resolve to the IPv6 address ::1 as well as 127.0.0.1. If your server only listens on IPv4 and your browser or tool tries IPv6 first, the connection is refused. Use 127.0.0.1 explicitly, or make the server listen on both."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why can't I open my localhost site on my phone?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "On your phone, localhost means the phone. Use your computer's LAN address (like 192.168.1.23:3000), make the dev server listen on 0.0.0.0, and keep both devices on the same network."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why can't I reach my Docker container on localhost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Publish the port with docker run -p 8080:80 and make sure the app inside the container listens on 0.0.0.0, not 127.0.0.1 — inside a container, 127.0.0.1 is the container itself."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script src="/script.js?v=2.0.0" defer></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" style="stroke:var(--stroke-2);stroke-width:1"/></pattern>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" style="fill:var(--stroke)"/></marker>
+    <marker id="arr-sig" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" style="fill:var(--signal)"/></marker>
+  </defs>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap masthead-inner">
+    <a class="logo" href="/" aria-label="whatislocalhost.com home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" style="fill:var(--blue)"/><path d="M1 16h30M16 1v30" stroke="#fff" stroke-opacity=".14"/><g class="logo-loop"><path d="M22.9 12.6A7.4 7.4 0 1 0 23.4 17" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round"/><path d="M19.6 12.4l3.6.5.5-3.6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></g><circle cx="16" cy="16" r="2.7" fill="#ff8a3d"/></svg>
+      <span class="logo-text">whatis<b>localhost</b></span>
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Chapters">
+      <a href="/"><span class="n">01</span>Localhost</a>
+      <a href="/localhost-ports.html"><span class="n">02</span>Ports</a>
+      <a href="/localhost-not-working.html" aria-current="page"><span class="n">03</span>Troubleshoot</a>
+      <a href="/what-is-the-cloud.html"><span class="n">04</span>The cloud</a>
+      <a href="/deploy-guide.html"><span class="n">05</span>Deploy</a>
+    </nav>
+    <div class="masthead-actions">
+      <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark blueprint theme"><span class="knob" aria-hidden="true"></span><svg class="ico-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.3 5.3l1.7 1.7M17 17l1.7 1.7M5.3 18.7L7 17M17 7l1.7-1.7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><svg class="ico-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button>
+      <a class="btn btn-primary btn-sm" href="/deploy-guide.html#launchpad">Deploy an app</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="bars" aria-hidden="true"></span>Menu</button>
+    </div>
+  </div>
+  <div class="progress" aria-hidden="true"><span></span></div>
+</header>
+
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Localhost</a><span aria-hidden="true">/</span><span>Troubleshooting</span></nav>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="kicker"><span class="tag">CH. 03</span> Troubleshooting · diagnose, then fix</p>
+        <h1>Localhost <span class="hl">not working</span>?</h1>
+        <p class="lede">“This site can't be reached.” “localhost refused to connect.” A blank white page. Every one of these is a clue. Match your symptom, see what's actually happening inside your computer, and fix it — with exact commands for macOS, Windows and Linux.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#diagnose">Match my symptom <span class="arr" aria-hidden="true">↓</span></a>
+          <a class="btn" href="#refused">Fix “refused to connect”</a>
+        </div>
+      </div>
+      <figure class="fig corners" style="margin:0">
+        <div class="fig-bar"><span><b>Fig. 01</b> — The most common error on the smallest network</span><span style="color:var(--err)">Redlined</span></div>
+        <svg class="dg" viewBox="0 0 640 400" role="img" aria-labelledby="er-t er-d">
+          <title id="er-t">The “localhost refused to connect” error page, annotated</title>
+          <desc id="er-d">A browser showing “This site can't be reached — localhost refused to connect — ERR_CONNECTION_REFUSED”, with three red annotations: check the port in the address bar, nothing is listening on that port, and the instant refusal comes from your own computer.</desc>
+          <rect class="bg ln-2" x="10" y="10" width="440" height="380" rx="12"/>
+          <path class="ln-3" d="M10 54 H450"/>
+          <circle class="ln-2" cx="32" cy="32" r="5"/><circle class="ln-2" cx="48" cy="32" r="5"/><circle class="ln-2" cx="64" cy="32" r="5"/>
+          <rect class="bg-2" x="84" y="20" width="350" height="24" rx="12"/>
+          <text class="tx" x="102" y="36.5" style="font-size:12px">localhost:3000</text>
+          <path class="ln-2" d="M50 96 h30 l12 12 v40 h-42 z M80 96 v12 h12"/>
+          <circle class="f-stroke" cx="62" cy="124" r="1.8"/><circle class="f-stroke" cx="78" cy="124" r="1.8"/>
+          <path class="ln-2" d="M61 138 q9 -7 18 0"/>
+          <text x="50" y="190" style="font-family:var(--font-body);font-size:22px;font-weight:600;fill:var(--ink)">This site can't be reached</text>
+          <text x="50" y="221" style="font-family:var(--font-body);font-size:14px;fill:var(--ink-2)"><tspan style="font-weight:600;fill:var(--ink)">localhost</tspan> refused to connect.</text>
+          <text x="50" y="252" style="font-family:var(--font-body);font-size:12px;fill:var(--ink-3)">Try: checking the connection</text>
+          <text x="50" y="270" style="font-family:var(--font-body);font-size:12px;fill:var(--ink-3)">Checking the proxy and the firewall</text>
+          <text class="tx-3" x="50" y="309" style="font-size:11px">ERR_CONNECTION_REFUSED</text>
+          <rect class="f-blue" x="50" y="334" width="78" height="30" rx="6"/>
+          <text x="89" y="353.5" class="mid" style="font-family:var(--font-body);font-size:12.5px;font-weight:600;fill:#fff">Reload</text>
+          <rect class="ln-err dash" x="94" y="22" width="102" height="20" rx="10"/>
+          <rect class="ln-err dash" x="44" y="205" width="200" height="23" rx="6"/>
+          <rect class="ln-err dash" x="44" y="296" width="168" height="20" rx="6"/>
+          <path class="ln-err" d="M196 32 H462 M244 216 H462 M212 306 H462" style="stroke-width:1.2"/>
+          <g transform="translate(476 32)"><circle class="bg" r="10"/><circle class="ln-err" r="10" style="stroke-width:1.4"/><text class="lbl-err mid" y="3.8">1</text></g>
+          <text class="lbl-err" x="494" y="30">WRONG PORT?</text><text class="tx-3" x="494" y="45" style="font-size:9px">CHECK WHAT YOUR SERVER</text><text class="tx-3" x="494" y="57" style="font-size:9px">PRINTED WHEN IT STARTED</text>
+          <g transform="translate(476 216)"><circle class="bg" r="10"/><circle class="ln-err" r="10" style="stroke-width:1.4"/><text class="lbl-err mid" y="3.8">2</text></g>
+          <text class="lbl-err" x="494" y="214">NOTHING LISTENING</text><text class="tx-3" x="494" y="229" style="font-size:9px">SERVER STOPPED, CRASHED</text><text class="tx-3" x="494" y="241" style="font-size:9px">OR ON ANOTHER PORT</text>
+          <g transform="translate(476 306)"><circle class="bg" r="10"/><circle class="ln-err" r="10" style="stroke-width:1.4"/><text class="lbl-err mid" y="3.8">3</text></g>
+          <text class="lbl-err" x="494" y="304">INSTANT REFUSAL</text><text class="tx-3" x="494" y="319" style="font-size:9px">YOUR COMPUTER ANSWERED —</text><text class="tx-3" x="494" y="331" style="font-size:9px">YOUR SERVER DIDN'T</text>
+        </svg>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section section-tight section-rule" id="diagnose" aria-labelledby="dx-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 01</span> Diagnose</p>
+      <h2 id="dx-h">What are you seeing?</h2>
+      <p>Pick the closest match. Each one jumps to its fix.</p>
+    </div>
+    <div class="diag reveal">
+      <a href="#refused"><span class="n">01</span><b>“localhost refused to connect”</b><span>ERR_CONNECTION_REFUSED · ECONNREFUSED · “Unable to connect”</span></a>
+      <a href="#port-in-use"><span class="n">02</span><b>“Port already in use”</b><span>EADDRINUSE · Errno 48 / 98 · the server won't start</span></a>
+      <a href="#ipv6"><span class="n">03</span><b>127.0.0.1 works, localhost doesn't</b><span>…or the other way around</span></a>
+      <a href="#phone"><span class="n">04</span><b>Works on my laptop, not on my phone</b><span>Or on another computer on the same Wi-Fi</span></a>
+      <a href="#docker"><span class="n">05</span><b>Docker container is up, page won't load</b><span>docker ps says “Up” — the browser says no</span></a>
+      <a href="#wsl"><span class="n">06</span><b>Works in WSL, not in Windows</b><span>The Linux side answers, the browser doesn't</span></a>
+      <a href="#https"><span class="n">07</span><b>“Your connection is not private”</b><span>https://localhost, certificates, HSTS</span></a>
+      <a href="#timeout"><span class="n">08</span><b>“Took too long to respond”</b><span>ERR_CONNECTION_TIMED_OUT · spins forever</span></a>
+      <a href="#cache"><span class="n">09</span><b>Blank page, or an old version</b><span>Caches, service workers, a crashed frontend</span></a>
+      <a href="#hosts"><span class="n">10</span><b>localhost goes somewhere strange</b><span>A modified hosts file</span></a>
+      <a href="#share"><span class="n">11</span><b>My friend can't open my link</b><span>localhost:3000 works for me, not for them</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" id="how-refusal-works" aria-labelledby="sim-h">
+  <div class="wrap split split-wide" style="align-items:center">
+    <div class="reveal prose">
+      <p class="eyebrow"><span class="idx">§ 02</span> What's really happening</p>
+      <h2 id="sim-h">“Refused” means the door was shut</h2>
+      <p>Your browser knocks on one numbered door — a <a href="/localhost-ports.html">port</a>. If no program is listening behind it, your operating system turns the connection away <em>instantly</em>. That instant “no” is <strong>ERR_CONNECTION_REFUSED</strong>.</p>
+      <p>It's actually good news: your computer is fine, and the network is fine. The only question is <em>why nothing is listening</em> — usually a stopped server or the wrong port.</p>
+      <p class="muted small">Try it: your app starts switched off. Knock on :3000, flip the switch, and knock again.</p>
+    </div>
+    <div class="reveal reveal-d1" data-portsim>
+      <div class="portsim-bar">
+          <label class="urlbar" for="port-in-t"><span class="host">http://<b>localhost</b>:</span><input id="port-in-t" type="number" min="1" max="65535" value="3000" inputmode="numeric" aria-label="Port number"><button class="btn btn-primary btn-sm" type="button" data-send>Send request</button></label>
+          <label class="switch"><input type="checkbox" data-app-switch><span class="track" aria-hidden="true"></span>Your app on :3000 is running</label>
+        </div>
+        <figure class="fig corners" style="margin:0">
+          <div class="fig-bar"><span><b>Fig. 02</b> — Knock on a door</span><span class="live">Interactive</span></div>
+          <svg class="dg" viewBox="0 0 760 410" role="img" aria-labelledby="tpb-t tpb-d">
+            <title id="tpb-t">A computer drawn as a building with numbered doors</title>
+            <desc id="tpb-d">The computer at 127.0.0.1 is a building. Each door is a port: 22, 80, 443, 3000, 3001, 5173, 5432, 6000, 8080 and any other number. Doors with a green light have a program listening behind them. The browser sends a request to one door at a time.</desc>
+            <rect class="bg ln" x="22" y="150" width="172" height="120" rx="8"/>
+            <path class="ln-3" d="M22 172 H194"/>
+            <circle class="ln-2" cx="35" cy="161" r="3"/><circle class="ln-2" cx="46" cy="161" r="3"/><circle class="ln-2" cx="57" cy="161" r="3"/>
+            <rect class="bg-2" x="68" y="155" width="116" height="12" rx="6"/>
+            <text class="tx-2" x="76" y="164.5" style="font-size:8.5px">localhost:<tspan data-port-echo>3000</tspan></text>
+            <rect class="bg-blue" x="36" y="186" width="90" height="10" rx="2"/>
+            <path class="ln-3" d="M36 210 H178 M36 222 H160 M36 234 H170"/>
+            <text class="lbl" x="22" y="294">YOUR BROWSER</text><text class="tx-3" x="22" y="309">ON THIS COMPUTER</text>
+            <path class="ln-2 dash" d="M194 210 H262"/>
+            <path class="ln-2" d="M250 50 H748"/>
+            <path class="ln" d="M262 388 V50 H736 V388"/>
+            <rect class="bg ln" x="389" y="62" width="220" height="30" rx="3"/>
+            <text class="lbl mid" x="499" y="81">127.0.0.1 · LOCALHOST</text>
+            <path class="ln" d="M20 388 H746"/>
+            <rect class="f-hatch" x="20" y="388" width="726" height="12"/>
+            <text class="tx-3 mid" x="499" y="374">65,535 DOORS PER ADDRESS · PORT 0 IS RESERVED</text>
+            <g class="door" data-port="22" data-x="321" data-y="166"><rect class="door-body" x="286" y="112" width="70" height="96" rx="4"/><circle class="door-led" cx="346" cy="122" r="3"/><text class="door-num mid" x="321" y="148">22</text><text class="door-what mid" x="321" y="164">SSH</text><circle class="ln-3" cx="343" cy="178" r="2.5"/></g>
+            <g class="door" data-port="80" data-x="409" data-y="166"><rect class="door-body" x="374" y="112" width="70" height="96" rx="4"/><circle class="door-led" cx="434" cy="122" r="3"/><text class="door-num mid" x="409" y="148">80</text><text class="door-what mid" x="409" y="164">HTTP</text><circle class="ln-3" cx="431" cy="178" r="2.5"/></g>
+            <g class="door" data-port="443" data-x="497" data-y="166"><rect class="door-body" x="462" y="112" width="70" height="96" rx="4"/><circle class="door-led" cx="522" cy="122" r="3"/><text class="door-num mid" x="497" y="148">443</text><text class="door-what mid" x="497" y="164">HTTPS</text><circle class="ln-3" cx="519" cy="178" r="2.5"/></g>
+            <g class="door" data-port="3000" data-x="585" data-y="166"><rect class="door-body" x="550" y="112" width="70" height="96" rx="4"/><circle class="door-led" cx="610" cy="122" r="3"/><text class="door-num mid" x="585" y="148">3000</text><text class="door-what mid" x="585" y="164">YOUR APP</text><circle class="ln-3" cx="607" cy="178" r="2.5"/></g>
+            <g class="door" data-port="3001" data-x="673" data-y="166"><rect class="door-body" x="638" y="112" width="70" height="96" rx="4"/><circle class="door-led" cx="698" cy="122" r="3"/><text class="door-num mid" x="673" y="148">3001</text><text class="door-what mid" x="673" y="164">EMPTY</text><circle class="ln-3" cx="695" cy="178" r="2.5"/></g>
+            <g class="door" data-port="5173" data-x="321" data-y="290"><rect class="door-body" x="286" y="236" width="70" height="96" rx="4"/><circle class="door-led" cx="346" cy="246" r="3"/><text class="door-num mid" x="321" y="272">5173</text><text class="door-what mid" x="321" y="288">VITE</text><circle class="ln-3" cx="343" cy="302" r="2.5"/></g>
+            <g class="door" data-port="5432" data-x="409" data-y="290"><rect class="door-body" x="374" y="236" width="70" height="96" rx="4"/><circle class="door-led" cx="434" cy="246" r="3"/><text class="door-num mid" x="409" y="272">5432</text><text class="door-what mid" x="409" y="288">POSTGRES</text><circle class="ln-3" cx="431" cy="302" r="2.5"/></g>
+            <g class="door" data-port="6000" data-x="497" data-y="290"><rect class="door-body" x="462" y="236" width="70" height="96" rx="4"/><circle class="door-led" cx="522" cy="246" r="3"/><text class="door-num mid" x="497" y="272">6000</text><text class="door-what mid" x="497" y="288">X11</text><circle class="ln-3" cx="519" cy="302" r="2.5"/></g>
+            <g class="door" data-port="8080" data-x="585" data-y="290"><rect class="door-body" x="550" y="236" width="70" height="96" rx="4"/><circle class="door-led" cx="610" cy="246" r="3"/><text class="door-num mid" x="585" y="272">8080</text><text class="door-what mid" x="585" y="288">ALT HTTP</text><circle class="ln-3" cx="607" cy="302" r="2.5"/></g>
+            <g class="door" data-port="other" data-x="673" data-y="290"><rect class="door-body" x="638" y="236" width="70" height="96" rx="4"/><circle class="door-led" cx="698" cy="246" r="3"/><text class="door-num mid" x="673" y="272">…</text><text class="door-what mid" x="673" y="288">ANY PORT</text><circle class="ln-3" cx="695" cy="302" r="2.5"/></g>
+            <g class="sim-packet" data-x="194" data-y="210"><circle class="pkt-halo" cx="194" cy="210" r="11"/><circle class="pkt-core" cx="194" cy="210" r="5.5"/></g>
+          </svg>
+        </figure>
+        <div class="chips" style="margin-top:14px" aria-label="Try a port">
+          <button class="chip" type="button" data-port-chip="3000"><span class="k">:3000</span></button>
+          <button class="chip" type="button" data-port-chip="3001"><span class="k">:3001</span></button>
+          <button class="chip" type="button" data-port-chip="5432"><span class="k">:5432</span></button>
+          <button class="chip" type="button" data-port-chip="6000"><span class="k">:6000</span></button>
+          <button class="chip" type="button" data-port-chip="22"><span class="k">:22</span></button>
+          <button class="chip" type="button" data-port-chip="8080"><span class="k">:8080</span></button>
+        </div>
+        
+      <div class="sim-result" data-kind="idle" aria-live="polite"><span class="ico" aria-hidden="true">·</span><div><p class="sim-title">Your app is switched off</p><p>Send a request to :3000 and watch what your computer does.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" id="fixes" aria-labelledby="fx-h">
+  <div class="wrap-narrow">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 03</span> The fixes</p>
+      <h2 id="fx-h">Every common cause, and its fix</h2>
+    </div>
+
+    <article class="fix" id="refused">
+      <div class="fix-head"><span class="n">01</span><h3>“localhost refused to connect”</h3></div>
+      <p class="symptom">ERR_CONNECTION_REFUSED · ECONNREFUSED · Firefox: “Unable to connect”</p>
+      <p>The request reached your computer, but no program is listening on that port. Work through these in order:</p>
+      <ol>
+        <li><strong>Is the server still running?</strong> Go back to the terminal where you started it. If it crashed, the error is near the bottom; if you closed the window or your laptop slept, it's simply gone. Start it again — <code>npm run dev</code>, <code>python manage.py runserver</code>, <code>docker start my-app</code> — and wait until it prints an address.</li>
+        <li><strong>Are you on the right port?</strong> Use the exact URL the server printed. Many tools quietly move to the next free port (<em>“Port 3000 is in use, trying 3001 instead”</em>).</li>
+        <li><strong>Is anything listening at all?</strong> Ask your OS directly. No output means nothing is behind that door.</li>
+        <li><strong>Try <code>127.0.0.1</code> instead of <code>localhost</code>.</strong> If that works, jump to <a href="#ipv6">the IPv6 mismatch</a>.</li>
+      </ol>
+      <div class="tabs" data-tabs>
+        <div class="tab-list" role="tablist" aria-label="Operating system">
+          <button class="tab" role="tab" type="button" data-os="mac" id="t1-mac" aria-controls="p1-mac">macOS</button>
+          <button class="tab" role="tab" type="button" data-os="linux" id="t1-linux" aria-controls="p1-linux">Linux</button>
+          <button class="tab" role="tab" type="button" data-os="win" id="t1-win" aria-controls="p1-win">Windows</button>
+        </div>
+        <div class="tab-panel" role="tabpanel" id="p1-mac" aria-labelledby="t1-mac"><p class="tab-title">macOS</p><div class="code"><div class="code-head"><span>Terminal</span></div><pre><code><span class="c"># Is anything listening on port 3000?</span>
+lsof -nP -iTCP:3000 -sTCP:LISTEN
+
+<span class="c"># Talk to it directly — "Connection refused" confirms it</span>
+curl -v http://localhost:3000</code></pre></div></div>
+        <div class="tab-panel" role="tabpanel" id="p1-linux" aria-labelledby="t1-linux"><p class="tab-title">Linux</p><div class="code"><div class="code-head"><span>Terminal</span></div><pre><code><span class="c"># Is anything listening on port 3000?</span>
+ss -ltn 'sport = :3000'
+
+<span class="c"># Talk to it directly — "Connection refused" confirms it</span>
+curl -v http://localhost:3000</code></pre></div></div>
+        <div class="tab-panel" role="tabpanel" id="p1-win" aria-labelledby="t1-win"><p class="tab-title">Windows</p><div class="code"><div class="code-head"><span>PowerShell</span></div><pre><code><span class="c"># Is anything listening on port 3000?</span>
+Get-NetTCPConnection -LocalPort 3000 -State Listen
+
+<span class="c"># Talk to it directly</span>
+curl.exe -v http://localhost:3000</code></pre></div></div>
+      </div>
+    </article>
+
+    <article class="fix" id="port-in-use">
+      <div class="fix-head"><span class="n">02</span><h3>“Port already in use”</h3></div>
+      <p class="symptom">Error: listen EADDRINUSE: address already in use :::3000 · OSError: [Errno 48] Address already in use</p>
+      <p>Only one program can listen on a port. Another one — very often an old copy of your own server running in a forgotten terminal — already has it. Find it and stop it, or start your app on a different port.</p>
+      <div class="tabs" data-tabs>
+        <div class="tab-list" role="tablist" aria-label="Operating system">
+          <button class="tab" role="tab" type="button" data-os="mac" id="t2-mac" aria-controls="p2-mac">macOS</button>
+          <button class="tab" role="tab" type="button" data-os="linux" id="t2-linux" aria-controls="p2-linux">Linux</button>
+          <button class="tab" role="tab" type="button" data-os="win" id="t2-win" aria-controls="p2-win">Windows</button>
+        </div>
+        <div class="tab-panel" role="tabpanel" id="p2-mac" aria-labelledby="t2-mac"><p class="tab-title">macOS</p><div class="code"><div class="code-head"><span>Terminal</span></div><pre><code><span class="c"># Find the process holding port 3000</span>
+lsof -nP -iTCP:3000 -sTCP:LISTEN
+
+<span class="c"># Stop it (PID is the second column)</span>
+kill &lt;PID&gt;
+<span class="c"># Still there? Force it</span>
+kill -9 &lt;PID&gt;</code></pre></div></div>
+        <div class="tab-panel" role="tabpanel" id="p2-linux" aria-labelledby="t2-linux"><p class="tab-title">Linux</p><div class="code"><div class="code-head"><span>Terminal</span></div><pre><code><span class="c"># Find the process holding port 3000</span>
+sudo ss -ltnp 'sport = :3000'
+
+<span class="c"># Stop it — or kill whatever holds the port in one step</span>
+kill &lt;PID&gt;
+sudo fuser -k 3000/tcp</code></pre></div></div>
+        <div class="tab-panel" role="tabpanel" id="p2-win" aria-labelledby="t2-win"><p class="tab-title">Windows</p><div class="code"><div class="code-head"><span>PowerShell</span></div><pre><code><span class="c"># Find the process holding port 3000 (OwningProcess is its PID)</span>
+Get-NetTCPConnection -LocalPort 3000 -State Listen
+
+<span class="c"># Stop it</span>
+Stop-Process -Id &lt;PID&gt; -Force</code></pre></div><p class="small muted">In Command Prompt: <code>netstat -ano | findstr :3000</code>, then <code>taskkill /PID &lt;PID&gt; /F</code>.</p></div>
+      </div>
+      <p>Or leave it running and pick another port: <code>npm run dev -- --port 5174</code> (Vite), <code>next dev -p 3001</code>, <code>flask run --port 5001</code>, <code>python manage.py runserver 8001</code>.</p>
+      <div class="note"><span class="note-label">Mac, port 5000 or 7000?</span>Since macOS Monterey, AirPlay Receiver listens there. Turn it off in System Settings → General → AirDrop &amp; Handoff, or use another port.</div>
+    </article>
+
+    <article class="fix" id="ipv6">
+      <div class="fix-head"><span class="n">03</span><h3>127.0.0.1 works, but localhost doesn't</h3></div>
+      <p class="symptom">connect ECONNREFUSED ::1:3000 · works in one tool, refused in another</p>
+      <p><code>localhost</code> can resolve to two addresses: <code>127.0.0.1</code> (IPv4) and <code>::1</code> (IPv6). If your server listens on only one of them and your browser or tool tries the other, the connection is refused — even though the server is running. Node.js 17 and later stopped preferring IPv4 for <code>localhost</code>, which made this a common surprise.</p>
+      <div class="code"><div class="code-head"><span>Terminal · see which family answers</span></div><pre><code>curl -4 http://localhost:3000   <span class="c"># IPv4: 127.0.0.1</span>
+curl -6 http://localhost:3000   <span class="c"># IPv6: ::1</span></code></pre></div>
+      <p><strong>Fix:</strong> point your client at the address that works (<code>http://127.0.0.1:3000</code>), or make the server listen on both — for example <code>server.listen(3000, "::")</code> in Node.js accepts IPv6 and, on most systems, IPv4 too.</p>
+    </article>
+
+    <article class="fix" id="phone">
+      <div class="fix-head"><span class="n">04</span><h3>Works on my laptop, but not on my phone</h3></div>
+      <p class="symptom">Phone shows “can't connect” · another computer on the same Wi-Fi can't reach it</p>
+      <p>On your phone, <code>localhost</code> means <em>the phone</em>. To reach your laptop you need three things:</p>
+      <ol>
+        <li><strong>Your laptop's LAN address</strong>, like <code>192.168.1.23</code> — not localhost.</li>
+        <li><strong>A server listening on <code>0.0.0.0</code></strong>, not only <code>127.0.0.1</code> (Vite: <code>npm run dev -- --host</code>; Flask: <code>--host=0.0.0.0</code>; Django: <code>runserver 0.0.0.0:8000</code>).</li>
+        <li><strong>The same network, and a firewall that allows it.</strong> Guest and office Wi-Fi often isolate devices from each other.</li>
+      </ol>
+      <div class="tabs" data-tabs>
+        <div class="tab-list" role="tablist" aria-label="Operating system">
+          <button class="tab" role="tab" type="button" data-os="mac" id="t4-mac" aria-controls="p4-mac">macOS</button>
+          <button class="tab" role="tab" type="button" data-os="linux" id="t4-linux" aria-controls="p4-linux">Linux</button>
+          <button class="tab" role="tab" type="button" data-os="win" id="t4-win" aria-controls="p4-win">Windows</button>
+        </div>
+        <div class="tab-panel" role="tabpanel" id="p4-mac" aria-labelledby="t4-mac"><p class="tab-title">macOS</p><div class="code"><div class="code-head"><span>Terminal · your LAN address</span></div><pre><code>ipconfig getifaddr en0</code></pre></div></div>
+        <div class="tab-panel" role="tabpanel" id="p4-linux" aria-labelledby="t4-linux"><p class="tab-title">Linux</p><div class="code"><div class="code-head"><span>Terminal · your LAN address</span></div><pre><code>hostname -I</code></pre></div></div>
+        <div class="tab-panel" role="tabpanel" id="p4-win" aria-labelledby="t4-win"><p class="tab-title">Windows</p><div class="code"><div class="code-head"><span>Command Prompt · look for “IPv4 Address”</span></div><pre><code>ipconfig</code></pre></div></div>
+      </div>
+      <p>Then open <code>http://192.168.1.23:3000</code> (with your address and port) on the phone. <a href="/#who-can-reach">See who can reach what, interactively →</a></p>
+    </article>
+
+    <article class="fix" id="docker">
+      <div class="fix-head"><span class="n">05</span><h3>Docker: the container is up, but localhost won't load</h3></div>
+      <p class="symptom">docker ps shows “Up” · browser shows refused or an empty response</p>
+      <p>Two things must both be true. The port must be <strong>published</strong> from the container to your computer with <code>-p HOST:CONTAINER</code>, and the app inside must listen on <strong><code>0.0.0.0</code></strong> — because inside a container, <code>127.0.0.1</code> means the container itself.</p>
+      <figure class="fig draft" style="margin:22px 0">
+        <div class="fig-bar"><span><b>Fig. 03</b> — docker run -p 8080:80</span><span class="live">Live</span></div>
+        <svg class="dg anim" viewBox="0 0 760 290" role="img" aria-labelledby="dk-t dk-d">
+          <title id="dk-t">How Docker port publishing works</title>
+          <desc id="dk-d">The browser on your computer opens localhost:8080. Docker forwards port 8080 on your computer to port 80 inside the container, where the app must be listening on 0.0.0.0. If the app listens on 127.0.0.1, only the container itself can reach it.</desc>
+          <rect class="ln" x="16" y="20" width="728" height="252" rx="14"/>
+          <text class="lbl" x="36" y="46">YOUR COMPUTER · THE HOST</text>
+          <rect class="bg ln" x="44" y="100" width="150" height="100" rx="8"/><path class="ln-3" d="M44 120 H194"/>
+          <circle class="ln-2" cx="56" cy="110" r="3"/><circle class="ln-2" cx="66" cy="110" r="3"/>
+          <text class="tx" x="58" y="146" style="font-size:11px">localhost:8080</text>
+          <path class="ln-3" d="M58 162 H170 M58 174 H150"/>
+          <text class="tx-3" x="44" y="222">BROWSER</text>
+          <rect class="bg ln-2 dash" x="392" y="70" width="330" height="178" rx="12"/>
+          <text class="lbl" x="412" y="96">CONTAINER · my-app</text>
+          <rect class="bg-blue" x="540" y="122" width="160" height="88" rx="8"/><rect class="ln" x="540" y="122" width="160" height="88" rx="8"/>
+          <text class="tx" x="556" y="150" style="font-size:12px;font-weight:600">APP</text>
+          <text class="tx-2" x="556" y="170">listening on</text>
+          <text class="lbl-sig" x="556" y="188">0.0.0.0:80</text>
+          <g transform="translate(316 160)"><rect class="bg ln" x="-34" y="-17" width="68" height="34" rx="17"/><text class="lbl mid" y="4">:8080</text></g>
+          <g transform="translate(450 166)"><rect class="bg ln" x="-26" y="-17" width="52" height="34" rx="17"/><text class="lbl mid" y="4">:80</text></g>
+          <text class="lbl-sig mid" x="384" y="214">-p 8080:80</text>
+          <path class="ln-2" d="M350 160 C 370 160 400 166 424 166"/>
+          <path id="dk-path" class="ln-sig flow" d="M194 150 C 240 150 250 160 282 160 M350 160 C 370 160 400 166 424 166 M476 166 H540"/>
+          <path id="dk-pkt" d="M194 150 C 240 150 250 160 282 160 L350 160 C 370 160 400 166 424 166 L476 166 L540 166" fill="none"/>
+          <g class="pkt"><circle class="pkt-halo" r="8"/><circle class="pkt-core" r="4"/><animateMotion dur="2.8s" repeatCount="indefinite"><mpath href="#dk-pkt"/></animateMotion></g>
+          <text class="lbl-err" x="412" y="236" style="font-size:9.5px">ON 127.0.0.1, ONLY THE CONTAINER CAN REACH IT</text>
+        </svg>
+      </figure>
+      <div class="code"><div class="code-head"><span>Terminal</span></div><pre><code><span class="c"># Wrong: the container runs, but no port is published</span>
+docker run my-app
+
+<span class="c"># Right: your localhost:8080 → the container's port 80</span>
+docker run -p 8080:80 my-app
+
+<span class="c"># Check the PORTS column for 0.0.0.0:8080->80/tcp</span>
+docker ps</code></pre></div>
+      <p>With Docker Compose, the same mapping goes under <code>ports: ["8080:80"]</code>. Going the other way — reaching a server on your computer from inside a container — use <code>host.docker.internal</code> instead of localhost (Docker Desktop).</p>
+    </article>
+
+    <article class="fix" id="wsl">
+      <div class="fix-head"><span class="n">06</span><h3>WSL: works in Linux, not in my Windows browser</h3></div>
+      <p class="symptom">curl works inside WSL · Edge or Chrome on Windows can't connect</p>
+      <p>WSL 2 runs Linux in a lightweight virtual machine with its own network. Windows normally forwards localhost into it automatically; when that fails, make the server listen on <code>0.0.0.0</code>, try the WSL address from <code>hostname -I</code>, or switch WSL to <strong>mirrored networking</strong> on Windows 11, which shares your Windows network with Linux:</p>
+      <div class="code"><div class="code-head"><span>%UserProfile%\.wslconfig</span></div><pre><code>[wsl2]
+networkingMode=mirrored</code></pre></div>
+      <p>Then run <code>wsl --shutdown</code> and start your distribution again.</p>
+    </article>
+
+    <article class="fix" id="https">
+      <div class="fix-head"><span class="n">07</span><h3>“Your connection is not private” on localhost</h3></div>
+      <p class="symptom">https://localhost:3000 fails · NET::ERR_CERT_AUTHORITY_INVALID · ERR_SSL_PROTOCOL_ERROR</p>
+      <p>Most dev servers speak plain <code>http://</code>. If your browser autocompletes or upgrades to <code>https://</code>, there's nothing on the other end that speaks encryption. Type <code>http://localhost:3000</code> explicitly.</p>
+      <p>If Chrome keeps forcing HTTPS for localhost (an old HSTS rule), open <code>chrome://net-internals/#hsts</code> and delete the domain security policy for <code>localhost</code>. And if you genuinely need HTTPS locally, create a certificate your machine trusts:</p>
+      <div class="code"><div class="code-head"><span>Terminal · mkcert</span></div><pre><code>mkcert -install
+mkcert localhost 127.0.0.1 ::1</code></pre></div>
+    </article>
+
+    <article class="fix" id="timeout">
+      <div class="fix-head"><span class="n">08</span><h3>“This site can't be reached — took too long to respond”</h3></div>
+      <p class="symptom">ERR_CONNECTION_TIMED_OUT · the tab spins forever</p>
+      <p>A refusal is instant; a <strong>timeout</strong> means packets are being dropped or the server is stuck. Usual suspects: a firewall, VPN, proxy or antivirus intercepting local traffic; a server frozen in a busy loop; or an IP address that isn't yours anymore because you changed Wi-Fi.</p>
+      <div class="code"><div class="code-head"><span>Terminal · give up after 5 seconds</span></div><pre><code>curl -v --max-time 5 http://localhost:3000</code></pre></div>
+      <p>Pause the VPN or security tool and try again. If that fixes it, allow your port in its settings. If the server itself hangs, restart it and watch its logs.</p>
+    </article>
+
+    <article class="fix" id="cache">
+      <div class="fix-head"><span class="n">09</span><h3>A blank page, or an old version of my app</h3></div>
+      <p class="symptom">White screen · changes don't show up · works in a private window</p>
+      <p>A blank page is often a crashed frontend: open the browser console (<kbd>F12</kbd>) and look for red errors. Old versions usually come from caches and <strong>service workers</strong>, which can keep serving a previous build even after your server changed.</p>
+      <ul>
+        <li>Hard refresh: <kbd>⌘</kbd> <kbd>Shift</kbd> <kbd>R</kbd> on macOS, <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>R</kbd> on Windows and Linux.</li>
+        <li>DevTools → Application → Service workers → <em>Unregister</em>, then reload.</li>
+        <li>Rule it out completely with a private window or another browser.</li>
+      </ul>
+    </article>
+
+    <article class="fix" id="hosts">
+      <div class="fix-head"><span class="n">10</span><h3>localhost goes somewhere strange</h3></div>
+      <p class="symptom">localhost resolves to the wrong address · works on every machine but yours</p>
+      <p>Your hosts file maps names to addresses before any DNS server is asked, and a tool or tutorial may have edited it. It should contain <code>127.0.0.1 localhost</code> and usually <code>::1 localhost</code>.</p>
+      <div class="code"><div class="code-head"><span>macOS / Linux · Windows</span></div><pre><code>cat /etc/hosts
+<span class="c"># Windows:</span>
+type C:\Windows\System32\drivers\etc\hosts</code></pre></div>
+      <p>Fix any other line that mentions <code>localhost</code> (you'll need admin rights to save the file).</p>
+    </article>
+
+    <article class="fix" id="share">
+      <div class="fix-head"><span class="n">11</span><h3>My friend can't open my localhost link</h3></div>
+      <p class="symptom">http://localhost:3000 works for you · “refused to connect” for everyone else</p>
+      <p>That's not a bug — it's what localhost means. On your friend's device, <code>localhost</code> is <em>their</em> computer, where nothing is running. There are two real fixes:</p>
+      <ul>
+        <li><strong>Quick demo:</strong> a tunnel such as <code>cloudflared tunnel --url http://localhost:3000</code> or <code>ngrok http 3000</code> gives your laptop a temporary public URL. It stops working when your laptop sleeps — and anyone with the link can reach your app.</li>
+        <li><strong>The durable fix:</strong> deploy it to a server in the cloud that stays on and has a public address. <a href="/deploy-guide.html">Here's how, in one sentence</a>.</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<section class="section section-rule" aria-labelledby="cta-h">
+  <div class="wrap">
+    <div class="launchpad reveal">
+      <div class="lp-head">
+        <div>
+          <p class="eyebrow"><span class="idx">§ 04</span> Make it permanent</p>
+          <h2 id="cta-h">Fixed it? Now stop depending on localhost.</h2>
+        </div>
+        <a class="btn btn-primary" href="/deploy-guide.html#launchpad">Deploy my app <span class="arr" aria-hidden="true">→</span></a>
+      </div>
+      <p class="lede" style="margin:0;max-width:52em">A deployed app has a real address that works on every phone, every network and every friend's laptop — even with yours closed. Learn <a href="/what-is-the-cloud.html">what the cloud actually is</a>, or skip ahead and <a href="/deploy-guide.html">deploy in one sentence</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" id="faq" aria-labelledby="faq-h">
+  <div class="wrap-narrow">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 05</span> FAQ</p>
+      <h2 id="faq-h">Quick answers</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>What does “localhost refused to connect” mean?</summary>
+        <div class="faq-a"><p>Your computer received the request, but no program was listening on that port, so the operating system refused the connection immediately. The server you meant to reach isn't running, crashed, or is on a different port than the one in the URL.</p></div>
+      </details>
+      <details>
+        <summary>How do I fix ERR_CONNECTION_REFUSED on localhost?</summary>
+        <div class="faq-a"><p>Start (or restart) your server, then open the exact address and port it prints. If it still fails, check whether anything is listening on that port, and try 127.0.0.1 instead of localhost in case of an IPv4/IPv6 mismatch.</p></div>
+      </details>
+      <details>
+        <summary>How do I free a port that's already in use?</summary>
+        <div class="faq-a"><p>Find the process that owns the port — <code>lsof -nP -iTCP:3000 -sTCP:LISTEN</code> on macOS, <code>ss -ltnp</code> on Linux, <code>netstat -ano | findstr :3000</code> on Windows — and stop it with <code>kill &lt;PID&gt;</code> or <code>taskkill /PID &lt;PID&gt; /F</code>. Or start your app on another port.</p></div>
+      </details>
+      <details>
+        <summary>Why does 127.0.0.1 work but localhost doesn't?</summary>
+        <div class="faq-a"><p>localhost can resolve to the IPv6 address ::1 as well as 127.0.0.1. If your server only listens on IPv4 and your browser or tool tries IPv6 first, the connection is refused. Use 127.0.0.1 explicitly, or make the server listen on both.</p></div>
+      </details>
+      <details>
+        <summary>Why can't I open my localhost site on my phone?</summary>
+        <div class="faq-a"><p>On your phone, localhost means the phone. Use your computer's LAN address (like 192.168.1.23:3000), make the dev server listen on 0.0.0.0, and keep both devices on the same network.</p></div>
+      </details>
+      <details>
+        <summary>Why can't I reach my Docker container on localhost?</summary>
+        <div class="faq-a"><p>Publish the port with <code>docker run -p 8080:80</code> and make sure the app inside the container listens on 0.0.0.0, not 127.0.0.1 — inside a container, 127.0.0.1 is the container itself.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight" aria-label="Next chapter">
+  <div class="wrap">
+    <a class="next-chapter reveal" href="/what-is-the-cloud.html">
+      <span><small>Next · Chapter 04</small><strong>What is the cloud, actually?</strong><span class="sub">A planet-sized network of computers that never sleep — and how to rent a slice of one.</span></span>
+      <span class="go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+  </div>
+</section>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="logo" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" style="fill:var(--blue)"/><path d="M1 16h30M16 1v30" stroke="#fff" stroke-opacity=".14"/><path d="M22.9 12.6A7.4 7.4 0 1 0 23.4 17" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round"/><path d="M19.6 12.4l3.6.5.5-3.6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="16" r="2.7" fill="#ff8a3d"/></svg><span class="logo-text">whatis<b>localhost</b></span></a>
+        <p>A visual field guide to how the internet really works — from 127.0.0.1 to a data center on the other side of the planet.</p>
+      </div>
+      <div class="footer-col"><h2>Chapters</h2><ul>
+        <li><a href="/">01 · What is localhost?</a></li>
+        <li><a href="/localhost-ports.html">02 · Localhost ports</a></li>
+        <li><a href="/localhost-not-working.html">03 · Localhost not working</a></li>
+        <li><a href="/what-is-the-cloud.html">04 · What is the cloud?</a></li>
+        <li><a href="/deploy-guide.html">05 · Deploy your app</a></li>
+      </ul></div>
+      <div class="footer-col"><h2>Primary sources</h2><ul>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc6761#section-6.3" rel="noopener">RFC 6761 · the localhost name</a></li>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc6890" rel="noopener">RFC 6890 · special IP addresses</a></li>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc4291#section-2.5.3" rel="noopener">RFC 4291 · IPv6 loopback ::1</a></li>
+        <li><a href="https://www.iana.org/assignments/service-names-port-numbers/" rel="noopener">IANA port registry</a></li>
+        <li><a href="https://fetch.spec.whatwg.org/#port-blocking" rel="noopener">Fetch standard · blocked ports</a></li>
+      </ul></div>
+      <div class="footer-col"><h2>For machines</h2><ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="https://cloudish.ai/skill.md" rel="noopener">Cloudish deploy skill</a></li>
+      </ul></div>
+    </div>
+    <div class="titleblock">
+      <div><span>Project</span><strong>What is localhost? A field guide</strong></div>
+      <div><span>Sheet</span><strong>03 of 05</strong></div>
+      <div><span>Drawing</span><strong>Troubleshooting</strong></div>
+      <div><span>Rev</span><strong>2.0.0</strong></div>
+      <div><span>Scale</span><strong>127.0.0.1 : 1</strong></div>
+      <div><span>Deployed on</span><strong><a href="https://cloudish.ai/" rel="noopener">Cloudish.ai</a> — not localhost</strong></div>
+    </div>
+    <div class="footer-legal"><span>© 2026 whatislocalhost.com</span><span>Drawn in blueprint blue. Served from a data center, not a laptop.</span></div>
+  </div>
+</footer>
+</body>
+</html>

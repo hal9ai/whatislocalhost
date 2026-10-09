@@ -1,0 +1,9 @@
+.git
+.gitignore
+.env*
+.claude
+.archive
+tools
+node_modules
+context.tar.gz
+.DS_Store

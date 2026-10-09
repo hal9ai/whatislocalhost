@@ -1,0 +1,890 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What Is Localhost? 127.0.0.1 Explained Visually (+ How to Fix It)</title>
+<meta name="description" content="localhost is your computer talking to itself. A visual guide to 127.0.0.1, ports like :3000, why localhost only works for you, and the journey to the cloud.">
+<link rel="canonical" href="https://whatislocalhost.com/">
+<meta name="theme-color" content="#f5f8fd" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061633" media="(prefers-color-scheme: dark)">
+<script>(function(){var d=document.documentElement;d.classList.add("js");try{var t=localStorage.getItem("theme");if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";d.dataset.theme=t}catch(e){d.dataset.theme="light"}})()</script>
+<link rel="preload" href="/fonts/space-grotesk-vf.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/ibm-plex-sans-vf.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/styles.css?v=2.0.0">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="whatislocalhost.com">
+<meta property="og:title" content="What is localhost? Your computer, talking to itself.">
+<meta property="og:description" content="A visual field guide: what 127.0.0.1 really is, why localhost only works for you, and how a request travels from localhost to a data center on the other side of the planet.">
+<meta property="og:url" content="https://whatislocalhost.com/">
+<meta property="og:image" content="https://whatislocalhost.com/og/home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What is localhost? Your computer, talking to itself.">
+<meta name="twitter:description" content="A visual guide to 127.0.0.1, ports, and the journey from localhost to the cloud.">
+<meta name="twitter:image" content="https://whatislocalhost.com/og/home.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://whatislocalhost.com/#website",
+      "name": "whatislocalhost.com",
+      "url": "https://whatislocalhost.com/",
+      "description": "A visual field guide to localhost, ports, troubleshooting, the cloud, and deploying your app.",
+      "inLanguage": "en"
+    },
+    {
+      "@type": "TechArticle",
+      "@id": "https://whatislocalhost.com/#article",
+      "headline": "What is localhost?",
+      "description": "localhost is the hostname a computer uses to refer to itself. It resolves to the loopback addresses 127.0.0.1 (IPv4) and ::1 (IPv6), so traffic sent to it never leaves the machine.",
+      "url": "https://whatislocalhost.com/",
+      "image": "https://whatislocalhost.com/og/home.png",
+      "datePublished": "2026-09-25",
+      "dateModified": "2026-10-04",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://whatislocalhost.com/#website"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "whatislocalhost.com",
+        "url": "https://whatislocalhost.com/"
+      },
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "localhost"
+        },
+        {
+          "@type": "Thing",
+          "name": "Loopback address 127.0.0.1"
+        },
+        {
+          "@type": "Thing",
+          "name": "Port (computer networking)"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://whatislocalhost.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is localhost the same as 127.0.0.1?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Almost always, yes. localhost is a name; 127.0.0.1 is the IPv4 loopback address it normally resolves to. Many systems also map localhost to the IPv6 loopback address ::1. Either way, the request stays on your own computer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does localhost:3000 mean?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It means “the program listening on port 3000 on this computer.” localhost picks the machine and the number after the colon picks the program. Port 3000 is the default for tools like Next.js, Ruby on Rails and many Node.js tutorials. See every common localhost port."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does it say “localhost refused to connect”?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your computer received the request, but no program was listening on that port, so the operating system refused the connection (ERR_CONNECTION_REFUSED). Usually the server isn't running, crashed, or is on a different port than the one in the URL. Here's the full troubleshooting guide."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can other people visit my localhost website?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. localhost always points to the device making the request, so a http://localhost:3000 link sent to a friend points at their own computer. To let anyone visit, deploy your app to a server with a public address — that's what people mean by putting it “in the cloud.”"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does localhost work on my computer but not on my phone?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because your phone has its own localhost. To reach your laptop from your phone on the same Wi-Fi, use the laptop's local network address (something like 192.168.1.23:3000) and make sure your dev server listens on 0.0.0.0, not only 127.0.0.1."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is 0.0.0.0?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "When a server listens on 0.0.0.0, it accepts connections on every network interface the machine has — loopback, Wi-Fi, Ethernet. It isn't an address you visit; it's an instruction meaning “all of them.”"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is localhost safe? Can hackers reach it?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Traffic to localhost never leaves your computer, and services that listen only on 127.0.0.1 can't be reached from other devices. One caveat: web pages you visit run code on your machine, so a malicious page could try to talk to your local servers. Modern browsers increasingly block that or ask for permission first."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I put my localhost site online?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Copy it to a computer that's always on and has a public address — a cloud server — and point a URL at it. Today you can ask an AI coding agent to do it in one sentence, or use a platform like Vercel, AWS or DigitalOcean. Compare the options in the deploy guide."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script src="/script.js?v=2.0.0" defer></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" style="stroke:var(--stroke-2);stroke-width:1"/></pattern>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" style="fill:var(--stroke)"/></marker>
+    <marker id="arr-sig" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" style="fill:var(--signal)"/></marker>
+  </defs>
+</svg>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap masthead-inner">
+    <a class="logo" href="/" aria-label="whatislocalhost.com home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" style="fill:var(--blue)"/><path d="M1 16h30M16 1v30" stroke="#fff" stroke-opacity=".14"/><g class="logo-loop"><path d="M22.9 12.6A7.4 7.4 0 1 0 23.4 17" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round"/><path d="M19.6 12.4l3.6.5.5-3.6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></g><circle cx="16" cy="16" r="2.7" fill="#ff8a3d"/></svg>
+      <span class="logo-text">whatis<b>localhost</b></span>
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Chapters">
+      <a href="/" aria-current="page"><span class="n">01</span>Localhost</a>
+      <a href="/localhost-ports.html"><span class="n">02</span>Ports</a>
+      <a href="/localhost-not-working.html"><span class="n">03</span>Troubleshoot</a>
+      <a href="/what-is-the-cloud.html"><span class="n">04</span>The cloud</a>
+      <a href="/deploy-guide.html"><span class="n">05</span>Deploy</a>
+    </nav>
+    <div class="masthead-actions">
+      <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark blueprint theme"><span class="knob" aria-hidden="true"></span><svg class="ico-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.3 5.3l1.7 1.7M17 17l1.7 1.7M5.3 18.7L7 17M17 7l1.7-1.7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><svg class="ico-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button>
+      <a class="btn btn-primary btn-sm" href="/deploy-guide.html#launchpad">Deploy an app</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="bars" aria-hidden="true"></span>Menu</button>
+    </div>
+  </div>
+  <div class="progress" aria-hidden="true"><span></span></div>
+</header>
+
+<main id="main">
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="kicker"><span class="tag">CH. 01</span> A field guide · from 127.0.0.1 to the cloud</p>
+      <h1>What is <span class="hl">localhost</span>?</h1>
+      <p class="lede">It's your computer, talking to itself. Every app you've ever built started here — on a private address that never leaves your machine. Here's how it really works, why it breaks, and how a request travels from localhost to a data center on the other side of the planet.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#journey">Follow a request to the cloud <span class="arr" aria-hidden="true">↓</span></a>
+        <a class="btn" href="/localhost-not-working.html">My localhost isn't working</a>
+      </div>
+      <dl class="readouts">
+        <div><dt>Distance traveled</dt><dd>0 m</dd></div>
+        <div><dt>Typical round trip</dt><dd>~0.05 <small>ms</small></dd></div>
+        <div><dt>Who can reach it</dt><dd>Only you</dd></div>
+      </dl>
+    </div>
+
+    <figure class="fig hero-fig corners" data-crosshair>
+      <div class="fig-bar"><span><b>Fig. 01</b> — localhost:3000, exploded</span><span class="live">Live</span></div>
+      <svg class="dg anim" viewBox="0 0 600 500" data-vb-narrow="208 16 340 480" role="img" aria-labelledby="f1t f1d">
+        <title id="f1t">Anatomy of a request to localhost</title>
+        <desc id="f1d">An exploded view of the four network layers inside one computer. A request from the browser travels down through HTTP, TCP and IP to the loopback interface, turns around without touching the Wi-Fi hardware, and climbs back up to the server listening on port 3000.</desc>
+        <!-- Layer 04: link -->
+        <g transform="matrix(.866 .5 -.866 .5 330 300)">
+          <rect class="ln" x="0" y="0" width="240" height="128" rx="6" vector-effect="non-scaling-stroke" style="fill:var(--surface);fill-opacity:.78"/>
+          <rect class="bg-blue" x="10" y="10" width="220" height="80" rx="4"/>
+          <rect class="ln-2" x="10" y="10" width="220" height="80" rx="4" vector-effect="non-scaling-stroke"/>
+          <text class="lbl" x="18" y="84" style="font-size:8.5px">lo0 · LOOPBACK · SOFTWARE ONLY</text>
+          <path class="ln-sig flow" d="M62 64 H176" vector-effect="non-scaling-stroke" marker-end="url(#arr-sig)"/>
+          <rect class="f-hatch" x="10" y="96" width="220" height="24" rx="4"/>
+          <rect class="ln-3" x="10" y="96" width="220" height="24" rx="4" vector-effect="non-scaling-stroke"/>
+          <text class="tx-3" x="18" y="111" style="font-size:8px">en0 · WI-FI RADIO · NOT USED</text>
+        </g>
+        <!-- Layer 03: internet -->
+        <g transform="matrix(.866 .5 -.866 .5 330 210)">
+          <rect class="ln" x="0" y="0" width="240" height="128" rx="6" vector-effect="non-scaling-stroke" style="fill:var(--surface);fill-opacity:.8"/>
+          <rect class="bg" x="70" y="38" width="100" height="52" rx="4"/>
+          <rect class="ln-2" x="70" y="38" width="100" height="52" rx="4" vector-effect="non-scaling-stroke"/>
+          <text class="tx" x="78" y="59" style="font-size:8.5px">SRC 127.0.0.1</text>
+          <text class="tx" x="78" y="77" style="font-size:8.5px">DST 127.0.0.1</text>
+          <text class="lbl" x="10" y="119" style="font-size:9px">INTERNET · IP</text>
+        </g>
+        <!-- Layer 02: transport -->
+        <g transform="matrix(.866 .5 -.866 .5 330 120)">
+          <rect class="ln" x="0" y="0" width="240" height="128" rx="6" vector-effect="non-scaling-stroke" style="fill:var(--surface);fill-opacity:.82"/>
+          <path class="ln-2 dash" d="M73 64 H167" vector-effect="non-scaling-stroke"/>
+          <circle class="bg" cx="62" cy="64" r="11"/><circle class="ln" cx="62" cy="64" r="11" vector-effect="non-scaling-stroke"/>
+          <circle class="bg" cx="178" cy="64" r="11"/><circle class="ln" cx="178" cy="64" r="11" vector-effect="non-scaling-stroke"/>
+          <text class="tx-2" x="40" y="94" style="font-size:8.5px">:52814</text>
+          <text class="tx-2" x="163" y="94" style="font-size:8.5px">:3000</text>
+          <text class="lbl" x="10" y="119" style="font-size:9px">TRANSPORT · TCP</text>
+        </g>
+        <!-- Layer 01: application -->
+        <g transform="matrix(.866 .5 -.866 .5 330 30)">
+          <rect class="ln" x="0" y="0" width="240" height="128" rx="6" vector-effect="non-scaling-stroke" style="fill:var(--surface);fill-opacity:.9"/>
+          <rect class="bg" x="14" y="30" width="96" height="68" rx="5"/>
+          <rect class="ln-2" x="14" y="30" width="96" height="68" rx="5" vector-effect="non-scaling-stroke"/>
+          <path class="ln-3" d="M14 42 H110" vector-effect="non-scaling-stroke"/>
+          <text class="tx-3" x="20" y="39" style="font-size:7px">BROWSER</text>
+          <text class="tx" x="20" y="58" style="font-size:8.5px">localhost:3000</text>
+          <rect class="bg-blue" x="20" y="66" width="60" height="6" rx="1"/>
+          <rect class="bg-blue" x="20" y="77" width="76" height="4" rx="1"/>
+          <rect class="bg-blue" x="20" y="85" width="66" height="4" rx="1"/>
+          <rect class="bg" x="130" y="30" width="96" height="68" rx="5"/>
+          <rect class="ln-2" x="130" y="30" width="96" height="68" rx="5" vector-effect="non-scaling-stroke"/>
+          <path class="ln-3" d="M130 42 H226" vector-effect="non-scaling-stroke"/>
+          <text class="tx-3" x="136" y="39" style="font-size:7px">SERVER</text>
+          <text class="tx" x="136" y="58" style="font-size:8.5px">listening :3000</text>
+          <text class="lbl-ok" x="136" y="77" style="font-size:8.5px">GET / → 200<animate attributeName="opacity" values=".15;.15;1;1;.15" keyTimes="0;.4;.44;.9;1" dur="6s" repeatCount="indefinite"/></text>
+          <text class="lbl" x="10" y="119" style="font-size:9px">APPLICATION · HTTP</text>
+        </g>
+        <!-- drop lines through the stack -->
+        <path class="ln-2 dash" d="M328.27 93 V363 M428.72 151 V421"/>
+        <g class="f-stroke">
+          <circle cx="328.27" cy="183" r="2.2"/><circle cx="328.27" cy="273" r="2.2"/><circle cx="328.27" cy="363" r="2.2"/>
+          <circle cx="428.72" cy="241" r="2.2"/><circle cx="428.72" cy="331" r="2.2"/><circle cx="428.72" cy="421" r="2.2"/>
+        </g>
+        <!-- annotations -->
+        <g class="iso-notes">
+          <text class="lbl" x="12" y="90">01 · APPLICATION</text><text class="tx-3" x="12" y="105">HTTP · GET / localhost</text>
+          <text class="lbl" x="12" y="180">02 · TRANSPORT</text><text class="tx-3" x="12" y="195">TCP · :52814 TO :3000</text>
+          <text class="lbl" x="12" y="270">03 · INTERNET</text><text class="tx-3" x="12" y="285">IP · 127.0.0.1 TO ITSELF</text>
+          <text class="lbl" x="12" y="360">04 · LINK</text><text class="tx-3" x="12" y="375">lo0 · TURNS AROUND HERE</text>
+          <path class="ln-3" d="M178 94 H216 M178 184 H216 M178 274 H216 M178 364 H216"/>
+          <g class="f-stroke"><circle cx="219.2" cy="94" r="2.4"/><circle cx="219.2" cy="184" r="2.4"/><circle cx="219.2" cy="274" r="2.4"/><circle cx="219.2" cy="364" r="2.4"/></g>
+        </g>
+        <path id="iso-req" d="M328.27 93 V363 L428.72 421 V151" fill="none"/>
+        <g class="pkt"><circle class="pkt-halo" r="10"/><circle class="pkt-core" r="4.6"/>
+          <animateMotion dur="6s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;.42;1" calcMode="linear"><mpath href="#iso-req"/></animateMotion>
+          <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;.42;.44;1" dur="6s" repeatCount="indefinite"/>
+        </g>
+        <g class="pkt"><circle class="pkt-halo ok" r="10"/><circle class="pkt-core ok" r="4.6"/>
+          <animateMotion dur="6s" repeatCount="indefinite" keyPoints="1;1;0;0" keyTimes="0;.5;.92;1" calcMode="linear"><mpath href="#iso-req"/></animateMotion>
+          <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;.49;.5;.92;.93;1" dur="6s" repeatCount="indefinite"/>
+        </g>
+      </svg>
+      <figcaption>The request (<span style="color:var(--signal)">●</span>) drops through four layers of networking software, turns around at the loopback interface, and climbs back up to the server. The response (<span style="color:var(--ok)">●</span>) makes the same trip in reverse. The Wi-Fi radio is never touched.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ QUICK ANSWER ============ -->
+<section class="section section-tight" id="quick-answer" aria-labelledby="qa-h">
+  <div class="wrap split split-wide">
+    <div class="reveal">
+      <p class="eyebrow"><span class="idx">§ 01</span> The short answer</p>
+      <h2 id="qa-h">localhost, in one paragraph</h2>
+      <div class="answer">
+        <span class="answer-label">Quick answer</span>
+        <p><strong>localhost</strong> is the standard hostname for the computer you're using right now. Your operating system maps it to a special <strong>loopback address</strong> — <code>127.0.0.1</code> in IPv4, <code>::1</code> in IPv6 — so anything sent there turns around inside your machine instead of going out to the network.</p>
+        <p>Developers use it to run and test apps privately. It's also why nobody else can open your <code>http://localhost:3000</code> link: on their device, localhost means <em>their</em> computer, not yours.</p>
+      </div>
+    </div>
+    <div class="reveal reveal-d1">
+      <p class="eyebrow"><span class="idx">Spec sheet</span> Key facts</p>
+      <dl class="facts">
+        <dt>Name</dt><dd>localhost — reserved by <a href="https://www.rfc-editor.org/rfc/rfc6761#section-6.3" rel="noopener">RFC 6761</a></dd>
+        <dt>IPv4</dt><dd>127.0.0.1 — the whole 127.0.0.0/8 block (16,777,216 addresses) is loopback</dd>
+        <dt>IPv6</dt><dd>::1</dd>
+        <dt>Interface</dt><dd>lo (Linux) · lo0 (macOS) · Loopback Pseudo-Interface 1 (Windows)</dd>
+        <dt>Leaves your computer?</dt><dd>Never</dd>
+        <dt>Who can reach it?</dt><dd>Only programs on the same device</dd>
+        <dt>Typical round trip</dt><dd>Tens of microseconds</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ============ JOURNEY ============ -->
+<section class="section section-rule" id="journey" aria-labelledby="journey-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 02</span> The journey of a request</p>
+      <h2 id="journey-h">From localhost to the cloud, in five zooms</h2>
+      <p>Scroll to zoom out. Follow a request from 0 meters to the other side of the planet — and see exactly where localhost stops working, and why.</p>
+    </div>
+
+    <div class="journey no-js-stage" data-journey>
+      <div class="journey-stage" aria-hidden="true">
+        <div class="stage">
+          <canvas class="stage-canvas is-future" data-level="3"></canvas>
+          <svg class="stage-svg dg anim" viewBox="0 0 800 560" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <path id="j-house" d="M372.2 274 L400 257.4 L427.8 274 M375.5 272 V293.4 M424.5 272 V293.4"/>
+            </defs>
+
+            <!-- ZOOM 01 · laptop -->
+            <g class="lvl is-current" data-level="0">
+              <text class="lbl mid" x="400" y="72">THIS COMPUTER · 127.0.0.1</text>
+              <rect class="bg ln" x="170" y="92" width="460" height="292" rx="14"/>
+              <rect class="bg-2" x="184" y="106" width="432" height="262" rx="6"/>
+              <path class="bg ln" d="M120 384 H680 L662 404 H138 Z"/>
+              <rect class="ln-2" x="370" y="384" width="60" height="6" rx="3"/>
+              <rect class="bg ln-2" x="204" y="126" width="236" height="170" rx="6"/>
+              <path class="ln-3" d="M204 148 H440"/>
+              <circle class="ln-2" cx="217" cy="137" r="3"/><circle class="ln-2" cx="229" cy="137" r="3"/><circle class="ln-2" cx="241" cy="137" r="3"/>
+              <rect class="bg-2" x="256" y="130" width="172" height="14" rx="7"/>
+              <text class="tx-2" x="266" y="140.5" style="font-size:9.5px">localhost:3000</text>
+              <rect class="bg-blue" x="222" y="166" width="124" height="12" rx="2"/>
+              <path class="ln-3" d="M222 194 H412 M222 208 H392 M222 222 H402"/>
+              <rect class="f-blue" x="222" y="246" width="74" height="22" rx="4"/>
+              <rect x="458" y="160" width="142" height="136" rx="6" style="fill:var(--code-bg)"/>
+              <text x="470" y="182" style="fill:var(--code-muted);font-size:9.5px">$ npm run dev</text>
+              <text x="470" y="200" style="fill:var(--code-ink);font-size:9.5px">ready on</text>
+              <text x="470" y="214" style="fill:var(--code-accent);font-size:9.5px">localhost:3000</text>
+              <text x="470" y="240" style="fill:#7ff0b8;font-size:9.5px">GET / 200 · 3ms<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.42;.46;.9;1" dur="5s" repeatCount="indefinite"/></text>
+              <rect class="blink" x="470" y="250" width="6" height="11" style="fill:var(--code-accent)"/>
+              <path id="j-loop" class="ln-sig flow" d="M322 296 V322 Q322 344 344 344 H508 Q530 344 530 322 V296"/>
+              <text class="lbl-sig mid" x="426" y="336">LOOPBACK · lo0</text>
+              <path class="ln-2" d="M112 206 H200"/><circle class="f-stroke" cx="204" cy="206" r="2.6"/>
+              <text class="lbl end" x="104" y="203">CLIENT</text><text class="tx-3 end" x="104" y="218">BROWSER</text>
+              <path class="ln-2" d="M604 228 H688"/><circle class="f-stroke" cx="600" cy="228" r="2.6"/>
+              <text class="lbl" x="696" y="225">SERVER</text><text class="tx-3" x="696" y="240">PORT 3000</text>
+              <g class="pkt"><circle class="pkt-halo" r="9"/><circle class="pkt-core" r="4.5"/>
+                <animateMotion dur="5s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;.42;1" calcMode="linear"><mpath href="#j-loop"/></animateMotion>
+                <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;.42;.43;1" dur="5s" repeatCount="indefinite"/></g>
+              <g class="pkt"><circle class="pkt-halo ok" r="9"/><circle class="pkt-core ok" r="4.5"/>
+                <animateMotion dur="5s" repeatCount="indefinite" keyPoints="1;1;0;0" keyTimes="0;.5;.92;1" calcMode="linear"><mpath href="#j-loop"/></animateMotion>
+                <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;.49;.5;.92;.93;1" dur="5s" repeatCount="indefinite"/></g>
+            </g>
+
+            <!-- ZOOM 02 · home network -->
+            <g class="lvl is-future" data-level="1">
+              <path class="ln" d="M40 392 H760"/>
+              <rect class="f-hatch" x="40" y="392" width="720" height="14"/>
+              <path class="ln" d="M168 230 L400 92 L632 230"/>
+              <path class="ln" d="M196 213 V392 M604 213 V392"/>
+                            <path class="ln" d="M330 296 H470"/><path class="ln-2" d="M342 296 V392 M458 296 V392"/>
+              <rect class="bg ln" x="372.4" y="257.4" width="55.2" height="35.1" rx="1.7"/>
+              <rect class="bg-2" x="374.4" y="259.4" width="51.2" height="31.1" rx=".8"/>
+              <path class="bg ln" d="M366.4 292.5 H433.6 L431.4 294.9 H368.6 Z"/>
+              <text class="lbl mid" x="400" y="246">LAPTOP · 192.168.1.23</text>
+              <path class="ln-2" d="M206 318 H296"/>
+              <rect class="bg ln" x="220" y="300" width="60" height="18" rx="3"/>
+              <path class="ln" d="M232 300 V284 M268 300 V284"/>
+              <circle class="led on" cx="236" cy="309" r="2"/><circle class="led on" cx="246" cy="309" r="2" style="animation-delay:-.9s"/><circle class="led" cx="256" cy="309" r="2"/>
+              <g class="pulse"><path class="ln-2" d="M238 274 A16 16 0 0 1 262 274"/><path class="ln-2" d="M230 266 A27 27 0 0 1 270 266"/></g>
+              <text class="lbl mid" x="250" y="338">ROUTER</text><text class="tx-3 mid" x="250" y="352">192.168.1.1</text>
+              <path class="ln-2" d="M502 350 H566 M510 350 V392 M558 350 V392"/>
+              <rect class="bg ln" x="521" y="304" width="24" height="46" rx="5"/><path class="ln-3" d="M529 343 H537"/>
+              <path class="ln-err" d="M546 314 a11 11 0 1 1 0 18"/>
+              <path class="ln-3" d="M548 306 H612 M570 323 H612"/>
+              <text class="lbl" x="616" y="302">PHONE</text><text class="tx-3" x="616" y="315">192.168.1.42</text>
+              <text class="lbl-err" x="616" y="336">ITS localhost</text><text class="tx-3" x="616" y="349">= THE PHONE ITSELF</text>
+              <path id="j-lan" class="ln-sig flow" d="M520 318 C 470 120 330 120 282 296 C 310 300 340 290 372 282"/>
+              <text class="tx-3 mid" x="404" y="156">http://192.168.1.23:3000</text>
+              <path class="ln-2 dash" d="M220 310 H208 V420 H40"/>
+              <text class="lbl" x="48" y="438">← CABLE / FIBER TO YOUR ISP</text>
+              <text class="lbl mid" x="400" y="466">YOUR HOME NETWORK · LAN</text>
+              <text class="tx-3 mid" x="400" y="482">PRIVATE ADDRESSES · 192.168.x.x</text>
+              <g class="pkt"><circle class="pkt-halo" r="8"/><circle class="pkt-core" r="4"/><animateMotion dur="3.6s" repeatCount="indefinite"><mpath href="#j-lan"/></animateMotion></g>
+            </g>
+
+            <!-- ZOOM 03 · neighborhood + ISP -->
+            <g class="lvl is-future" data-level="2">
+              <path class="ln" d="M30 293.4 H770"/>
+              <rect class="f-hatch" x="30" y="293.4" width="740" height="10"/>
+              <path class="ln-3" d="M40 293.4 V230 H70 V200 H96 V293.4 M138 293.4 V176 H170 V293.4 M214 293.4 V214 H240 V188 H262 V293.4 M556 293.4 V196 H590 V293.4 M626 293.4 V222 H648"/>
+              <use href="#j-house" x="-288" class="ln-2"/><use href="#j-house" x="-212" class="ln-2"/><use href="#j-house" x="-136" class="ln-2"/>
+              <use href="#j-house" x="136" class="ln-2"/><use href="#j-house" x="212" class="ln-2"/>
+              <use href="#j-house" class="ln-sig"/>
+              <rect class="ln-2" x="306" y="221.4" width="40" height="72"/><path class="ln-3" d="M314 236 h8 m8 0 h8 M314 252 h8 m8 0 h8 M314 268 h8 m8 0 h8"/>
+              <rect class="ln-2" x="452" y="237.4" width="44" height="56"/><path class="ln-3" d="M460 250 h8 m10 0 h8 M460 266 h8 m10 0 h8"/>
+              <rect class="bg ln" x="650" y="205" width="96" height="88.4" rx="2"/>
+              <path class="ln" d="M698 205 V176"/><circle class="ln" cx="698" cy="172" r="4"/>
+              <text class="lbl mid" x="698" y="245">ISP</text><text class="tx-3 mid" x="698" y="260">EXCHANGE</text>
+              <path class="ln-2" d="M100 324 H698"/>
+              <path class="ln-3" d="M112 293.4 V324 M188 293.4 V324 M264 293.4 V324 M326 293.4 V324 M474 293.4 V324 M536 293.4 V324 M612 293.4 V324 M698 293.4 V324"/>
+              <path class="ln-sig" d="M400 293.4 V324"/>
+              <text class="lbl" x="414" y="206">YOUR HOME'S PUBLIC IP</text><text class="tx-3" x="414" y="220">203.0.113.7 · SHARED BY EVERY DEVICE</text>
+              <path class="ln-2" d="M410 212 L403 254"/>
+              <path class="ln-err dash" d="M190 160 C 270 176 330 218 366 250"/>
+              <g transform="translate(360 245)"><circle class="f-err" r="9"/><path d="M-3.5 -3.5 L3.5 3.5 M3.5 -3.5 L-3.5 3.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+              <text class="lbl-err" x="96" y="150">INBOUND: BLOCKED BY NAT</text><text class="tx-3" x="96" y="164">NO DOOR INTO YOUR HOME</text>
+              <path id="j-out" class="ln-sig flow" d="M400 293.4 V324 H698 V176 C 698 140 740 118 790 108"/>
+              <text class="tx-3 mid" x="400" y="346">UNDERGROUND FIBER · ≈10 KM</text>
+              <text class="lbl mid" x="698" y="346">YOUR INTERNET PROVIDER</text>
+              <text class="lbl-sig" x="610" y="112">OUTBOUND: OK →</text>
+              <g class="pkt"><circle class="pkt-halo" r="8"/><circle class="pkt-core" r="4"/><animateMotion dur="4s" repeatCount="indefinite"><mpath href="#j-out"/></animateMotion></g>
+            </g>
+
+            <!-- ZOOM 04 · the internet (globe is the canvas underneath) -->
+
+            <!-- ZOOM 05 · data center -->
+            <g class="lvl lvl-dc is-future" data-level="4">
+              <path class="ln-2" d="M60 120 H760"/>
+              <rect class="ln-3" x="236" y="126" width="456" height="8"/>
+              <text class="tx-3 mid" x="464" y="114">CABLE TRAY · FIBER · POWER</text>
+              <path class="ln" d="M60 440 H760"/>
+              <rect class="f-hatch" x="60" y="440" width="700" height="16"/>
+              <text class="tx-3 mid" x="420" y="474">RAISED FLOOR · COOLED AIR</text>
+              <rect class="bg ln-2" x="236" y="150" width="66" height="290" rx="2"/>
+              <g class="ln-3"><rect x="242" y="160" width="54" height="17" rx="1.5"/><rect x="242" y="181" width="54" height="17" rx="1.5"/><rect x="242" y="202" width="54" height="17" rx="1.5"/><rect x="242" y="223" width="54" height="17" rx="1.5"/><rect x="242" y="244" width="54" height="17" rx="1.5"/><rect x="242" y="265" width="54" height="17" rx="1.5"/><rect x="242" y="286" width="54" height="17" rx="1.5"/><rect x="242" y="307" width="54" height="17" rx="1.5"/><rect x="242" y="328" width="54" height="17" rx="1.5"/><rect x="242" y="349" width="54" height="17" rx="1.5"/><rect x="242" y="370" width="54" height="17" rx="1.5"/><rect x="242" y="391" width="54" height="17" rx="1.5"/><rect x="242" y="412" width="54" height="17" rx="1.5"/></g>
+              <g><circle class="led on" cx="288" cy="168.5" r="1.7" style="animation-delay:-0.4s"/><circle class="led on" cx="288" cy="189.5" r="1.7" style="animation-delay:-0.2s"/><circle class="led on" cx="288" cy="210.5" r="1.7" style="animation-delay:-1.0s"/><circle class="led" cx="288" cy="231.5" r="1.7"/><circle class="led on" cx="288" cy="252.5" r="1.7" style="animation-delay:-0.1s"/><circle class="led on" cx="288" cy="273.5" r="1.7" style="animation-delay:-0.2s"/><circle class="led" cx="288" cy="294.5" r="1.7"/><circle class="led on" cx="288" cy="315.5" r="1.7" style="animation-delay:-2.1s"/><circle class="led" cx="288" cy="336.5" r="1.7"/><circle class="led on" cx="288" cy="357.5" r="1.7" style="animation-delay:-1.6s"/><circle class="led on" cx="288" cy="378.5" r="1.7" style="animation-delay:-1.5s"/><circle class="led on" cx="288" cy="399.5" r="1.7" style="animation-delay:-2.5s"/><circle class="led" cx="288" cy="420.5" r="1.7"/></g>
+              <rect class="bg ln-2" x="314" y="150" width="66" height="290" rx="2"/>
+              <g class="ln-3"><rect x="320" y="160" width="54" height="17" rx="1.5"/><rect x="320" y="181" width="54" height="17" rx="1.5"/><rect x="320" y="202" width="54" height="17" rx="1.5"/><rect x="320" y="223" width="54" height="17" rx="1.5"/><rect x="320" y="244" width="54" height="17" rx="1.5"/><rect x="320" y="265" width="54" height="17" rx="1.5"/><rect x="320" y="286" width="54" height="17" rx="1.5"/><rect x="320" y="307" width="54" height="17" rx="1.5"/><rect x="320" y="328" width="54" height="17" rx="1.5"/><rect x="320" y="349" width="54" height="17" rx="1.5"/><rect x="320" y="370" width="54" height="17" rx="1.5"/><rect x="320" y="391" width="54" height="17" rx="1.5"/><rect x="320" y="412" width="54" height="17" rx="1.5"/></g>
+              <g><circle class="led on" cx="366" cy="168.5" r="1.7" style="animation-delay:-0.8s"/><circle class="led" cx="366" cy="189.5" r="1.7"/><circle class="led" cx="366" cy="210.5" r="1.7"/><circle class="led on" cx="366" cy="231.5" r="1.7" style="animation-delay:-2.1s"/><circle class="led on" cx="366" cy="252.5" r="1.7" style="animation-delay:-1.5s"/><circle class="led on" cx="366" cy="273.5" r="1.7" style="animation-delay:-1.0s"/><circle class="led on" cx="366" cy="294.5" r="1.7" style="animation-delay:-0.2s"/><circle class="led" cx="366" cy="315.5" r="1.7"/><circle class="led on" cx="366" cy="336.5" r="1.7" style="animation-delay:-1.8s"/><circle class="led on" cx="366" cy="357.5" r="1.7" style="animation-delay:-0.8s"/><circle class="led on" cx="366" cy="378.5" r="1.7" style="animation-delay:-1.2s"/><circle class="led on" cx="366" cy="399.5" r="1.7" style="animation-delay:-2.1s"/><circle class="led on" cx="366" cy="420.5" r="1.7" style="animation-delay:-0.6s"/></g>
+              <rect class="bg ln-2" x="392" y="150" width="66" height="290" rx="2"/>
+              <g class="ln-3"><rect x="398" y="160" width="54" height="17" rx="1.5"/><rect x="398" y="181" width="54" height="17" rx="1.5"/><rect x="398" y="202" width="54" height="17" rx="1.5"/><rect x="398" y="223" width="54" height="17" rx="1.5"/><rect x="398" y="244" width="54" height="17" rx="1.5"/><rect x="398" y="265" width="54" height="17" rx="1.5"/><rect x="398" y="286" width="54" height="17" rx="1.5"/><rect x="398" y="307" width="54" height="17" rx="1.5"/><rect x="398" y="328" width="54" height="17" rx="1.5"/><rect x="398" y="349" width="54" height="17" rx="1.5"/><rect x="398" y="370" width="54" height="17" rx="1.5"/><rect x="398" y="391" width="54" height="17" rx="1.5"/><rect x="398" y="412" width="54" height="17" rx="1.5"/></g>
+              <g><circle class="led on" cx="444" cy="168.5" r="1.7" style="animation-delay:-1.4s"/><circle class="led on" cx="444" cy="189.5" r="1.7" style="animation-delay:-1.9s"/><circle class="led on" cx="444" cy="210.5" r="1.7" style="animation-delay:-2.5s"/><circle class="led" cx="444" cy="231.5" r="1.7"/><circle class="led on" cx="444" cy="252.5" r="1.7" style="animation-delay:-2.0s"/><circle class="led" cx="444" cy="273.5" r="1.7"/><circle class="led on" cx="444" cy="294.5" r="1.7" style="animation-delay:-0.1s"/><circle class="led on" cx="444" cy="315.5" r="1.7" style="animation-delay:-2.0s"/><circle class="led on" cx="444" cy="336.5" r="1.7" style="animation-delay:-2.3s"/><circle class="led on" cx="444" cy="357.5" r="1.7" style="animation-delay:-1.8s"/><circle class="led on" cx="444" cy="378.5" r="1.7" style="animation-delay:-1.5s"/><circle class="led on" cx="444" cy="399.5" r="1.7" style="animation-delay:-2.2s"/><circle class="led on" cx="444" cy="420.5" r="1.7" style="animation-delay:-1.2s"/></g>
+              <rect class="bg ln-2" x="470" y="150" width="66" height="290" rx="2"/>
+              <g class="ln-3"><rect x="476" y="160" width="54" height="17" rx="1.5"/><rect x="476" y="181" width="54" height="17" rx="1.5"/><rect x="476" y="202" width="54" height="17" rx="1.5"/><rect x="476" y="223" width="54" height="17" rx="1.5"/><rect x="476" y="244" width="54" height="17" rx="1.5"/><rect x="476" y="265" width="54" height="17" rx="1.5"/><rect x="476" y="286" width="54" height="17" rx="1.5"/><rect x="476" y="307" width="54" height="17" rx="1.5"/><rect x="476" y="328" width="54" height="17" rx="1.5"/><rect x="476" y="349" width="54" height="17" rx="1.5"/><rect x="476" y="370" width="54" height="17" rx="1.5"/><rect x="476" y="391" width="54" height="17" rx="1.5"/><rect x="476" y="412" width="54" height="17" rx="1.5"/></g>
+              <g><circle class="led on" cx="522" cy="168.5" r="1.7" style="animation-delay:-0.2s"/><circle class="led on" cx="522" cy="189.5" r="1.7" style="animation-delay:-1.7s"/><circle class="led on" cx="522" cy="210.5" r="1.7" style="animation-delay:-2.1s"/><circle class="led on" cx="522" cy="231.5" r="1.7" style="animation-delay:-1.0s"/><circle class="led on" cx="522" cy="252.5" r="1.7" style="animation-delay:-0.1s"/><circle class="led on" cx="522" cy="273.5" r="1.7" style="animation-delay:-0.4s"/><circle class="led" cx="522" cy="294.5" r="1.7"/><circle class="led" cx="522" cy="315.5" r="1.7"/><circle class="led on" cx="522" cy="336.5" r="1.7" style="animation-delay:-0.3s"/><circle class="led on" cx="522" cy="357.5" r="1.7" style="animation-delay:-1.0s"/><circle class="led on" cx="522" cy="378.5" r="1.7" style="animation-delay:-0.2s"/><circle class="led on" cx="522" cy="399.5" r="1.7" style="animation-delay:-1.4s"/><circle class="led on" cx="522" cy="420.5" r="1.7" style="animation-delay:-2.1s"/></g>
+              <rect class="bg ln-2" x="548" y="150" width="66" height="290" rx="2"/>
+              <g class="ln-3"><rect x="554" y="160" width="54" height="17" rx="1.5"/><rect x="554" y="181" width="54" height="17" rx="1.5"/><rect x="554" y="202" width="54" height="17" rx="1.5"/><rect x="554" y="223" width="54" height="17" rx="1.5"/><rect x="554" y="244" width="54" height="17" rx="1.5"/><rect x="554" y="265" width="54" height="17" rx="1.5"/><rect x="554" y="286" width="54" height="17" rx="1.5"/><rect x="554" y="307" width="54" height="17" rx="1.5"/><rect x="554" y="328" width="54" height="17" rx="1.5"/><rect x="554" y="349" width="54" height="17" rx="1.5"/><rect x="554" y="370" width="54" height="17" rx="1.5"/><rect x="554" y="391" width="54" height="17" rx="1.5"/><rect x="554" y="412" width="54" height="17" rx="1.5"/></g>
+              <g><circle class="led on" cx="600" cy="168.5" r="1.7" style="animation-delay:-0.7s"/><circle class="led on" cx="600" cy="189.5" r="1.7" style="animation-delay:-0.9s"/><circle class="led on" cx="600" cy="210.5" r="1.7" style="animation-delay:-2.5s"/><circle class="led" cx="600" cy="231.5" r="1.7"/><circle class="led" cx="600" cy="252.5" r="1.7"/><circle class="led on" cx="600" cy="273.5" r="1.7" style="animation-delay:-0.6s"/><circle class="led on" cx="600" cy="294.5" r="1.7" style="animation-delay:-1.5s"/><circle class="led on" cx="600" cy="315.5" r="1.7" style="animation-delay:-0.0s"/><circle class="led on" cx="600" cy="336.5" r="1.7" style="animation-delay:-1.0s"/><circle class="led on" cx="600" cy="357.5" r="1.7" style="animation-delay:-2.5s"/><circle class="led on" cx="600" cy="378.5" r="1.7" style="animation-delay:-1.3s"/><circle class="led on" cx="600" cy="399.5" r="1.7" style="animation-delay:-1.8s"/><circle class="led" cx="600" cy="420.5" r="1.7"/></g>
+              <rect class="bg ln-2" x="626" y="150" width="66" height="290" rx="2"/>
+              <g class="ln-3"><rect x="632" y="160" width="54" height="17" rx="1.5"/><rect x="632" y="181" width="54" height="17" rx="1.5"/><rect x="632" y="202" width="54" height="17" rx="1.5"/><rect x="632" y="223" width="54" height="17" rx="1.5"/><rect x="632" y="244" width="54" height="17" rx="1.5"/><rect x="632" y="265" width="54" height="17" rx="1.5"/><rect x="632" y="286" width="54" height="17" rx="1.5"/><rect x="632" y="307" width="54" height="17" rx="1.5"/><rect x="632" y="328" width="54" height="17" rx="1.5"/><rect x="632" y="349" width="54" height="17" rx="1.5"/><rect x="632" y="370" width="54" height="17" rx="1.5"/><rect x="632" y="391" width="54" height="17" rx="1.5"/><rect x="632" y="412" width="54" height="17" rx="1.5"/></g>
+              <g><circle class="led on" cx="678" cy="168.5" r="1.7" style="animation-delay:-2.0s"/><circle class="led on" cx="678" cy="189.5" r="1.7" style="animation-delay:-2.1s"/><circle class="led on" cx="678" cy="210.5" r="1.7" style="animation-delay:-1.0s"/><circle class="led" cx="678" cy="231.5" r="1.7"/><circle class="led on" cx="678" cy="252.5" r="1.7" style="animation-delay:-0.2s"/><circle class="led" cx="678" cy="273.5" r="1.7"/><circle class="led on" cx="678" cy="294.5" r="1.7" style="animation-delay:-0.4s"/><circle class="led on" cx="678" cy="315.5" r="1.7" style="animation-delay:-0.1s"/><circle class="led" cx="678" cy="336.5" r="1.7"/><circle class="led" cx="678" cy="357.5" r="1.7"/><circle class="led" cx="678" cy="378.5" r="1.7"/><circle class="led on" cx="678" cy="399.5" r="1.7" style="animation-delay:-0.1s"/><circle class="led on" cx="678" cy="420.5" r="1.7" style="animation-delay:-1.6s"/></g>
+              <text class="tx-3 mid" x="269" y="144">R01</text><text class="tx-3 mid" x="347" y="144">R02</text><text class="tx-3 mid" x="425" y="144">R03</text><text class="tx-3 mid" x="503" y="144">R04</text><text class="tx-3 mid" x="581" y="144">R05</text><text class="tx-3 mid" x="659" y="144">R06</text>
+              <rect x="476" y="265" width="54" height="17" rx="1.5" style="fill:var(--signal-soft)"/>
+              <rect class="ln-sig" x="476" y="265" width="54" height="17" rx="1.5"/>
+              <path class="ln-sig dash" d="M530 273.5 H700"/>
+              <text class="lbl-sig" x="706" y="264">YOUR APP</text><text class="tx-3" x="706" y="278">CONTAINER</text><text class="tx-3" x="706" y="292">PORT 8080</text>
+              <rect class="bg ln" x="120" y="258" width="80" height="44" rx="6"/>
+              <text class="tx-3 mid" x="160" y="277">LOAD</text><text class="tx-3 mid" x="160" y="291">BALANCER</text>
+              <rect class="bg ln" x="44" y="192" width="30" height="20" rx="2"/><path class="ln" d="M40 214 H78"/>
+              <rect class="bg ln" x="51" y="266" width="16" height="28" rx="3"/>
+              <circle class="bg ln" cx="59" cy="358" r="14"/><ellipse class="ln-3" cx="59" cy="358" rx="6" ry="14"/><path class="ln-3" d="M45 358 H73"/>
+              <text class="lbl" x="40" y="176">USERS · ANYWHERE</text>
+              <path id="j-u1" class="ln-2" d="M80 204 C 100 204 104 272 120 276 H200 C 216 276 216 138 236 138 H503 V265"/>
+              <path id="j-u2" class="ln-2" d="M70 280 H120"/>
+              <path id="j-u3" class="ln-2" d="M75 352 C 100 352 104 290 120 286"/>
+              <path id="j-u2f" d="M70 280 H200 C 216 276 216 138 236 138 H503 V265" fill="none"/>
+              <path id="j-u3f" d="M75 352 C 100 352 104 290 120 286 H200 C 216 276 216 138 236 138 H503 V265" fill="none"/>
+              <g class="pkt"><circle class="pkt-halo" r="7"/><circle class="pkt-core" r="3.6"/><animateMotion dur="3.4s" repeatCount="indefinite"><mpath href="#j-u1"/></animateMotion></g>
+              <g class="pkt"><circle class="pkt-halo" r="7"/><circle class="pkt-core" r="3.6"/><animateMotion dur="3.4s" begin="-1.1s" repeatCount="indefinite"><mpath href="#j-u2f"/></animateMotion></g>
+              <g class="pkt"><circle class="pkt-halo" r="7"/><circle class="pkt-core" r="3.6"/><animateMotion dur="3.4s" begin="-2.3s" repeatCount="indefinite"><mpath href="#j-u3f"/></animateMotion></g>
+              <text class="lbl mid" x="420" y="500">DATA CENTER · ALWAYS ON · PUBLIC IP · HTTPS</text>
+            </g>
+          </svg>
+          <div class="hud">
+            <div>Scale <b data-hud="scale">1 : 1</b></div>
+            <div>Distance <b data-hud="dist">0 m</b></div>
+            <div>Round trip <b data-hud="rtt">~0.05 ms</b></div>
+            <div>Reach <b data-hud="reach">Only you</b></div>
+          </div>
+          <div class="stage-note" data-for="3"><b>The internet · a network of networks</b>Light in fiber ≈ 200,000 km/s · arcs show requests leaving you</div>
+          <div class="zoom-rail"><span class="on">0 m</span><span>10 m</span><span>10 km</span><span>10,000 km</span><span>Cloud</span></div>
+        </div>
+      </div>
+      <div class="journey-steps">
+        <article class="step" data-scale="1 : 1" data-dist="0 m" data-rtt="~0.05 ms" data-reach="Only you">
+          <div class="step-card">
+            <span class="card-idx"><span>Zoom 01</span><span>0 m</span></span>
+            <h3>Your computer</h3>
+            <p>When you open <code>http://localhost:3000</code>, your browser and your server are two programs on the same machine. The request goes down your operating system's network stack, reaches the <strong>loopback interface</strong> — a network card made entirely of software — and comes straight back up to the program listening on port 3000.</p>
+            <p>No Wi-Fi, no router, no internet. That's why localhost is fast, private, and works on a plane.</p>
+            <div class="step-stats"><span>Distance <b>0 m</b></span><span>Round trip <b>~0.05 ms</b></span><span>Reach <b>only you</b></span></div>
+          </div>
+        </article>
+        <article class="step" data-scale="1 : 100" data-dist="~10 m" data-rtt="~1–5 ms" data-reach="Your Wi-Fi">
+          <div class="step-card">
+            <span class="card-idx"><span>Zoom 02</span><span>10 m</span></span>
+            <h3>Your home network</h3>
+            <p>Your router hands every device a <strong>private address</strong> — say <code>192.168.1.23</code> for your laptop and <code>192.168.1.42</code> for your phone. Your phone can open your app at <code>http://192.168.1.23:3000</code>, as long as your server listens on all interfaces (<code>0.0.0.0</code>) and not only on <code>127.0.0.1</code>.</p>
+            <p>Type <code>localhost</code> on your phone and you'll reach… your phone. Every device has its own localhost.</p>
+            <div class="step-stats"><span>Distance <b>~10 m</b></span><span>Round trip <b>~1–5 ms</b></span><span>Reach <b>your Wi-Fi</b></span></div>
+          </div>
+        </article>
+        <article class="step" data-scale="1 : 100,000" data-dist="~10 km" data-rtt="~5–20 ms" data-reach="Still just your home">
+          <div class="step-card">
+            <span class="card-idx"><span>Zoom 03</span><span>10 km</span></span>
+            <h3>Your internet provider</h3>
+            <p>Your whole home usually shares <strong>one public IP address</strong>, held by your router. Requests going out are fine — that's how you browse. But unexpected connections coming in are dropped by default: that's <strong>NAT</strong> and your router's firewall doing their job.</p>
+            <p>So a friend across town can't open your laptop's app. There's no door from the internet into your living room — and that's a good thing.</p>
+            <div class="step-stats"><span>Distance <b>~10 km</b></span><span>Round trip <b>~5–20 ms</b></span><span>Reach <b>still just your home</b></span></div>
+          </div>
+        </article>
+        <article class="step" data-scale="1 : 100,000,000" data-dist="~10,000 km" data-rtt="live" data-reach="Anyone, if a server answers">
+          <div class="step-card">
+            <span class="card-idx"><span>Zoom 04</span><span>10,000 km</span></span>
+            <h3>The internet</h3>
+            <p>Your provider connects to thousands of other networks — together, they <em>are</em> the internet. Data crosses oceans through fiber-optic cables on the sea floor, as pulses of light moving at about <strong>200,000 km per second</strong>.</p>
+            <p>Even at that speed, distance costs time. Loading this page, your browser just made a round trip to this site's server in <strong data-live-rtt data-live-rtt-fallback="a few dozen milliseconds">…</strong>.</p>
+            <div class="step-stats"><span>Distance <b>~10,000 km</b></span><span>Round trip <b>~20–250 ms</b></span><span>Reach <b>anyone, if a server answers</b></span></div>
+          </div>
+        </article>
+        <article class="step" data-scale="1 data center" data-dist="Anywhere" data-rtt="~20–200 ms" data-reach="Everyone, 24/7">
+          <div class="step-card">
+            <span class="card-idx"><span>Zoom 05</span><span>The cloud</span></span>
+            <h3>A computer that never sleeps</h3>
+            <p>A <strong>data center</strong> is a building full of always-on computers with public addresses, fast connections, backup power and industrial cooling. “The cloud” means renting a slice of one — by the month, the hour, or even the second.</p>
+            <p><strong>Deploying</strong> is copying your app from your localhost onto one of those machines, so anyone, anywhere can reach it — even when your laptop is closed.</p>
+            <p class="mb-0"><a class="btn btn-primary" href="/deploy-guide.html#launchpad">Deploy your first app <span class="arr" aria-hidden="true">→</span></a></p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXPLORER ============ -->
+<section class="section section-rule" id="who-can-reach" aria-labelledby="ex-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 03</span> Interactive</p>
+      <h2 id="ex-h">127.0.0.1 vs 0.0.0.0 vs the cloud: who can reach your server?</h2>
+      <p>The address your server <em>listens</em> on decides who can talk to it. Flip between the three and watch the connections.</p>
+    </div>
+    <div class="explorer reveal" data-explorer data-mode="loopback">
+      <div class="explorer-controls">
+        <span class="lab">Your server listens on</span>
+        <div class="seg" role="group" aria-label="Where the server listens">
+          <button type="button" data-mode="loopback" aria-pressed="true">127.0.0.1<small>localhost only</small></button>
+          <button type="button" data-mode="all" aria-pressed="false">0.0.0.0<small>every interface</small></button>
+          <button type="button" data-mode="cloud" aria-pressed="false">A cloud server<small>public address</small></button>
+        </div>
+      </div>
+      <figure class="fig">
+        <div class="fig-bar"><span><b>Fig. 02</b> — Reachability</span><span class="live">Live</span></div>
+        <svg class="dg anim" viewBox="0 0 800 330" role="img" aria-labelledby="f2t f2d">
+          <title id="f2t">Who can reach a server, depending on where it listens</title>
+          <desc id="f2d">Three clients — a browser on the same laptop, a phone on the same Wi-Fi, and a friend elsewhere on the internet — try to connect to a server. Listening on 127.0.0.1 only the laptop connects. Listening on 0.0.0.0 the phone connects too, but the friend is blocked by the home router. On a cloud server with a public address, all three connect.</desc>
+          <!-- clients -->
+          <rect class="bg ln" x="44" y="44" width="44" height="28" rx="3"/><path class="ln" d="M38 74 H94 L90 79 H42 Z"/>
+          <text class="lbl" x="110" y="58">YOUR BROWSER</text><text class="tx-3" x="110" y="74">SAME LAPTOP</text>
+          <rect class="bg ln" x="54" y="140" width="24" height="40" rx="5"/><path class="ln-3" d="M62 173 H70"/>
+          <text class="lbl" x="110" y="158">YOUR PHONE</text><text class="tx-3" x="110" y="174">SAME WI-FI</text>
+          <circle class="bg ln" cx="66" cy="262" r="20"/><ellipse class="ln-3" cx="66" cy="262" rx="8" ry="20"/><path class="ln-3" d="M46 262 H86 M50 252 H82 M50 272 H82"/>
+          <text class="lbl" x="110" y="258">A FRIEND</text><text class="tx-3" x="110" y="274">ANYWHERE ON EARTH</text>
+          <!-- server -->
+          <rect class="bg ln" x="604" y="96" width="176" height="140" rx="10"/>
+          <path class="ln-3" d="M604 124 H780"/>
+          <g data-mode-show="loopback all"><text class="lbl" x="618" y="115">YOUR LAPTOP</text><text class="tx sans" x="618" y="154" style="font-size:15px;font-weight:600">server :3000</text></g>
+          <g data-mode-show="cloud" style="opacity:0"><text class="lbl" x="618" y="115">CLOUD SERVER</text><text class="tx sans" x="618" y="154" style="font-size:13px;font-weight:600">my-app.example.com</text></g>
+          <text class="tx-3" x="618" y="182">LISTENING ON</text>
+          <text class="lbl-sig" x="618" y="200" data-mode-show="loopback">127.0.0.1 ONLY</text>
+          <text class="lbl-sig" x="618" y="200" data-mode-show="all" style="opacity:0">0.0.0.0 · ALL</text>
+          <text class="lbl-sig" x="618" y="200" data-mode-show="cloud" style="opacity:0">PUBLIC IP · 24/7</text>
+          <text class="tx-3" x="618" y="222" data-mode-show="cloud" style="opacity:0">IN A DATA CENTER</text>
+          <!-- path labels -->
+          <text class="tx-3" x="290" y="52" data-mode-show="loopback all">VIA LOOPBACK · 127.0.0.1</text>
+          <text class="tx-3" x="290" y="52" data-mode-show="cloud" style="opacity:0">VIA THE INTERNET</text>
+          <text class="tx-3" x="300" y="152" data-mode-show="loopback all">VIA YOUR WI-FI · 192.168.1.23</text>
+          <text class="tx-3" x="300" y="152" data-mode-show="cloud" style="opacity:0">VIA WI-FI OR CELLULAR</text>
+          <text class="tx-3" x="214" y="296">VIA THE INTERNET</text>
+          <!-- laptop path -->
+          <g data-client="laptop" data-state="ok">
+            <path class="seg-a ln flow" d="M200 66 C 330 66 420 120 520 128"/>
+            <path class="seg-b ln flow" d="M520 128 L604 130"/>
+            <path id="xp-l" d="M200 66 C 330 66 420 120 520 128 L604 130" fill="none"/>
+            <g class="pkt"><circle class="pkt-halo" r="8"/><circle class="pkt-core" r="4"/><animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#xp-l"/></animateMotion></g>
+            <g class="verdict v-ok" transform="translate(586 112)"><circle class="f-ok" r="9"/><path d="M-4 0 L-1 3 L4.5 -3.5" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></g>
+          </g>
+          <!-- phone path -->
+          <g data-client="phone" data-state="no">
+            <path class="seg-a ln flow" d="M200 162 L578 166"/>
+            <path class="seg-b ln" d="M578 166 L604 166"/>
+            <path id="xp-p" d="M200 162 L604 166" fill="none"/>
+            <g class="pkt"><circle class="pkt-halo" r="8"/><circle class="pkt-core" r="4"/><animateMotion dur="2.6s" begin="-.9s" repeatCount="indefinite"><mpath href="#xp-p"/></animateMotion></g>
+            <g class="verdict v-ok" transform="translate(586 150)"><circle class="f-ok" r="9"/><path d="M-4 0 L-1 3 L4.5 -3.5" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></g>
+            <g class="verdict v-no" transform="translate(586 166)"><circle class="f-err" r="9"/><path d="M-3.5 -3.5 L3.5 3.5 M3.5 -3.5 L-3.5 3.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+          </g>
+          <!-- friend path -->
+          <g data-client="friend" data-state="no">
+            <path class="seg-a ln flow" d="M200 264 C 300 264 360 242 432 228"/>
+            <path class="seg-b ln" d="M448 225 C 500 214 560 204 604 202"/>
+            <path id="xp-f" d="M200 264 C 300 264 360 242 432 228 L448 225 C 500 214 560 204 604 202" fill="none"/>
+            <g class="pkt"><circle class="pkt-halo" r="8"/><circle class="pkt-core" r="4"/><animateMotion dur="2.6s" begin="-1.7s" repeatCount="indefinite"><mpath href="#xp-f"/></animateMotion></g>
+            <g class="verdict v-ok" transform="translate(586 218)"><circle class="f-ok" r="9"/><path d="M-4 0 L-1 3 L4.5 -3.5" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></g>
+            <g class="verdict v-no" transform="translate(440 226)"><circle class="f-err" r="9"/><path d="M-3.5 -3.5 L3.5 3.5 M3.5 -3.5 L-3.5 3.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>
+          </g>
+          <!-- barriers -->
+          <g data-barrier="nat"><path class="ln-err dash" d="M440 188 V300"/><text class="lbl-err mid" x="440" y="318">HOME ROUTER · NAT</text></g>
+          <g data-barrier="iface"><path class="ln-err" d="M598 154 V178" style="stroke-width:3"/></g>
+        </svg>
+      </figure>
+      <div class="explorer-out" aria-live="polite">
+        <div data-out="laptop" data-name="Your browser"><b>Your browser: Works</b><span class="t">http://localhost:3000 — the request loops back inside your laptop.</span></div>
+        <div data-out="phone" data-name="Your phone"><b>Your phone: Connection refused</b><span class="t">Your phone reaches your laptop, but the server only accepts connections from 127.0.0.1.</span></div>
+        <div data-out="friend" data-name="A friend"><b>A friend: Can't get in</b><span class="t">Your home router has no rule to forward strangers to your laptop, so the connection never arrives.</span></div>
+      </div>
+    </div>
+
+    <div class="split" style="margin-top:clamp(36px,5vw,56px)">
+      <div class="reveal">
+        <h3>Open your dev server to your phone (same Wi-Fi)</h3>
+        <p>Most dev servers listen on <code>127.0.0.1</code> by default — a safe choice. To test on your phone, tell the server to listen on every interface, then open your laptop's LAN address on the phone, like <code>http://192.168.1.23:5173</code>.</p>
+        <div class="note warn"><span class="note-label">Heads up</span>Listening on <code>0.0.0.0</code> lets <em>every</em> device on that network reach your server. Do it on networks you trust, and never with real secrets in a debug build.</div>
+      </div>
+      <div class="code reveal reveal-d1">
+        <div class="code-head"><span>Listen on all interfaces</span></div>
+<pre><code><span class="c"># Vite (React, Vue, Svelte…) — prints a "Network:" URL</span>
+npm run dev -- --host
+
+<span class="c"># Flask</span>
+flask run --host=0.0.0.0
+
+<span class="c"># Django (also add your LAN IP to ALLOWED_HOSTS)</span>
+python manage.py runserver 0.0.0.0:8000
+
+<span class="c"># Rails</span>
+bin/rails server -b 0.0.0.0
+
+<span class="c"># Find your laptop's LAN address (macOS)</span>
+ipconfig getifaddr en0</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ URL ANATOMY ============ -->
+<section class="section section-rule" id="ports" aria-labelledby="ua-h">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <p class="eyebrow"><span class="idx">§ 04</span> Anatomy of a URL</p>
+      <h2 id="ua-h">What's the <span style="color:var(--signal)">:3000</span> in localhost:3000?</h2>
+      <p>It's the <strong>port</strong>: a number from 0 to 65535 that picks one program on a computer. If localhost is the building, the port is the door.</p>
+    </div>
+    <figure class="fig corners reveal" style="padding:0">
+      <div class="url-anatomy" role="img" aria-label="The URL http://localhost:3000/about broken into scheme, host, port and path">
+        <div class="ua"><code>http://</code><span class="br"></span><span class="lab"><b>Scheme</b>How to talk: plain HTTP</span></div>
+        <div class="ua ua-host"><code>localhost</code><span class="br"></span><span class="lab"><b>Host</b>Which computer — this one (127.0.0.1)</span></div>
+        <div class="ua ua-port"><code>:3000</code><span class="br"></span><span class="lab"><b>Port</b>Which program on that computer</span></div>
+        <div class="ua"><code>/about</code><span class="br"></span><span class="lab"><b>Path</b>Which page inside that program</span></div>
+      </div>
+    </figure>
+    <div class="reveal" style="margin-top:28px;text-align:center">
+      <ul class="chips" style="justify-content:center;list-style:none;padding:0" aria-label="Common development ports">
+        <li><a class="chip" href="/localhost-ports.html#port-3000"><span class="k">:3000</span> Next.js, Rails, Node</a></li>
+        <li><a class="chip" href="/localhost-ports.html#port-5173"><span class="k">:5173</span> Vite</a></li>
+        <li><a class="chip" href="/localhost-ports.html#port-8000"><span class="k">:8000</span> Django, Python</a></li>
+        <li><a class="chip" href="/localhost-ports.html#port-8080"><span class="k">:8080</span> Alt HTTP, Java</a></li>
+        <li><a class="chip" href="/localhost-ports.html#port-5000"><span class="k">:5000</span> Flask</a></li>
+        <li><a class="chip" href="/localhost-ports.html#port-5432"><span class="k">:5432</span> PostgreSQL</a></li>
+      </ul>
+      <p style="margin-top:20px"><a class="btn" href="/localhost-ports.html">Every common localhost port, explained <span class="arr" aria-hidden="true">→</span></a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REFERENCE TABLE ============ -->
+<section class="section section-rule" id="addresses" aria-labelledby="ref-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 05</span> Reference</p>
+      <h2 id="ref-h">localhost, 127.0.0.1, ::1, 0.0.0.0, 192.168.x.x — what's the difference?</h2>
+      <p>Six addresses that look alike and mean very different things. Knowing which is which explains nearly every “why can't X see my app?” moment.</p>
+    </div>
+    <div class="table-wrap reveal">
+      <table>
+        <thead><tr><th scope="col">Address</th><th scope="col">What it is</th><th scope="col">Who can reach it</th><th scope="col">Where you'll see it</th></tr></thead>
+        <tbody>
+          <tr><th scope="row"><code>localhost</code></th><td>A <em>name</em> for “this computer.” Resolves to 127.0.0.1 and/or ::1.</td><td>Only this device</td><td>Dev servers: <code>Local: http://localhost:5173</code></td></tr>
+          <tr><th scope="row"><code>127.0.0.1</code></th><td>The IPv4 loopback address. All of 127.0.0.0/8 is reserved for loopback.</td><td>Only this device</td><td><code>Starting development server at http://127.0.0.1:8000/</code></td></tr>
+          <tr><th scope="row"><code>::1</code></th><td>The IPv6 loopback address — the same idea, newer protocol.</td><td>Only this device</td><td>When <code>localhost</code> resolves to IPv6 first (common in Node.js)</td></tr>
+          <tr><th scope="row"><code>0.0.0.0</code></th><td>Not a destination. For a server, it means “listen on every network interface.”</td><td>Anything that can reach this machine</td><td><code>--host 0.0.0.0</code>, Docker, servers in the cloud</td></tr>
+          <tr><th scope="row"><code>192.168.x.x</code><br><code>10.x.x.x</code></th><td>Private network (LAN) addresses, defined in RFC 1918. Not routable on the internet.</td><td>Devices on the same network</td><td>Vite's <code>Network:</code> URL, your router's admin page</td></tr>
+          <tr><th scope="row">Public IP / domain</th><td>An address that's reachable on the internet, usually behind a domain name and HTTPS.</td><td>Anyone, anywhere</td><td>Your app after you <a href="/deploy-guide.html">deploy it</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRY IT ============ -->
+<section class="section section-rule" id="try-it" aria-labelledby="try-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 06</span> Try it yourself</p>
+      <h2 id="try-h">Six experiments you can run in 60 seconds</h2>
+      <p>Open a terminal. Each one reveals a piece of the machinery that's been quietly running on your computer all along.</p>
+    </div>
+    <div class="cards cards-2">
+      <article class="card try reveal">
+        <span class="card-idx">Exp. 01 · Ping yourself</span>
+        <h3>Measure a trip of zero meters</h3>
+        <p>Watch your computer answer itself in a few hundredths of a millisecond — faster than any network on Earth.</p>
+        <div class="code"><div class="code-head"><span>macOS / Linux</span></div><pre><code>ping -c 3 localhost</code></pre></div>
+      </article>
+      <article class="card try reveal reveal-d1">
+        <span class="card-idx">Exp. 02 · The address book</span>
+        <h3>Find where “localhost” is defined</h3>
+        <p>Your computer's hosts file maps names to addresses before any DNS server is asked. Look for <code>127.0.0.1 localhost</code>.</p>
+        <div class="code"><div class="code-head"><span>macOS / Linux · Windows</span></div><pre><code>cat /etc/hosts
+<span class="c"># Windows:</span>
+type C:\Windows\System32\drivers\etc\hosts</code></pre></div>
+      </article>
+      <article class="card try reveal">
+        <span class="card-idx">Exp. 03 · Be a web server</span>
+        <h3>Serve a folder in one line</h3>
+        <p>Run this in any folder, then open <code>http://localhost:8000</code>. Congratulations — you're running a web server.</p>
+        <div class="code"><div class="code-head"><span>Any OS with Python 3</span></div><pre><code>python3 -m http.server 8000</code></pre></div>
+      </article>
+      <article class="card try reveal reveal-d1">
+        <span class="card-idx">Exp. 04 · Infinite names</span>
+        <h3>Every *.localhost is you</h3>
+        <p>RFC 6761 reserves the whole <code>.localhost</code> domain for loopback. With the server above still running, open <code>http://hello.localhost:8000</code> in Chrome.</p>
+        <div class="code"><div class="code-head"><span>macOS</span></div><pre><code>open http://hello.localhost:8000</code></pre></div>
+      </article>
+      <article class="card try reveal">
+        <span class="card-idx">Exp. 05 · 16,777,216 of you</span>
+        <h3>The whole 127.x.x.x block loops back</h3>
+        <p>127.0.0.1 is just the famous one. On Linux, every address from 127.0.0.1 to 127.255.255.254 reaches your own machine. (macOS only answers on 127.0.0.1 unless you add more.)</p>
+        <div class="code"><div class="code-head"><span>Linux</span></div><pre><code>ping -c 1 127.12.34.56</code></pre></div>
+      </article>
+      <article class="card try reveal reveal-d1">
+        <span class="card-idx">Exp. 06 · Open doors</span>
+        <h3>See every port that's listening</h3>
+        <p>List every program on your machine waiting for connections — the “doors” that localhost can knock on.</p>
+        <div class="code"><div class="code-head"><span>macOS / Linux · Windows</span></div><pre><code>lsof -iTCP -sTCP:LISTEN -n -P
+<span class="c"># Windows:</span>
+netstat -ano | findstr LISTENING</code></pre></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEPLOY BAND ============ -->
+<section class="section section-rule" id="go-live" aria-labelledby="lp-h">
+  <div class="wrap">
+    <div class="launchpad reveal" data-launchpad data-tpl="Build me {idea} as a small web app with a Dockerfile, then deploy it to cloudish.ai using the instructions at https://cloudish.ai/skill.md and send me the live URL. If you can't run commands yourself, give me the exact steps to run in my terminal.">
+      <div class="lp-head">
+        <div>
+          <p class="eyebrow"><span class="idx">§ 07</span> Beyond localhost</p>
+          <h2 id="lp-h">Your app works on localhost.<br>Now let the world see it.</h2>
+        </div>
+        <span class="badge">One sentence · no dashboard</span>
+      </div>
+      <div class="lp-grid">
+        <div class="lp-card">
+          <span class="lp-step"><i>A</i> Already have a project?</span>
+          <h3>Ask your coding agent</h3>
+          <p>Open a terminal in your project folder and paste one of these. The agent reads the deploy instructions, packages your code, and hands you back a public URL.</p>
+          <div class="cmd"><span class="p">$</span><code>claude "Deploy this project to cloudish.ai and give me the live URL. Instructions: https://cloudish.ai/skill.md"</code></div>
+          <div class="cmd"><span class="p">$</span><code>codex "Deploy this project to cloudish.ai and give me the live URL. Instructions: https://cloudish.ai/skill.md"</code></div>
+          <p class="fineprint">Works with Claude Code, Codex, and other coding agents that can run commands.</p>
+        </div>
+        <div class="lp-card">
+          <span class="lp-step"><i>B</i> Starting from zero?</span>
+          <h3>Build & deploy from your browser</h3>
+          <label class="visually-hidden" for="idea-home">What should your app be?</label>
+          <input class="field" id="idea-home" data-idea type="text" placeholder="a personal homepage with a guestbook" autocomplete="off">
+          <div class="chips" style="margin:10px 0 4px">
+            <button type="button" class="chip" data-idea-chip="a countdown to my birthday" aria-pressed="false">Countdown</button>
+            <button type="button" class="chip" data-idea-chip="a link-in-bio page for my band" aria-pressed="false">Link-in-bio</button>
+            <button type="button" class="chip" data-idea-chip="a tiny multiplayer tic-tac-toe game" aria-pressed="false">Tic-tac-toe</button>
+          </div>
+          <div class="ai-buttons">
+            <a class="ai-btn" data-ai="chatgpt" href="https://chatgpt.com/?q=Build%20me%20a%20personal%20homepage%20with%20a%20guestbook%20as%20a%20small%20web%20app%20with%20a%20Dockerfile%2C%20then%20deploy%20it%20to%20cloudish.ai%20using%20the%20instructions%20at%20https%3A%2F%2Fcloudish.ai%2Fskill.md%20and%20send%20me%20the%20live%20URL.%20If%20you%20can&#x27;t%20run%20commands%20yourself%2C%20give%20me%20the%20exact%20steps%20to%20run%20in%20my%20terminal." target="_blank" rel="noopener"><span class="mono-ico" aria-hidden="true">G</span><span>ChatGPT<small>Open with prompt</small></span></a>
+            <a class="ai-btn" data-ai="claude" href="https://claude.ai/new?q=Build%20me%20a%20personal%20homepage%20with%20a%20guestbook%20as%20a%20small%20web%20app%20with%20a%20Dockerfile%2C%20then%20deploy%20it%20to%20cloudish.ai%20using%20the%20instructions%20at%20https%3A%2F%2Fcloudish.ai%2Fskill.md%20and%20send%20me%20the%20live%20URL.%20If%20you%20can&#x27;t%20run%20commands%20yourself%2C%20give%20me%20the%20exact%20steps%20to%20run%20in%20my%20terminal." target="_blank" rel="noopener"><span class="mono-ico" aria-hidden="true" style="background:#c2410c">C</span><span>Claude<small>Open with prompt</small></span></a>
+            <a class="ai-btn" data-ai="grok" href="https://grok.com/?q=Build%20me%20a%20personal%20homepage%20with%20a%20guestbook%20as%20a%20small%20web%20app%20with%20a%20Dockerfile%2C%20then%20deploy%20it%20to%20cloudish.ai%20using%20the%20instructions%20at%20https%3A%2F%2Fcloudish.ai%2Fskill.md%20and%20send%20me%20the%20live%20URL.%20If%20you%20can&#x27;t%20run%20commands%20yourself%2C%20give%20me%20the%20exact%20steps%20to%20run%20in%20my%20terminal." target="_blank" rel="noopener"><span class="mono-ico" aria-hidden="true" style="background:#334155">X</span><span>Grok<small>Open with prompt</small></span></a>
+          </div>
+          <p class="fineprint">Chat assistants deploy for you when they can run code with internet access; otherwise they'll give you the exact two commands. <a href="/deploy-guide.html#launchpad">More options →</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section section-rule" id="faq" aria-labelledby="faq-h">
+  <div class="wrap-narrow">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 08</span> FAQ</p>
+      <h2 id="faq-h">Frequently asked questions</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Is localhost the same as 127.0.0.1?</summary>
+        <div class="faq-a"><p>Almost always, yes. <code>localhost</code> is a name; <code>127.0.0.1</code> is the IPv4 loopback address it normally resolves to. Many systems also map localhost to the IPv6 loopback address <code>::1</code>. Either way, the request stays on your own computer.</p></div>
+      </details>
+      <details>
+        <summary>What does localhost:3000 mean?</summary>
+        <div class="faq-a"><p>It means “the program listening on port 3000 on this computer.” localhost picks the machine and the number after the colon picks the program. Port 3000 is the default for tools like Next.js, Ruby on Rails and many Node.js tutorials. See <a href="/localhost-ports.html">every common localhost port</a>.</p></div>
+      </details>
+      <details>
+        <summary>Why does it say “localhost refused to connect”?</summary>
+        <div class="faq-a"><p>Your computer received the request, but no program was listening on that port, so the operating system refused the connection (ERR_CONNECTION_REFUSED). Usually the server isn't running, crashed, or is on a different port than the one in the URL. Here's <a href="/localhost-not-working.html">the full troubleshooting guide</a>.</p></div>
+      </details>
+      <details>
+        <summary>Can other people visit my localhost website?</summary>
+        <div class="faq-a"><p>No. localhost always points to the device making the request, so a <code>http://localhost:3000</code> link sent to a friend points at their own computer. To let anyone visit, deploy your app to a server with a public address — that's what people mean by putting it “in the cloud.”</p></div>
+      </details>
+      <details>
+        <summary>Why does localhost work on my computer but not on my phone?</summary>
+        <div class="faq-a"><p>Because your phone has its own localhost. To reach your laptop from your phone on the same Wi-Fi, use the laptop's local network address (something like <code>192.168.1.23:3000</code>) and make sure your dev server listens on <code>0.0.0.0</code>, not only <code>127.0.0.1</code>.</p></div>
+      </details>
+      <details>
+        <summary>What is 0.0.0.0?</summary>
+        <div class="faq-a"><p>When a server listens on <code>0.0.0.0</code>, it accepts connections on every network interface the machine has — loopback, Wi-Fi, Ethernet. It isn't an address you visit; it's an instruction meaning “all of them.”</p></div>
+      </details>
+      <details>
+        <summary>Is localhost safe? Can hackers reach it?</summary>
+        <div class="faq-a"><p>Traffic to localhost never leaves your computer, and services that listen only on <code>127.0.0.1</code> can't be reached from other devices. One caveat: web pages you visit run code on your machine, so a malicious page could try to talk to your local servers. Modern browsers increasingly block that or ask for permission first.</p></div>
+      </details>
+      <details>
+        <summary>How do I put my localhost site online?</summary>
+        <div class="faq-a"><p>Copy it to a computer that's always on and has a public address — a cloud server — and point a URL at it. Today you can ask an AI coding agent to do it in one sentence, or use a platform like Vercel, AWS or DigitalOcean. Compare the options in the <a href="/deploy-guide.html">deploy guide</a>.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight" aria-label="Next chapter">
+  <div class="wrap">
+    <a class="next-chapter reveal" href="/localhost-ports.html">
+      <span><small>Next · Chapter 02</small><strong>Ports: what's the :3000?</strong><span class="sub">65,535 doors on every computer — and which programs live behind the famous ones.</span></span>
+      <span class="go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="logo" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" style="fill:var(--blue)"/><path d="M1 16h30M16 1v30" stroke="#fff" stroke-opacity=".14"/><path d="M22.9 12.6A7.4 7.4 0 1 0 23.4 17" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round"/><path d="M19.6 12.4l3.6.5.5-3.6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="16" r="2.7" fill="#ff8a3d"/></svg><span class="logo-text">whatis<b>localhost</b></span></a>
+        <p>A visual field guide to how the internet really works — from 127.0.0.1 to a data center on the other side of the planet.</p>
+      </div>
+      <div class="footer-col"><h2>Chapters</h2><ul>
+        <li><a href="/">01 · What is localhost?</a></li>
+        <li><a href="/localhost-ports.html">02 · Localhost ports</a></li>
+        <li><a href="/localhost-not-working.html">03 · Localhost not working</a></li>
+        <li><a href="/what-is-the-cloud.html">04 · What is the cloud?</a></li>
+        <li><a href="/deploy-guide.html">05 · Deploy your app</a></li>
+      </ul></div>
+      <div class="footer-col"><h2>Primary sources</h2><ul>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc6761#section-6.3" rel="noopener">RFC 6761 · the localhost name</a></li>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc6890" rel="noopener">RFC 6890 · special IP addresses</a></li>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc4291#section-2.5.3" rel="noopener">RFC 4291 · IPv6 loopback ::1</a></li>
+        <li><a href="https://www.iana.org/assignments/service-names-port-numbers/" rel="noopener">IANA port registry</a></li>
+        <li><a href="https://fetch.spec.whatwg.org/#port-blocking" rel="noopener">Fetch standard · blocked ports</a></li>
+      </ul></div>
+      <div class="footer-col"><h2>For machines</h2><ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="https://cloudish.ai/skill.md" rel="noopener">Cloudish deploy skill</a></li>
+      </ul></div>
+    </div>
+    <div class="titleblock">
+      <div><span>Project</span><strong>What is localhost? A field guide</strong></div>
+      <div><span>Sheet</span><strong>01 of 05</strong></div>
+      <div><span>Drawing</span><strong>Localhost</strong></div>
+      <div><span>Rev</span><strong>2.0.0</strong></div>
+      <div><span>Scale</span><strong>127.0.0.1 : 1</strong></div>
+      <div><span>Deployed on</span><strong><a href="https://cloudish.ai/" rel="noopener">Cloudish.ai</a> — not localhost</strong></div>
+    </div>
+    <div class="footer-legal"><span>© 2026 whatislocalhost.com</span><span>Drawn in blueprint blue. Served from a data center, not a laptop.</span></div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Localhost Ports Explained: What :3000, :5173, :8080 &amp; More Mean</title>
+<meta name="description" content="What's the number after localhost? A visual guide to ports, plus a searchable list of common localhost ports (3000, 5173, 8000, 8080…) and what runs on them.">
+<link rel="canonical" href="https://whatislocalhost.com/localhost-ports.html">
+<meta name="theme-color" content="#f5f8fd" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061633" media="(prefers-color-scheme: dark)">
+<script>(function(){var d=document.documentElement;d.classList.add("js");try{var t=localStorage.getItem("theme");if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";d.dataset.theme=t}catch(e){d.dataset.theme="light"}})()</script>
+<link rel="preload" href="/fonts/space-grotesk-vf.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/ibm-plex-sans-vf.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/styles.css?v=2.0.0">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="whatislocalhost.com">
+<meta property="og:title" content="Localhost ports explained: what :3000, :5173 and :8080 mean">
+<meta property="og:description" content="Every computer has 65,535 doors. Here's what a port is, and which programs live behind the famous ones.">
+<meta property="og:url" content="https://whatislocalhost.com/localhost-ports.html">
+<meta property="og:image" content="https://whatislocalhost.com/og/ports.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://whatislocalhost.com/og/ports.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Localhost ports explained",
+      "description": "What a port is, the three port ranges, and a reference list of the ports common development tools use on localhost.",
+      "url": "https://whatislocalhost.com/localhost-ports.html",
+      "image": "https://whatislocalhost.com/og/ports.png",
+      "datePublished": "2026-10-04",
+      "dateModified": "2026-10-04",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://whatislocalhost.com/#website"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "whatislocalhost.com",
+        "url": "https://whatislocalhost.com/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Localhost",
+          "item": "https://whatislocalhost.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Ports",
+          "item": "https://whatislocalhost.com/localhost-ports.html"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is localhost:8080?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Whatever program on your own computer is listening on port 8080. It's the classic “alternative HTTP” port, used by Spring Boot, Tomcat, Jenkins, webpack-dev-server, Vue CLI and many Docker images. If nothing is listening there, your browser shows “localhost refused to connect.”"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is localhost:3000?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The program listening on port 3000 on your computer — most often a Next.js, Nuxt, Ruby on Rails or Node.js development server. It only works while that server is running, and only on your machine."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is localhost:5173?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Vite's development server. React, Vue, Svelte and SvelteKit projects created with Vite open there by default. The number spells VITE: 5 is V in Roman numerals, then 1, 7 and 3 stand in for I, T and E."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is localhost:8000?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Usually Django's runserver, Python's built-in http.server, FastAPI with Uvicorn, or Laravel's artisan serve. Like 8080, it's a lookalike of HTTP's port 80 that doesn't need admin rights."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can two programs use the same port?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not on the same address at the same time. The first program to listen claims the port; the second fails with an error like EADDRINUSE (“address already in use”). Stop the first one, or start the second on a different port."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many ports are there?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "65,536 per protocol: TCP and UDP each have ports 0 through 65535, and port 0 is reserved. Ports 0–1023 are system ports, 1024–49151 are registered ports, and 49152–65535 are dynamic ports your operating system hands out for outgoing connections."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is port 5000 already in use on my Mac?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Since macOS Monterey, AirPlay Receiver listens on port 5000 (and 7000). Turn it off in System Settings → General → AirDrop & Handoff, or run your app on another port, for example flask run --port 5001."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is localhost:3000 the same as 127.0.0.1:3000?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "They reach the same server, but your browser treats them as different sites: cookies, logins and localStorage saved on one won't appear on the other. And if localhost resolves to IPv6 (::1) while your server only listens on 127.0.0.1, only one of them will work."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script src="/script.js?v=2.0.0" defer></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" style="stroke:var(--stroke-2);stroke-width:1"/></pattern>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" style="fill:var(--stroke)"/></marker>
+    <marker id="arr-sig" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" style="fill:var(--signal)"/></marker>
+  </defs>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap masthead-inner">
+    <a class="logo" href="/" aria-label="whatislocalhost.com home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" style="fill:var(--blue)"/><path d="M1 16h30M16 1v30" stroke="#fff" stroke-opacity=".14"/><g class="logo-loop"><path d="M22.9 12.6A7.4 7.4 0 1 0 23.4 17" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round"/><path d="M19.6 12.4l3.6.5.5-3.6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></g><circle cx="16" cy="16" r="2.7" fill="#ff8a3d"/></svg>
+      <span class="logo-text">whatis<b>localhost</b></span>
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Chapters">
+      <a href="/"><span class="n">01</span>Localhost</a>
+      <a href="/localhost-ports.html" aria-current="page"><span class="n">02</span>Ports</a>
+      <a href="/localhost-not-working.html"><span class="n">03</span>Troubleshoot</a>
+      <a href="/what-is-the-cloud.html"><span class="n">04</span>The cloud</a>
+      <a href="/deploy-guide.html"><span class="n">05</span>Deploy</a>
+    </nav>
+    <div class="masthead-actions">
+      <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark blueprint theme"><span class="knob" aria-hidden="true"></span><svg class="ico-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.3 5.3l1.7 1.7M17 17l1.7 1.7M5.3 18.7L7 17M17 7l1.7-1.7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><svg class="ico-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button>
+      <a class="btn btn-primary btn-sm" href="/deploy-guide.html#launchpad">Deploy an app</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="bars" aria-hidden="true"></span>Menu</button>
+    </div>
+  </div>
+  <div class="progress" aria-hidden="true"><span></span></div>
+</header>
+
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Localhost</a><span aria-hidden="true">/</span><span>Ports</span></nav>
+    <div class="hero-grid hero-grid-wide">
+      <div class="hero-copy">
+        <p class="kicker"><span class="tag">CH. 02</span> Ports · the doors of a computer</p>
+        <h1>Localhost ports, <span class="hl">explained</span></h1>
+        <p class="lede">In <code>localhost:3000</code>, <strong>localhost</strong> picks the computer and <strong>3000</strong> picks the program. A port is a numbered door — every computer has 65,535 of them — and your browser just knocked on one.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#common-ports">Find a port <span class="arr" aria-hidden="true">↓</span></a>
+          <a class="btn" href="#knock">Knock on a door</a>
+        </div>
+        <dl class="readouts">
+          <div><dt>Ports per address</dt><dd>65,535</dd></div>
+          <div><dt>Programs per port</dt><dd>One</dd></div>
+          <div><dt>Most famous</dt><dd>:3000</dd></div>
+        </dl>
+      </div>
+
+      <div id="knock" data-portsim>
+        <div class="portsim-bar">
+          <label class="urlbar" for="port-in"><span class="host">http://<b>localhost</b>:</span><input id="port-in" type="number" min="1" max="65535" value="3000" inputmode="numeric" aria-label="Port number"><button class="btn btn-primary btn-sm" type="button" data-send>Send request</button></label>
+          <label class="switch"><input type="checkbox" data-app-switch checked><span class="track" aria-hidden="true"></span>Your app on :3000 is running</label>
+        </div>
+        <figure class="fig corners" style="margin:0">
+          <div class="fig-bar"><span><b>Fig. 01</b> — 127.0.0.1, the building · ports, the doors</span><span class="live">Interactive</span></div>
+          <svg class="dg" viewBox="0 0 760 410" role="img" aria-labelledby="pb-t pb-d">
+            <title id="pb-t">A computer drawn as a building with numbered doors</title>
+            <desc id="pb-d">The computer at 127.0.0.1 is a building. Each door is a port: 22, 80, 443, 3000, 3001, 5173, 5432, 6000, 8080 and any other number. Doors with a green light have a program listening behind them. The browser sends a request to one door at a time.</desc>
+            <rect class="bg ln" x="22" y="150" width="172" height="120" rx="8"/>
+            <path class="ln-3" d="M22 172 H194"/>
+            <circle class="ln-2" cx="35" cy="161" r="3"/><circle class="ln-2" cx="46" cy="161" r="3"/><circle class="ln-2" cx="57" cy="161" r="3"/>
+            <rect class="bg-2" x="68" y="155" width="116" height="12" rx="6"/>
+            <text class="tx-2" x="76" y="164.5" style="font-size:8.5px">localhost:<tspan data-port-echo>3000</tspan></text>
+            <rect class="bg-blue" x="36" y="186" width="90" height="10" rx="2"/>
+            <path class="ln-3" d="M36 210 H178 M36 222 H160 M36 234 H170"/>
+            <text class="lbl" x="22" y="294">YOUR BROWSER</text><text class="tx-3" x="22" y="309">ON THIS COMPUTER</text>
+            <path class="ln-2 dash" d="M194 210 H262"/>
+            <path class="ln-2" d="M250 50 H748"/>
+            <path class="ln" d="M262 388 V50 H736 V388"/>
+            <rect class="bg ln" x="389" y="62" width="220" height="30" rx="3"/>
+            <text class="lbl mid" x="499" y="81">127.0.0.1 · LOCALHOST</text>
+            <path class="ln" d="M20 388 H746"/>
+            <rect class="f-hatch" x="20" y="388" width="726" height="12"/>
+            <text class="tx-3 mid" x="499" y="374">65,535 DOORS PER ADDRESS · PORT 0 IS RESERVED</text>
+            <g class="door" data-port="22" data-x="321" data-y="166"><rect class="door-body" x="286" y="112" width="70" height="96" rx="4"/><circle class="door-led" cx="346" cy="122" r="3"/><text class="door-num mid" x="321" y="148">22</text><text class="door-what mid" x="321" y="164">SSH</text><circle class="ln-3" cx="343" cy="178" r="2.5"/></g>
+            <g class="door" data-port="80" data-x="409" data-y="166"><rect class="door-body" x="374" y="112" width="70" height="96" rx="4"/><circle class="door-led" cx="434" cy="122" r="3"/><text class="door-num mid" x="409" y="148">80</text><text class="door-what mid" x="409" y="164">HTTP</text><circle class="ln-3" cx="431" cy="178" r="2.5"/></g>
+            <g class="door" data-port="443" data-x="497" data-y="166"><rect class="door-body" x="462" y="112" width="70" height="96" rx="4"/><circle class="door-led" cx="522" cy="122" r="3"/><text class="door-num mid" x="497" y="148">443</text><text class="door-what mid" x="497" y="164">HTTPS</text><circle class="ln-3" cx="519" cy="178" r="2.5"/></g>
+            <g class="door" data-port="3000" data-x="585" data-y="166"><rect class="door-body" x="550" y="112" width="70" height="96" rx="4"/><circle class="door-led" cx="610" cy="122" r="3"/><text class="door-num mid" x="585" y="148">3000</text><text class="door-what mid" x="585" y="164">YOUR APP</text><circle class="ln-3" cx="607" cy="178" r="2.5"/></g>
+            <g class="door" data-port="3001" data-x="673" data-y="166"><rect class="door-body" x="638" y="112" width="70" height="96" rx="4"/><circle class="door-led" cx="698" cy="122" r="3"/><text class="door-num mid" x="673" y="148">3001</text><text class="door-what mid" x="673" y="164">EMPTY</text><circle class="ln-3" cx="695" cy="178" r="2.5"/></g>
+            <g class="door" data-port="5173" data-x="321" data-y="290"><rect class="door-body" x="286" y="236" width="70" height="96" rx="4"/><circle class="door-led" cx="346" cy="246" r="3"/><text class="door-num mid" x="321" y="272">5173</text><text class="door-what mid" x="321" y="288">VITE</text><circle class="ln-3" cx="343" cy="302" r="2.5"/></g>
+            <g class="door" data-port="5432" data-x="409" data-y="290"><rect class="door-body" x="374" y="236" width="70" height="96" rx="4"/><circle class="door-led" cx="434" cy="246" r="3"/><text class="door-num mid" x="409" y="272">5432</text><text class="door-what mid" x="409" y="288">POSTGRES</text><circle class="ln-3" cx="431" cy="302" r="2.5"/></g>
+            <g class="door" data-port="6000" data-x="497" data-y="290"><rect class="door-body" x="462" y="236" width="70" height="96" rx="4"/><circle class="door-led" cx="522" cy="246" r="3"/><text class="door-num mid" x="497" y="272">6000</text><text class="door-what mid" x="497" y="288">X11</text><circle class="ln-3" cx="519" cy="302" r="2.5"/></g>
+            <g class="door" data-port="8080" data-x="585" data-y="290"><rect class="door-body" x="550" y="236" width="70" height="96" rx="4"/><circle class="door-led" cx="610" cy="246" r="3"/><text class="door-num mid" x="585" y="272">8080</text><text class="door-what mid" x="585" y="288">ALT HTTP</text><circle class="ln-3" cx="607" cy="302" r="2.5"/></g>
+            <g class="door" data-port="other" data-x="673" data-y="290"><rect class="door-body" x="638" y="236" width="70" height="96" rx="4"/><circle class="door-led" cx="698" cy="246" r="3"/><text class="door-num mid" x="673" y="272">…</text><text class="door-what mid" x="673" y="288">ANY PORT</text><circle class="ln-3" cx="695" cy="302" r="2.5"/></g>
+            <g class="sim-packet" data-x="194" data-y="210"><circle class="pkt-halo" cx="194" cy="210" r="11"/><circle class="pkt-core" cx="194" cy="210" r="5.5"/></g>
+          </svg>
+        </figure>
+        <div class="chips" style="margin-top:14px" aria-label="Try a port">
+          <button class="chip" type="button" data-port-chip="3000"><span class="k">:3000</span></button>
+          <button class="chip" type="button" data-port-chip="3001"><span class="k">:3001</span></button>
+          <button class="chip" type="button" data-port-chip="5432"><span class="k">:5432</span></button>
+          <button class="chip" type="button" data-port-chip="6000"><span class="k">:6000</span></button>
+          <button class="chip" type="button" data-port-chip="22"><span class="k">:22</span></button>
+          <button class="chip" type="button" data-port-chip="8080"><span class="k">:8080</span></button>
+        </div>
+        <div class="sim-result" data-kind="idle" aria-live="polite"><span class="ico" aria-hidden="true">·</span><div><p class="sim-title">Pick a port and send a request</p><p>Green lights mean a program is listening behind that door. Try turning your app off, then knock on :3000.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" aria-labelledby="what-h">
+  <div class="wrap split split-wide">
+    <div class="reveal">
+      <p class="eyebrow"><span class="idx">§ 01</span> The short answer</p>
+      <h2 id="what-h">What is a port?</h2>
+      <div class="answer">
+        <span class="answer-label">Quick answer</span>
+        <p>A <strong>port</strong> is a number from 0 to 65535 that identifies one program on a computer. The IP address gets data to the right <em>machine</em>; the port gets it to the right <em>program</em> on that machine.</p>
+        <p><code>localhost:3000</code> means “the program listening on port 3000 on this computer.” If nothing is listening there, the connection is refused.</p>
+      </div>
+    </div>
+    <div class="reveal reveal-d1 prose">
+      <p class="eyebrow"><span class="idx">Rules</span> How ports behave</p>
+      <ul>
+        <li><strong>One program per port.</strong> When a server starts, it <em>listens</em> on a port and claims it. A second program asking for the same port fails with <code>EADDRINUSE</code> — “address already in use.”</li>
+        <li><strong>Both ends have one.</strong> Your browser also uses a port — a random, temporary one like 52814 — for each connection it opens.</li>
+        <li><strong>The defaults are invisible.</strong> <code>http://</code> means port 80 and <code>https://</code> means 443, which is why real websites never show a port.</li>
+        <li><strong>TCP and UDP are separate.</strong> Each protocol has its own 65,536 ports (0–65535). Web traffic uses TCP — except HTTP/3, which runs over UDP.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" aria-labelledby="ranges-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 02</span> The map</p>
+      <h2 id="ranges-h">The three port ranges</h2>
+      <p>The <a href="https://www.iana.org/assignments/service-names-port-numbers/" rel="noopener">IANA registry</a> splits the 65,536 ports into three ranges (<a href="https://www.rfc-editor.org/rfc/rfc6335" rel="noopener">RFC 6335</a>). Drawn to scale, the famous ports barely show up.</p>
+    </div>
+    <figure class="fig reveal">
+      <div class="fig-bar"><span><b>Fig. 02</b> — Ports 0–65535, drawn to scale</span><span>TCP · same for UDP</span></div>
+      <div class="ranges" role="img" aria-label="Port ranges to scale: 0 to 1023 system ports are 1.6 percent of the space, 1024 to 49151 registered ports are 73.4 percent, and 49152 to 65535 dynamic ports are 25 percent.">
+        <div class="ranges-bar"><i class="r1" style="flex:1024"></i><i class="r2" style="flex:48128"></i><i class="r3" style="flex:16384"></i></div>
+        <div class="ranges-ticks"><span style="left:0">0</span><span style="left:1.5625%">1024</span><span style="left:75%">49152</span><span style="left:100%">65535</span></div>
+      </div>
+      <div class="ranges-legend">
+        <div><i class="r1"></i><b>0–1023 · System (“well-known”)</b><span>Classic services: 22 SSH, 53 DNS, 80 HTTP, 443 HTTPS. On many systems, listening here needs admin rights. 1.6% of the space.</span></div>
+        <div><i class="r2"></i><b>1024–49151 · Registered (“user”)</b><span>Where apps and dev servers live: 3000, 5173, 5432, 8080. Anyone can listen here. 73.4% of the space.</span></div>
+        <div><i class="r3"></i><b>49152–65535 · Dynamic (“ephemeral”)</b><span>Handed out by your OS for the client side of outgoing connections. (Linux uses 32768–60999 by default.) 25% of the space.</span></div>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<section class="section section-rule" id="common-ports" aria-labelledby="list-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 03</span> Reference</p>
+      <h2 id="list-h">Common localhost ports and what runs on them</h2>
+      <p>The defaults you'll meet most often while developing. A port is only a convention — any program can listen on any free port — but these are where things usually live.</p>
+    </div>
+    <div class="port-search reveal">
+      <label class="visually-hidden" for="port-filter">Filter ports</label>
+      <input class="field" id="port-filter" type="search" data-port-filter placeholder="Search a port or a tool — try “postgres” or “8080”" autocomplete="off">
+      <span class="port-count" data-port-count aria-live="polite"></span>
+    </div>
+    <div class="table-wrap reveal" data-port-table>
+      <table>
+        <thead><tr><th scope="col">Port</th><th scope="col">What usually runs there</th><th scope="col">Notes</th></tr></thead>
+        <tbody>
+          <tr class="tgroup"><th colspan="3" scope="rowgroup">Web servers &amp; app frameworks</th></tr>
+          <tr id="port-80"><td class="port">80</td><td>HTTP — the default for <code>http://</code></td><td>Browsers hide it: <code>http://localhost</code> means port 80.</td></tr>
+          <tr id="port-443"><td class="port">443</td><td>HTTPS — the default for <code>https://</code></td><td>Local HTTPS needs a certificate (tools like mkcert help).</td></tr>
+          <tr id="port-1234"><td class="port">1234</td><td>Parcel · LM Studio local API</td><td></td></tr>
+          <tr id="port-1313"><td class="port">1313</td><td>Hugo (<code>hugo server</code>)</td><td></td></tr>
+          <tr id="port-3000"><td class="port">3000</td><td>Next.js, Nuxt, Ruby on Rails, Docusaurus, Grafana, Express &amp; Bun examples</td><td>The most famous dev port of all.</td></tr>
+          <tr id="port-3001"><td class="port">3001</td><td>The next try when 3000 is taken</td><td>Next.js and others move up one port automatically.</td></tr>
+          <tr id="port-4000"><td class="port">4000</td><td>Phoenix (Elixir), Jekyll, Firebase Emulator UI</td><td></td></tr>
+          <tr id="port-4173"><td class="port">4173</td><td>Vite preview (<code>vite preview</code>)</td><td>Serves your production build locally.</td></tr>
+          <tr id="port-4200"><td class="port">4200</td><td>Angular CLI (<code>ng serve</code>)</td><td></td></tr>
+          <tr id="port-4321"><td class="port">4321</td><td>Astro</td><td>Default since Astro 3.0. Read it as a countdown.</td></tr>
+          <tr id="port-5000"><td class="port">5000</td><td>Flask · older ASP.NET Core templates</td><td>On macOS 12+, AirPlay Receiver already listens here.</td></tr>
+          <tr id="port-5173"><td class="port">5173</td><td>Vite dev server — React, Vue, Svelte, SvelteKit</td><td>5173 spells VITE: V=5, I=1, T=7, E=3.</td></tr>
+          <tr id="port-5500"><td class="port">5500</td><td>VS Code Live Server extension</td><td></td></tr>
+          <tr id="port-6006"><td class="port">6006</td><td>Storybook · TensorBoard</td><td></td></tr>
+          <tr id="port-7860"><td class="port">7860</td><td>Gradio · Stable Diffusion web UI</td><td></td></tr>
+          <tr id="port-8000"><td class="port">8000</td><td>Django, <code>python -m http.server</code>, FastAPI/Uvicorn, Laravel, Gatsby, Deno</td><td>“80, but unprivileged.”</td></tr>
+          <tr id="port-8080"><td class="port">8080</td><td>Spring Boot, Tomcat, Jenkins, webpack-dev-server, Vue CLI, many Docker images</td><td>The classic alternative HTTP port.</td></tr>
+          <tr id="port-8081"><td class="port">8081</td><td>React Native Metro bundler</td><td></td></tr>
+          <tr id="port-8188"><td class="port">8188</td><td>ComfyUI</td><td></td></tr>
+          <tr id="port-8443"><td class="port">8443</td><td>Alternative HTTPS</td><td></td></tr>
+          <tr id="port-8501"><td class="port">8501</td><td>Streamlit</td><td></td></tr>
+          <tr id="port-8787"><td class="port">8787</td><td>Cloudflare Workers (<code>wrangler dev</code>)</td><td></td></tr>
+          <tr id="port-8888"><td class="port">8888</td><td>Jupyter Notebook · Netlify Dev</td><td></td></tr>
+          <tr id="port-9000"><td class="port">9000</td><td>PHP-FPM, MinIO, SonarQube</td><td>A crowded one — conflicts are common.</td></tr>
+          <tr id="port-9229"><td class="port">9229</td><td>Node.js debugger (<code>node --inspect</code>)</td><td></td></tr>
+          <tr id="port-11434"><td class="port">11434</td><td>Ollama (local LLMs)</td><td></td></tr>
+          <tr class="tgroup"><th colspan="3" scope="rowgroup">Databases, queues &amp; data</th></tr>
+          <tr id="port-1433"><td class="port">1433</td><td>Microsoft SQL Server</td><td></td></tr>
+          <tr id="port-2181"><td class="port">2181</td><td>Apache ZooKeeper</td><td></td></tr>
+          <tr id="port-3306"><td class="port">3306</td><td>MySQL · MariaDB</td><td></td></tr>
+          <tr id="port-5432"><td class="port">5432</td><td>PostgreSQL</td><td>Not a web server — opening it in a browser fails.</td></tr>
+          <tr id="port-5555"><td class="port">5555</td><td>Prisma Studio</td><td></td></tr>
+          <tr id="port-5601"><td class="port">5601</td><td>Kibana</td><td></td></tr>
+          <tr id="port-5672"><td class="port">5672 · 15672</td><td>RabbitMQ · its management UI</td><td></td></tr>
+          <tr id="port-5984"><td class="port">5984</td><td>CouchDB</td><td></td></tr>
+          <tr id="port-6379"><td class="port">6379</td><td>Redis · Valkey</td><td></td></tr>
+          <tr id="port-7474"><td class="port">7474 · 7687</td><td>Neo4j (HTTP · Bolt)</td><td></td></tr>
+          <tr id="port-8086"><td class="port">8086</td><td>InfluxDB</td><td></td></tr>
+          <tr id="port-8123"><td class="port">8123</td><td>ClickHouse HTTP · Home Assistant</td><td></td></tr>
+          <tr id="port-9042"><td class="port">9042</td><td>Apache Cassandra</td><td></td></tr>
+          <tr id="port-9092"><td class="port">9092</td><td>Apache Kafka</td><td></td></tr>
+          <tr id="port-9200"><td class="port">9200</td><td>Elasticsearch · OpenSearch</td><td></td></tr>
+          <tr id="port-11211"><td class="port">11211</td><td>Memcached</td><td></td></tr>
+          <tr id="port-27017"><td class="port">27017</td><td>MongoDB</td><td></td></tr>
+          <tr id="port-54321"><td class="port">54321–54324</td><td>Supabase local stack (API, Postgres, Studio, email)</td><td>From <code>supabase start</code>.</td></tr>
+          <tr class="tgroup"><th colspan="3" scope="rowgroup">Infrastructure &amp; tools</th></tr>
+          <tr id="port-22"><td class="port">22</td><td>SSH</td><td>Browsers refuse to open it.</td></tr>
+          <tr id="port-25"><td class="port">25 · 587</td><td>SMTP (sending email)</td><td></td></tr>
+          <tr id="port-53"><td class="port">53</td><td>DNS</td><td></td></tr>
+          <tr id="port-1025"><td class="port">1025 · 8025</td><td>Mailpit · MailHog (SMTP · web inbox)</td><td>Catch outgoing email while developing.</td></tr>
+          <tr id="port-2375"><td class="port">2375 · 2376</td><td>Docker Engine API (plain · TLS)</td><td>Never expose 2375 to a network.</td></tr>
+          <tr id="port-3100"><td class="port">3100</td><td>Grafana Loki</td><td></td></tr>
+          <tr id="port-4566"><td class="port">4566</td><td>LocalStack (AWS services, locally)</td><td></td></tr>
+          <tr id="port-5678"><td class="port">5678</td><td>n8n</td><td></td></tr>
+          <tr id="port-6443"><td class="port">6443</td><td>Kubernetes API server</td><td></td></tr>
+          <tr id="port-8200"><td class="port">8200</td><td>HashiCorp Vault</td><td></td></tr>
+          <tr id="port-8500"><td class="port">8500</td><td>HashiCorp Consul</td><td></td></tr>
+          <tr id="port-8545"><td class="port">8545</td><td>Ethereum JSON-RPC (Hardhat, Anvil)</td><td></td></tr>
+          <tr id="port-9090"><td class="port">9090</td><td>Prometheus</td><td></td></tr>
+          <tr id="port-16686"><td class="port">16686</td><td>Jaeger UI</td><td></td></tr>
+          <tr id="port-25565"><td class="port">25565</td><td>Minecraft server</td><td></td></tr>
+          <tr id="port-32400"><td class="port">32400</td><td>Plex Media Server</td><td></td></tr>
+          <tr class="port-none" hidden><td colspan="3">No common port matches that. Any free port from 1024 to 49151 is fair game for your own app.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" aria-labelledby="why-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 04</span> Field notes</p>
+      <h2 id="why-h">Why 3000? Why 8080?</h2>
+      <p>Port numbers look random. Most of them have a story.</p>
+    </div>
+    <div class="cards cards-3">
+      <article class="card reveal"><span class="card-idx">:8080 · :8000 · :8888</span><h3>“80, but unprivileged”</h3><p>HTTP's real port is 80, and on Unix-like systems ports below 1024 traditionally required root. So developers picked lookalikes anyone can open: 8080, 8000, 8888.</p></article>
+      <article class="card reveal reveal-d1"><span class="card-idx">:3000</span><h3>The Rails era</h3><p>Ruby on Rails shipped with port 3000 in 2004. A generation of Node.js tutorials, Create React App and Next.js followed — and 3000 became the default “my app” port.</p></article>
+      <article class="card reveal reveal-d2"><span class="card-idx">:5173</span><h3>A port that spells its name</h3><p>Vite's default reads V-I-T-E: 5 is V in Roman numerals, 1 looks like I, 7 like T, and 3 like a backwards E.</p></article>
+      <article class="card reveal"><span class="card-idx">:5000 on a Mac</span><h3>AirPlay got there first</h3><p>Since macOS Monterey, AirPlay Receiver listens on 5000 (and 7000) — so Flask can fail with “address already in use.” Turn it off in System Settings → General → AirDrop &amp; Handoff, or use <code>--port 5001</code>.</p></article>
+      <article class="card reveal reveal-d1"><span class="card-idx">:52814</span><h3>Your browser's side</h3><p>Every connection has two ports. Yours is temporary — your OS picks it from the dynamic range and frees it when the connection closes.</p></article>
+      <article class="card reveal reveal-d2"><span class="card-idx">:0</span><h3>The port that means “any”</h3><p>Port 0 is reserved. Ask your OS to listen on port 0 and it picks a free port for you — a trick test suites use to avoid collisions.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" id="whats-using-a-port" aria-labelledby="using-h">
+  <div class="wrap split">
+    <div class="reveal prose">
+      <p class="eyebrow"><span class="idx">§ 05</span> Commands</p>
+      <h2 id="using-h">Which program is using a port?</h2>
+      <p>When a server won't start because its port is taken, find out who's behind that door, then stop it — or start your app on another port.</p>
+      <p>Replace <code>3000</code> with your port. For a fuller walkthrough of the errors you might see, read <a href="/localhost-not-working.html#port-in-use">“port already in use”</a> in the troubleshooting guide.</p>
+    </div>
+    <div class="tabs reveal reveal-d1" data-tabs>
+      <div class="tab-list" role="tablist" aria-label="Operating system">
+        <button class="tab" role="tab" type="button" data-os="mac" id="t-mac" aria-controls="p-mac">macOS</button>
+        <button class="tab" role="tab" type="button" data-os="linux" id="t-linux" aria-controls="p-linux">Linux</button>
+        <button class="tab" role="tab" type="button" data-os="win" id="t-win" aria-controls="p-win">Windows</button>
+      </div>
+      <div class="tab-panel" role="tabpanel" id="p-mac" aria-labelledby="t-mac"><p class="tab-title">macOS</p><div class="code"><div class="code-head"><span>Terminal</span></div><pre><code><span class="c"># Who is listening on port 3000?</span>
+lsof -nP -iTCP:3000 -sTCP:LISTEN
+
+<span class="c"># Stop it (use the PID from the output)</span>
+kill &lt;PID&gt;
+
+<span class="c"># Every listening port on this Mac</span>
+lsof -nP -iTCP -sTCP:LISTEN</code></pre></div></div>
+      <div class="tab-panel" role="tabpanel" id="p-linux" aria-labelledby="t-linux"><p class="tab-title">Linux</p><div class="code"><div class="code-head"><span>Terminal</span></div><pre><code><span class="c"># Who is listening on port 3000?</span>
+sudo ss -ltnp 'sport = :3000'
+
+<span class="c"># Stop it (use the PID from the output)</span>
+kill &lt;PID&gt;
+
+<span class="c"># Or in one step</span>
+sudo fuser -k 3000/tcp</code></pre></div></div>
+      <div class="tab-panel" role="tabpanel" id="p-win" aria-labelledby="t-win"><p class="tab-title">Windows</p><div class="code"><div class="code-head"><span>PowerShell</span></div><pre><code><span class="c"># Who is listening on port 3000?</span>
+Get-NetTCPConnection -LocalPort 3000 -State Listen
+
+<span class="c"># Stop it (OwningProcess from the output)</span>
+Stop-Process -Id &lt;PID&gt;
+
+<span class="c"># Classic Command Prompt version</span>
+netstat -ano | findstr :3000
+taskkill /PID &lt;PID&gt; /F</code></pre></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" id="blocked-ports" aria-labelledby="blocked-h">
+  <div class="wrap split split-wide">
+    <div class="reveal">
+      <p class="eyebrow"><span class="idx">§ 06</span> Browser rules</p>
+      <h2 id="blocked-h">Ports your browser refuses to open</h2>
+      <p>Open <code>http://localhost:6000</code> and Chrome shows <strong>ERR_UNSAFE_PORT</strong>; Firefox says <strong>“This address is restricted.”</strong> Nothing is wrong with your server: browsers block web requests to a short list of ports that belong to other protocols, so a malicious page can't trick your browser into talking to, say, a mail server.</p>
+      <p>The list lives in the <a href="https://fetch.spec.whatwg.org/#port-blocking" rel="noopener">Fetch standard</a>. If your app picked one of these by accident, move it to another port.</p>
+    </div>
+    <div class="reveal reveal-d1">
+      <div class="table-wrap" style="margin-top:0">
+        <table style="min-width:0">
+          <thead><tr><th scope="col">Blocked port</th><th scope="col">Belongs to</th></tr></thead>
+          <tbody>
+            <tr><td class="port">21 · 22 · 23</td><td>FTP · SSH · Telnet</td></tr>
+            <tr><td class="port">25 · 110 · 143 · 587 · 993</td><td>Email (SMTP, POP3, IMAP)</td></tr>
+            <tr><td class="port">53</td><td>DNS</td></tr>
+            <tr><td class="port">2049 · 4045</td><td>NFS file sharing</td></tr>
+            <tr><td class="port">5060 · 5061</td><td>SIP (internet telephony)</td></tr>
+            <tr><td class="port">6000</td><td>X11 (graphical desktops)</td></tr>
+            <tr><td class="port">6665–6669 · 6697</td><td>IRC chat</td></tr>
+            <tr><td class="port">10080</td><td>Amanda backups</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">A selection — the standard lists about 80 ports, most of them below 1024.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" id="faq" aria-labelledby="faq-h">
+  <div class="wrap-narrow">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 07</span> FAQ</p>
+      <h2 id="faq-h">Port questions, answered</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>What is localhost:8080?</summary>
+        <div class="faq-a"><p>Whatever program on your own computer is listening on port 8080. It's the classic “alternative HTTP” port, used by Spring Boot, Tomcat, Jenkins, webpack-dev-server, Vue CLI and many Docker images. If nothing is listening there, your browser shows “localhost refused to connect.”</p></div>
+      </details>
+      <details>
+        <summary>What is localhost:3000?</summary>
+        <div class="faq-a"><p>The program listening on port 3000 on your computer — most often a Next.js, Nuxt, Ruby on Rails or Node.js development server. It only works while that server is running, and only on your machine.</p></div>
+      </details>
+      <details>
+        <summary>What is localhost:5173?</summary>
+        <div class="faq-a"><p>Vite's development server. React, Vue, Svelte and SvelteKit projects created with Vite open there by default. The number spells VITE: 5 is V in Roman numerals, then 1, 7 and 3 stand in for I, T and E.</p></div>
+      </details>
+      <details>
+        <summary>What is localhost:8000?</summary>
+        <div class="faq-a"><p>Usually Django's <code>runserver</code>, Python's built-in <code>http.server</code>, FastAPI with Uvicorn, or Laravel's <code>artisan serve</code>. Like 8080, it's a lookalike of HTTP's port 80 that doesn't need admin rights.</p></div>
+      </details>
+      <details>
+        <summary>Can two programs use the same port?</summary>
+        <div class="faq-a"><p>Not on the same address at the same time. The first program to listen claims the port; the second fails with an error like EADDRINUSE (“address already in use”). Stop the first one, or start the second on a different port.</p></div>
+      </details>
+      <details>
+        <summary>How many ports are there?</summary>
+        <div class="faq-a"><p>65,536 per protocol: TCP and UDP each have ports 0 through 65535, and port 0 is reserved. Ports 0–1023 are system ports, 1024–49151 are registered ports, and 49152–65535 are dynamic ports your operating system hands out for outgoing connections.</p></div>
+      </details>
+      <details>
+        <summary>Why is port 5000 already in use on my Mac?</summary>
+        <div class="faq-a"><p>Since macOS Monterey, AirPlay Receiver listens on port 5000 (and 7000). Turn it off in System Settings → General → AirDrop &amp; Handoff, or run your app on another port, for example <code>flask run --port 5001</code>.</p></div>
+      </details>
+      <details>
+        <summary>Is localhost:3000 the same as 127.0.0.1:3000?</summary>
+        <div class="faq-a"><p>They reach the same server, but your browser treats them as different sites: cookies, logins and localStorage saved on one won't appear on the other. And if localhost resolves to IPv6 (<code>::1</code>) while your server only listens on <code>127.0.0.1</code>, only one of them will work.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight" aria-label="Next chapter">
+  <div class="wrap">
+    <a class="next-chapter reveal" href="/localhost-not-working.html">
+      <span><small>Next · Chapter 03</small><strong>Localhost not working? Fix it.</strong><span class="sub">“Refused to connect,” ports already in use, phones, Docker — every common cause, diagnosed.</span></span>
+      <span class="go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+  </div>
+</section>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="logo" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" style="fill:var(--blue)"/><path d="M1 16h30M16 1v30" stroke="#fff" stroke-opacity=".14"/><path d="M22.9 12.6A7.4 7.4 0 1 0 23.4 17" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round"/><path d="M19.6 12.4l3.6.5.5-3.6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="16" r="2.7" fill="#ff8a3d"/></svg><span class="logo-text">whatis<b>localhost</b></span></a>
+        <p>A visual field guide to how the internet really works — from 127.0.0.1 to a data center on the other side of the planet.</p>
+      </div>
+      <div class="footer-col"><h2>Chapters</h2><ul>
+        <li><a href="/">01 · What is localhost?</a></li>
+        <li><a href="/localhost-ports.html">02 · Localhost ports</a></li>
+        <li><a href="/localhost-not-working.html">03 · Localhost not working</a></li>
+        <li><a href="/what-is-the-cloud.html">04 · What is the cloud?</a></li>
+        <li><a href="/deploy-guide.html">05 · Deploy your app</a></li>
+      </ul></div>
+      <div class="footer-col"><h2>Primary sources</h2><ul>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc6761#section-6.3" rel="noopener">RFC 6761 · the localhost name</a></li>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc6890" rel="noopener">RFC 6890 · special IP addresses</a></li>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc4291#section-2.5.3" rel="noopener">RFC 4291 · IPv6 loopback ::1</a></li>
+        <li><a href="https://www.iana.org/assignments/service-names-port-numbers/" rel="noopener">IANA port registry</a></li>
+        <li><a href="https://fetch.spec.whatwg.org/#port-blocking" rel="noopener">Fetch standard · blocked ports</a></li>
+      </ul></div>
+      <div class="footer-col"><h2>For machines</h2><ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="https://cloudish.ai/skill.md" rel="noopener">Cloudish deploy skill</a></li>
+      </ul></div>
+    </div>
+    <div class="titleblock">
+      <div><span>Project</span><strong>What is localhost? A field guide</strong></div>
+      <div><span>Sheet</span><strong>02 of 05</strong></div>
+      <div><span>Drawing</span><strong>Ports</strong></div>
+      <div><span>Rev</span><strong>2.0.0</strong></div>
+      <div><span>Scale</span><strong>127.0.0.1 : 1</strong></div>
+      <div><span>Deployed on</span><strong><a href="https://cloudish.ai/" rel="noopener">Cloudish.ai</a> — not localhost</strong></div>
+    </div>
+    <div class="footer-legal"><span>© 2026 whatislocalhost.com</span><span>Drawn in blueprint blue. Served from a data center, not a laptop.</span></div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deploy From Localhost to the Cloud (2026): AI Agents, AWS, Vercel &amp; More</title>
+<meta name="description" content="Go from localhost to a live URL in one sentence with Claude Code, Codex, ChatGPT, Claude or Grok — or compare AWS, DigitalOcean and Vercel + Supabase.">
+<link rel="canonical" href="https://whatislocalhost.com/deploy-guide.html">
+<meta name="theme-color" content="#f5f8fd" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061633" media="(prefers-color-scheme: dark)">
+<script>(function(){var d=document.documentElement;d.classList.add("js");try{var t=localStorage.getItem("theme");if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";d.dataset.theme=t}catch(e){d.dataset.theme="light"}})()</script>
+<link rel="preload" href="/fonts/space-grotesk-vf.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/ibm-plex-sans-vf.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/styles.css?v=2.0.0">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="whatislocalhost.com">
+<meta property="og:title" content="From localhost to a live URL, in one sentence">
+<meta property="og:description" content="Ask your AI agent to deploy to cloudish.ai — or compare AWS, DigitalOcean, Vercel + Supabase and more, with real commands.">
+<meta property="og:url" content="https://whatislocalhost.com/deploy-guide.html">
+<meta property="og:image" content="https://whatislocalhost.com/og/deploy.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://whatislocalhost.com/og/deploy.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Deploy your app from localhost to the cloud",
+      "description": "How deploying works, how to deploy in one sentence with an AI coding agent and cloudish.ai, and how AWS, DigitalOcean, Vercel + Supabase and other platforms compare.",
+      "url": "https://whatislocalhost.com/deploy-guide.html",
+      "image": "https://whatislocalhost.com/og/deploy.png",
+      "datePublished": "2026-09-25",
+      "dateModified": "2026-10-04",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://whatislocalhost.com/#website"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "whatislocalhost.com",
+        "url": "https://whatislocalhost.com/"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Deploy an app to the cloud with an AI coding agent",
+      "description": "Use Claude Code, Codex or another coding agent to deploy a project to cloudish.ai and get a public URL.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Open a terminal in your project folder",
+          "text": "The folder should contain your app. If it has no Dockerfile, the agent can write one."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Ask the agent to deploy",
+          "text": "Run: claude \"Deploy this project to cloudish.ai and give me the live URL. Instructions: https://cloudish.ai/skill.md\" (or the same prompt with codex)."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Let it package and build",
+          "text": "The agent creates an API key, uploads your code without secrets, and Cloudish builds the image from your Dockerfile on its servers."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Open your live URL",
+          "text": "When the build succeeds, the agent returns a permanent HTTPS address that anyone can open. Redeploy any time by asking again."
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Localhost",
+          "item": "https://whatislocalhost.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Deploy",
+          "item": "https://whatislocalhost.com/deploy-guide.html"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What does “deploy” mean?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Copying your app from your own computer to a server that stays on and has a public address, then starting it there. After you deploy, your app has a URL that works for anyone, anywhere — not just on your localhost."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can ChatGPT or Claude deploy my app for me?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Coding agents such as Claude Code and Codex run commands on your computer, so they can deploy a project end to end. Chat assistants in the browser can deploy when they're able to run code with internet access; otherwise they'll write the app and give you the exact commands to run yourself."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need Docker installed to deploy to Cloudish?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. You need a Dockerfile in your project, but the image is built on Cloudish's servers, not on your machine. If your project doesn't have a Dockerfile yet, your coding agent can write one."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I update my app after deploying?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Deploy again. With Cloudish, uploading your project with the same project name updates it in place — or just ask your agent to redeploy. Most other platforms redeploy on every git push or CLI deploy."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does it cost to deploy a small app?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Often very little. Cloudish bills per second only while your app is running and scales idle apps to zero, and new keys start with a small free credit grant. Vercel, Supabase, Cloud Run and others have free tiers. Costs grow with traffic, memory and CPU."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does my app work on localhost but not after deploying?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The most common cause: the app listens on localhost (127.0.0.1) instead of 0.0.0.0, or on a different port than the platform expects. In a container, 127.0.0.1 is unreachable from outside — listen on 0.0.0.0 and the declared port."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where do my API keys and passwords go?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Never in the code you upload. Use your platform's secrets or environment-variable settings — on Cloudish, the encrypted secrets endpoint — and keep a .env file out of your build context and your git history."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script src="/script.js?v=2.0.0" defer></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" style="stroke:var(--stroke-2);stroke-width:1"/></pattern>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" style="fill:var(--stroke)"/></marker>
+    <marker id="arr-sig" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" style="fill:var(--signal)"/></marker>
+  </defs>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap masthead-inner">
+    <a class="logo" href="/" aria-label="whatislocalhost.com home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" style="fill:var(--blue)"/><path d="M1 16h30M16 1v30" stroke="#fff" stroke-opacity=".14"/><g class="logo-loop"><path d="M22.9 12.6A7.4 7.4 0 1 0 23.4 17" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round"/><path d="M19.6 12.4l3.6.5.5-3.6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></g><circle cx="16" cy="16" r="2.7" fill="#ff8a3d"/></svg>
+      <span class="logo-text">whatis<b>localhost</b></span>
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Chapters">
+      <a href="/"><span class="n">01</span>Localhost</a>
+      <a href="/localhost-ports.html"><span class="n">02</span>Ports</a>
+      <a href="/localhost-not-working.html"><span class="n">03</span>Troubleshoot</a>
+      <a href="/what-is-the-cloud.html"><span class="n">04</span>The cloud</a>
+      <a href="/deploy-guide.html" aria-current="page"><span class="n">05</span>Deploy</a>
+    </nav>
+    <div class="masthead-actions">
+      <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark blueprint theme"><span class="knob" aria-hidden="true"></span><svg class="ico-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.3 5.3l1.7 1.7M17 17l1.7 1.7M5.3 18.7L7 17M17 7l1.7-1.7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><svg class="ico-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button>
+      <a class="btn btn-primary btn-sm" href="/deploy-guide.html#launchpad">Deploy an app</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="bars" aria-hidden="true"></span>Menu</button>
+    </div>
+  </div>
+  <div class="progress" aria-hidden="true"><span></span></div>
+</header>
+
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Localhost</a><span aria-hidden="true">/</span><span>Deploy</span></nav>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="kicker"><span class="tag">CH. 05</span> Deploy · localhost → the world</p>
+        <h1>From localhost to a live URL, in <span class="hl">one sentence</span></h1>
+        <p class="lede">Deploying used to mean dashboards, YAML and an afternoon of docs. Now you can open your AI coding agent and say <strong>“deploy this to cloudish.ai.”</strong> It packages your app, builds it on a server, and hands back a link anyone can open.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#launchpad">Open the launchpad <span class="arr" aria-hidden="true">↓</span></a>
+          <a class="btn" href="#compare">Compare platforms</a>
+        </div>
+      </div>
+      <div>
+        <div class="term" data-term role="figure" aria-label="An example terminal session: an AI agent deploys a project to cloudish.ai and prints a live URL.">
+          <div class="term-top"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>~/my-app — claude</div>
+          <div class="term-body">
+            <div class="term-line"><span class="p">$ </span><span class="typed">claude "Deploy this project to cloudish.ai"</span></div>
+            <div class="term-line dim" data-delay="800">● Reading https://cloudish.ai/skill.md</div>
+            <div class="term-line" data-delay="700">● Creating an API key ............ <span class="ok">done</span></div>
+            <div class="term-line" data-delay="650">● Packaging build context ........ <span class="ok">18 KB</span></div>
+            <div class="term-line" data-delay="700">  <span class="dim">(.env and .git left out)</span></div>
+            <div class="term-line" data-delay="1300">● Building image on Cloudish ..... <span class="ok">9.4 s</span></div>
+            <div class="term-line" data-delay="700">● Starting container on :8080 .... <span class="ok">ok</span></div>
+            <div class="term-line" data-delay="700"><span class="ok">✓ Live:</span> <span class="url">https://my-app.on.do.cloudish.ai</span></div>
+            <div class="term-line" data-delay="400"><span class="p">$ </span><span class="caret"></span></div>
+          </div>
+        </div>
+        <p class="small muted" style="margin-top:12px">An illustrative session. Your agent's wording will differ; the steps won't.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-tight section-rule" id="how" aria-labelledby="how-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 01</span> What “deploy” actually does</p>
+      <h2 id="how-h">Six steps from your folder to the planet</h2>
+      <p>Every platform does some version of these. The only difference is how many you do by hand.</p>
+    </div>
+    <div class="pipeline reveal" data-pipeline>
+      <div class="pipe" style="--i:0"><div class="pipe-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><b>Code</b><span>A folder with your app and a Dockerfile describing how to run it.</span></div>
+      <div class="pipe" style="--i:1"><div class="pipe-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z M3 7.5 12 12l9-4.5 M12 12v9"/></svg></div><b>Package</b><span>Zipped into a build context — with secrets and git history left out.</span></div>
+      <div class="pipe" style="--i:2"><div class="pipe-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></div><b>Build</b><span>The Dockerfile becomes an image: your app plus everything it needs.</span></div>
+      <div class="pipe" style="--i:3"><div class="pipe-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3 2.5 8 12 13l9.5-5z M2.5 12.5 12 17.5l9.5-5 M2.5 16.5 12 21.5l9.5-5"/></svg></div><b>Store</b><span>The image is saved in a private registry, ready to run anywhere.</span></div>
+      <div class="pipe" style="--i:4"><div class="pipe-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5z"/></svg></div><b>Run</b><span>A container starts on a server and listens on its port — say 8080.</span></div>
+      <div class="pipe" style="--i:5"><div class="pipe-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3.2 3.6 3.2 14.4 0 18M12 3c-3.2 3.6-3.2 14.4 0 18"/></svg></div><b>Ship</b><span>A public HTTPS URL routes the world to your container.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" id="launchpad" aria-labelledby="lp-h">
+  <div class="wrap">
+    <div class="launchpad reveal" data-launchpad data-tpl="Build me {idea} as a small web app with a Dockerfile, then deploy it to cloudish.ai using the instructions at https://cloudish.ai/skill.md and send me the live URL. If you can't run commands yourself, give me the exact steps to run in my terminal.">
+      <div class="lp-head">
+        <div>
+          <p class="eyebrow"><span class="idx">§ 02</span> The launchpad</p>
+          <h2 id="lp-h">Deploy something. Right now.</h2>
+        </div>
+        <span class="badge">No signup · billed per second</span>
+      </div>
+      <div class="lp-grid">
+        <div class="lp-card">
+          <span class="lp-step"><i>A</i> You have a project</span>
+          <h3>Hand it to your coding agent</h3>
+          <p>Open a terminal in your project's folder and paste one of these. The agent reads Cloudish's instructions, packages your code, waits for the build and gives you the URL.</p>
+          <div class="cmd"><span class="p">$</span><code>claude "Deploy this project to cloudish.ai and give me the live URL. Instructions: https://cloudish.ai/skill.md"</code></div>
+          <div class="cmd"><span class="p">$</span><code>codex "Deploy this project to cloudish.ai and give me the live URL. Instructions: https://cloudish.ai/skill.md"</code></div>
+          <div class="lp-or">or</div>
+          <a class="ai-btn" data-ai="claudecode" data-fixed data-prompt="Deploy my project to cloudish.ai and give me the live URL. Ask me which folder it's in first. Instructions: https://cloudish.ai/skill.md" href="claude-cli://open?q=Deploy%20my%20project%20to%20cloudish.ai%20and%20give%20me%20the%20live%20URL.%20Ask%20me%20which%20folder%20it&#x27;s%20in%20first.%20Instructions%3A%20https%3A%2F%2Fcloudish.ai%2Fskill.md"><span class="mono-ico" aria-hidden="true" style="background:#c2410c">&gt;_</span><span>Open in Claude Code<small>Opens your terminal, prompt pre-filled</small></span></a>
+          <p class="fineprint">Works with Claude Code, Codex, Gemini CLI, Cursor and any agent that can run commands. No Dockerfile? The agent will write one.</p>
+        </div>
+        <div class="lp-card">
+          <span class="lp-step"><i>B</i> You have an idea</span>
+          <h3>Build &amp; deploy it from your browser</h3>
+          <label class="lp-step" for="idea-deploy" style="margin-top:6px"><i>1</i> What should it be?</label>
+          <input class="field" id="idea-deploy" data-idea type="text" placeholder="a personal homepage with a guestbook" autocomplete="off">
+          <div class="chips" style="margin:10px 0 2px">
+            <button type="button" class="chip" data-idea-chip="a countdown to my birthday" aria-pressed="false">Countdown</button>
+            <button type="button" class="chip" data-idea-chip="a link-in-bio page for my band" aria-pressed="false">Link-in-bio</button>
+            <button type="button" class="chip" data-idea-chip="a tiny multiplayer tic-tac-toe game" aria-pressed="false">Tic-tac-toe</button>
+            <button type="button" class="chip" data-idea-chip="a shared grocery list for my family" aria-pressed="false">Grocery list</button>
+          </div>
+          <span class="lp-step"><i>2</i> The prompt</span>
+          <div class="prompt-preview" data-prompt-preview>Build me <mark>a personal homepage with a guestbook</mark> as a small web app with a Dockerfile, then deploy it to cloudish.ai using the instructions at https://cloudish.ai/skill.md and send me the live URL. If you can't run commands yourself, give me the exact steps to run in my terminal.</div>
+          <span class="lp-step"><i>3</i> Send it</span>
+          <div class="ai-buttons">
+            <a class="ai-btn" data-ai="chatgpt" href="https://chatgpt.com/?q=Build%20me%20a%20personal%20homepage%20with%20a%20guestbook%20as%20a%20small%20web%20app%20with%20a%20Dockerfile%2C%20then%20deploy%20it%20to%20cloudish.ai%20using%20the%20instructions%20at%20https%3A%2F%2Fcloudish.ai%2Fskill.md%20and%20send%20me%20the%20live%20URL.%20If%20you%20can&#x27;t%20run%20commands%20yourself%2C%20give%20me%20the%20exact%20steps%20to%20run%20in%20my%20terminal." target="_blank" rel="noopener"><span class="mono-ico" aria-hidden="true">G</span><span>ChatGPT<small>Open with prompt</small></span></a>
+            <a class="ai-btn" data-ai="claude" href="https://claude.ai/new?q=Build%20me%20a%20personal%20homepage%20with%20a%20guestbook%20as%20a%20small%20web%20app%20with%20a%20Dockerfile%2C%20then%20deploy%20it%20to%20cloudish.ai%20using%20the%20instructions%20at%20https%3A%2F%2Fcloudish.ai%2Fskill.md%20and%20send%20me%20the%20live%20URL.%20If%20you%20can&#x27;t%20run%20commands%20yourself%2C%20give%20me%20the%20exact%20steps%20to%20run%20in%20my%20terminal." target="_blank" rel="noopener"><span class="mono-ico" aria-hidden="true" style="background:#c2410c">C</span><span>Claude<small>Open with prompt</small></span></a>
+            <a class="ai-btn" data-ai="grok" href="https://grok.com/?q=Build%20me%20a%20personal%20homepage%20with%20a%20guestbook%20as%20a%20small%20web%20app%20with%20a%20Dockerfile%2C%20then%20deploy%20it%20to%20cloudish.ai%20using%20the%20instructions%20at%20https%3A%2F%2Fcloudish.ai%2Fskill.md%20and%20send%20me%20the%20live%20URL.%20If%20you%20can&#x27;t%20run%20commands%20yourself%2C%20give%20me%20the%20exact%20steps%20to%20run%20in%20my%20terminal." target="_blank" rel="noopener"><span class="mono-ico" aria-hidden="true" style="background:#334155">X</span><span>Grok<small>Open with prompt</small></span></a>
+          </div>
+          <p class="fineprint">The prompt is copied to your clipboard too, in case the chat doesn't pre-fill it. Chat assistants deploy directly when they can run code with internet access; otherwise they'll write the app and give you the two commands to run.</p>
+        </div>
+      </div>
+      <dl class="lp-facts">
+        <div><dt>Signup</dt><dd>None — the first request creates an API key</dd></div>
+        <div><dt>Build</dt><dd>On Cloudish's servers, from your Dockerfile — no Docker needed locally</dd></div>
+        <div><dt>Address</dt><dd>A permanent HTTPS URL, provisioned automatically</dd></div>
+        <div><dt>Billing</dt><dd>Per second while running; idle apps scale to zero</dd></div>
+        <div><dt>Updates</dt><dd>Ask again — the same request redeploys</dd></div>
+        <div><dt>Data</dt><dd>Persistent volumes for SQLite or Postgres; encrypted secrets</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" id="by-hand" aria-labelledby="hand-h">
+  <div class="wrap split">
+    <div class="reveal prose">
+      <p class="eyebrow"><span class="idx">§ 03</span> No agent? No problem</p>
+      <h2 id="hand-h">The same deploy, by hand</h2>
+      <p>Under the hood, the agent runs a couple of commands — so can you. All you need is <code>curl</code>, <code>tar</code> and a <code>Dockerfile</code> at the root of your project.</p>
+      <p>Your app must listen on <code>0.0.0.0</code> and on the port you declare — not on localhost — or the platform's proxy can't reach it. (Sound familiar? It's the <a href="/#who-can-reach">same rule as your phone</a>.)</p>
+      <p>This very site deploys this way: a five-line Dockerfile that serves these pages with nginx.</p>
+      <div class="code"><div class="code-head"><span>Dockerfile · a Node.js app</span></div><pre><code>FROM node:22-alpine
+WORKDIR /app
+COPY . .
+RUN npm ci &amp;&amp; npm run build
+<span class="c"># your server must listen on 0.0.0.0:$PORT</span>
+ENV PORT=8080
+EXPOSE 8080
+CMD ["npm", "start"]</code></pre></div>
+    </div>
+    <div class="reveal reveal-d1">
+      <div class="code" style="margin-top:0"><div class="code-head"><span>Terminal · deploy to Cloudish</span></div><pre><code><span class="c"># 1. Get an API key (no signup) — save "key" as CLOUDISH_API_KEY</span>
+curl -X POST https://cloudish.ai/api/v1/keys
+
+<span class="c"># 2. Package the project, leaving secrets and git history out</span>
+tar --exclude='.env*' --exclude='.git' -czf context.tar.gz .
+
+<span class="c"># 3. Upload it — Cloudish builds the Dockerfile and runs it</span>
+curl -X POST https://cloudish.ai/api/v1/projects \
+  -H "Authorization: Bearer $CLOUDISH_API_KEY" \
+  -F "name=my-app" -F "port=8080" -F "context=@context.tar.gz"
+
+<span class="c"># 4. Later: run steps 2 and 3 again to redeploy</span></code></pre></div>
+      <div class="note"><span class="note-label">Keep secrets out</span>Never bake API keys into the code you upload. Set them with Cloudish's encrypted secrets endpoint — the full API is documented in <a href="https://cloudish.ai/skill.md" rel="noopener">cloudish.ai/skill.md</a>.</div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" id="compare" aria-labelledby="cmp-h">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 04</span> Choose your cloud</p>
+      <h2 id="cmp-h">Cloudish vs Vercel + Supabase vs AWS vs DigitalOcean</h2>
+      <p>All of them can be driven from a terminal — and therefore by an AI agent. They differ in what you have to understand first.</p>
+    </div>
+    <div class="cards cards-2x">
+      <article class="card platform featured reveal">
+        <span class="tagline">Agent-first · any container</span>
+        <h3><a href="https://cloudish.ai/" rel="noopener">Cloudish.ai</a> <span class="badge" style="vertical-align:3px">This site runs here</span></h3>
+        <p>No dashboard to click through: the product is an API designed for coding agents. It builds your Dockerfile server-side and runs the container with a permanent HTTPS URL, persistent volumes and encrypted secrets.</p>
+        <p><strong>Pick it if</strong> you want your AI agent to handle deployment end to end, for any language or framework.</p>
+        <div class="code"><div class="code-head"><span>Terminal</span></div><pre><code>claude "Deploy this project to cloudish.ai"</code></pre></div>
+      </article>
+      <article class="card platform reveal reveal-d1">
+        <span class="tagline">Front end + managed backend</span>
+        <h3><a href="https://vercel.com/" rel="noopener">Vercel</a> + <a href="https://supabase.com/" rel="noopener">Supabase</a></h3>
+        <p>Vercel deploys front ends and serverless functions to a global edge network; Supabase adds a managed Postgres database, logins and file storage. Most “vibe-coded” full-stack apps map onto this pair.</p>
+        <p><strong>Pick it if</strong> you're building a Next.js-style app that needs a database and auth fast, and you're happy wiring two services together.</p>
+        <div class="code"><div class="code-head"><span>Terminal</span></div><pre><code>npx vercel --prod
+npx supabase link --project-ref &lt;ref&gt;
+npx supabase db push</code></pre></div>
+      </article>
+      <article class="card platform reveal">
+        <span class="tagline">The industry standard</span>
+        <h3><a href="https://aws.amazon.com/" rel="noopener">AWS</a></h3>
+        <p>The largest cloud, with nearly unlimited flexibility — and nearly unlimited ways to configure something wrong. For a container app, <strong>Amazon ECS Express Mode</strong> sets up the load balancer, scaling and URL for you; <strong>Amplify Hosting</strong> deploys front ends from a Git repo. (App Runner closed to new customers in April 2026.)</p>
+        <p><strong>Pick it if</strong> you already use AWS, need fine-grained control, or are planning for serious scale.</p>
+        <div class="code"><div class="code-head"><span>Terminal · ECS Express Mode (image already in ECR)</span></div><pre><code>aws ecs create-express-gateway-service \
+  --primary-container image=&lt;account&gt;.dkr.ecr.&lt;region&gt;.amazonaws.com/my-app:latest \
+  --execution-role-arn &lt;task-execution-role-arn&gt; \
+  --infrastructure-role-arn &lt;infrastructure-role-arn&gt; \
+  --monitor-resources</code></pre></div>
+      </article>
+      <article class="card platform reveal reveal-d1">
+        <span class="tagline">Real servers, predictable bills</span>
+        <h3><a href="https://www.digitalocean.com/" rel="noopener">DigitalOcean</a></h3>
+        <p>Approachable virtual servers (“Droplets”) plus App Platform for Git- or spec-based deploys, with managed databases alongside — all scriptable from the <code>doctl</code> CLI.</p>
+        <p><strong>Pick it if</strong> you want a real server or simple app hosting with flat monthly pricing, without AWS's sprawl.</p>
+        <div class="code"><div class="code-head"><span>Terminal</span></div><pre><code>doctl auth init
+doctl apps create --spec .do/app.yaml</code></pre></div>
+      </article>
+    </div>
+    <p class="muted" style="margin-top:22px">Also worth knowing: <a href="https://fly.io/" rel="noopener">Fly.io</a> (<code>fly deploy</code>), <a href="https://railway.com/" rel="noopener">Railway</a> (<code>railway up</code>), <a href="https://render.com/" rel="noopener">Render</a> (Git push), <a href="https://www.netlify.com/" rel="noopener">Netlify</a> (<code>netlify deploy --prod</code>) and <a href="https://cloud.google.com/run" rel="noopener">Google Cloud Run</a> (<code>gcloud run deploy --source .</code>).</p>
+
+    <div class="table-wrap reveal" style="margin-top:36px">
+      <table>
+        <thead><tr><th scope="col">Platform</th><th scope="col">Best for</th><th scope="col">How you deploy</th><th scope="col">Database</th><th scope="col">Pricing model</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Cloudish.ai</th><td>Letting an AI agent deploy any container end to end</td><td>One sentence to your agent, or two <code>curl</code> calls</td><td>Bring your own: SQLite or Postgres on a volume</td><td>Per-second credits; small free grant to start</td></tr>
+          <tr><th scope="row">Vercel + Supabase</th><td>Front-end-heavy apps that need a database and auth fast</td><td><code>vercel --prod</code> + <code>supabase db push</code></td><td>Supabase: managed Postgres, auth, storage</td><td>Free tiers, then usage-based</td></tr>
+          <tr><th scope="row">AWS</th><td>Teams on AWS, maximum control, large scale</td><td>ECS Express Mode (containers), Amplify Hosting (front ends)</td><td>RDS, Aurora, DynamoDB — configured separately</td><td>Usage-based, many line items</td></tr>
+          <tr><th scope="row">DigitalOcean</th><td>Simple servers and app hosting without the sprawl</td><td><code>doctl apps create</code> or a Droplet</td><td>Managed PostgreSQL, MySQL and more</td><td>Flat monthly tiers</td></tr>
+          <tr><th scope="row">Google Cloud Run</th><td>Containers that scale to zero on Google Cloud</td><td><code>gcloud run deploy --source .</code></td><td>Cloud SQL, Firestore</td><td>Usage-based with a free tier</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section section-rule" aria-labelledby="pick-h">
+  <div class="wrap-narrow">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 05</span> The short version</p>
+      <h2 id="pick-h">So which one should you pick?</h2>
+    </div>
+    <ul class="picks reveal">
+      <li><span>You build with an AI agent and want it to handle everything</span><b><a href="https://cloudish.ai/" rel="noopener">Cloudish.ai</a></b></li>
+      <li><span>You want a database and logins on the fastest path</span><b>Vercel + Supabase</b></li>
+      <li><span>You're already on AWS, or need fine-grained control</span><b>AWS · ECS Express Mode</b></li>
+      <li><span>You want a plain server with a predictable bill</span><b>DigitalOcean</b></li>
+      <li><span>You want containers that scale to zero on Google</span><b>Google Cloud Run</b></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section section-rule" id="faq" aria-labelledby="faq-h">
+  <div class="wrap-narrow">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="idx">§ 06</span> FAQ</p>
+      <h2 id="faq-h">Deploying, answered</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>What does “deploy” mean?</summary>
+        <div class="faq-a"><p>Copying your app from your own computer to a server that stays on and has a public address, then starting it there. After you deploy, your app has a URL that works for anyone, anywhere — not just on your localhost.</p></div>
+      </details>
+      <details>
+        <summary>Can ChatGPT or Claude deploy my app for me?</summary>
+        <div class="faq-a"><p>Coding agents such as Claude Code and Codex run commands on your computer, so they can deploy a project end to end. Chat assistants in the browser can deploy when they're able to run code with internet access; otherwise they'll write the app and give you the exact commands to run yourself.</p></div>
+      </details>
+      <details>
+        <summary>Do I need Docker installed to deploy to Cloudish?</summary>
+        <div class="faq-a"><p>No. You need a Dockerfile in your project, but the image is built on Cloudish's servers, not on your machine. If your project doesn't have a Dockerfile yet, your coding agent can write one.</p></div>
+      </details>
+      <details>
+        <summary>How do I update my app after deploying?</summary>
+        <div class="faq-a"><p>Deploy again. With Cloudish, uploading your project with the same project name updates it in place — or just ask your agent to redeploy. Most other platforms redeploy on every git push or CLI deploy.</p></div>
+      </details>
+      <details>
+        <summary>How much does it cost to deploy a small app?</summary>
+        <div class="faq-a"><p>Often very little. Cloudish bills per second only while your app is running and scales idle apps to zero, and new keys start with a small free credit grant. Vercel, Supabase, Cloud Run and others have free tiers. Costs grow with traffic, memory and CPU.</p></div>
+      </details>
+      <details>
+        <summary>Why does my app work on localhost but not after deploying?</summary>
+        <div class="faq-a"><p>The most common cause: the app listens on localhost (127.0.0.1) instead of 0.0.0.0, or on a different port than the platform expects. In a container, 127.0.0.1 is unreachable from outside — listen on 0.0.0.0 and the declared port.</p></div>
+      </details>
+      <details>
+        <summary>Where do my API keys and passwords go?</summary>
+        <div class="faq-a"><p>Never in the code you upload. Use your platform's secrets or environment-variable settings — on Cloudish, the encrypted secrets endpoint — and keep a .env file out of your build context and your git history.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight" aria-label="Back to the start">
+  <div class="wrap">
+    <a class="next-chapter reveal" href="/">
+      <span><small>Back to Chapter 01</small><strong>Everything starts with localhost</strong><span class="sub">Revisit the journey of a request — from 127.0.0.1 to a data center on the other side of the planet.</span></span>
+      <span class="go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+  </div>
+</section>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="logo" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" style="fill:var(--blue)"/><path d="M1 16h30M16 1v30" stroke="#fff" stroke-opacity=".14"/><path d="M22.9 12.6A7.4 7.4 0 1 0 23.4 17" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round"/><path d="M19.6 12.4l3.6.5.5-3.6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="16" r="2.7" fill="#ff8a3d"/></svg><span class="logo-text">whatis<b>localhost</b></span></a>
+        <p>A visual field guide to how the internet really works — from 127.0.0.1 to a data center on the other side of the planet.</p>
+      </div>
+      <div class="footer-col"><h2>Chapters</h2><ul>
+        <li><a href="/">01 · What is localhost?</a></li>
+        <li><a href="/localhost-ports.html">02 · Localhost ports</a></li>
+        <li><a href="/localhost-not-working.html">03 · Localhost not working</a></li>
+        <li><a href="/what-is-the-cloud.html">04 · What is the cloud?</a></li>
+        <li><a href="/deploy-guide.html">05 · Deploy your app</a></li>
+      </ul></div>
+      <div class="footer-col"><h2>Primary sources</h2><ul>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc6761#section-6.3" rel="noopener">RFC 6761 · the localhost name</a></li>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc6890" rel="noopener">RFC 6890 · special IP addresses</a></li>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc4291#section-2.5.3" rel="noopener">RFC 4291 · IPv6 loopback ::1</a></li>
+        <li><a href="https://www.iana.org/assignments/service-names-port-numbers/" rel="noopener">IANA port registry</a></li>
+        <li><a href="https://fetch.spec.whatwg.org/#port-blocking" rel="noopener">Fetch standard · blocked ports</a></li>
+      </ul></div>
+      <div class="footer-col"><h2>For machines</h2><ul>
+        <li><a href="/llms.txt">llms.txt</a></li>
+        <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        <li><a href="https://cloudish.ai/skill.md" rel="noopener">Cloudish deploy skill</a></li>
+      </ul></div>
+    </div>
+    <div class="titleblock">
+      <div><span>Project</span><strong>What is localhost? A field guide</strong></div>
+      <div><span>Sheet</span><strong>05 of 05</strong></div>
+      <div><span>Drawing</span><strong>Deploy</strong></div>
+      <div><span>Rev</span><strong>2.0.0</strong></div>
+      <div><span>Scale</span><strong>127.0.0.1 : 1</strong></div>
+      <div><span>Deployed on</span><strong><a href="https://cloudish.ai/" rel="noopener">Cloudish.ai</a> — not localhost</strong></div>
+    </div>
+    <div class="footer-legal"><span>© 2026 whatislocalhost.com</span><span>Drawn in blueprint blue. Served from a data center, not a laptop.</span></div>
+  </div>
+</footer>
+</body>
+</html>
